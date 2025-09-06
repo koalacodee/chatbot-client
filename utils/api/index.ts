@@ -67,15 +67,6 @@ api.interceptors.response.use(
   }
 );
 
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
 const factoryArgs: [Configuration, string | undefined, AxiosInstance] = [
   new Configuration({ basePath: api.defaults.baseURL }),
   api.defaults.baseURL,

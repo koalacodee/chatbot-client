@@ -110,7 +110,7 @@ export default function TicketForm() {
       const response = await SupportTicketService.createSupportTicket({
         subject: data.subject,
         description: data.description,
-        departmentId: data.subDepartment ?? data.mainCategory,
+        departmentId: data.subDepartment || data.mainCategory,
       });
 
       // Add the newly created ticket to the store
