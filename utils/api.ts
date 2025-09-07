@@ -1,9 +1,6 @@
 import axios from "axios";
 import { getCookie, setCookie } from "./cookies";
-
-import getConfig from "next/config";
-
-const { publicRuntimeConfig } = getConfig();
+import { env } from "next-runtime-env";
 
 // Types for authentication
 interface User {
@@ -48,7 +45,7 @@ interface TrackTicketResponse {
 
 // Create axios instance
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || publicRuntimeConfig.API_URL,
+  baseURL: env("NEXT_PUBLIC_API_URL"),
   headers: {
     "Content-Type": "application/json",
   },

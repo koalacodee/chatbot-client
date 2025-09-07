@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+import { PublicEnvScript } from "next-runtime-env";
 
 const roboto = localFont({
   src: "../public/fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf",
@@ -92,7 +93,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${roboto.variable}`}>
-      <head />
+      <head>
+        <PublicEnvScript />
+      </head>
       <body
         className="min-h-screen bg-background font-sans antialiased text-foreground"
         suppressHydrationWarning

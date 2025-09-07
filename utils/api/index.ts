@@ -7,12 +7,10 @@ import {
   GuestApiFactory,
   SupportTicketsApiFactory,
 } from "./generated";
-import getConfig from "next/config";
-
-const { publicRuntimeConfig } = getConfig();
+import { env } from "next-runtime-env";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || publicRuntimeConfig.API_URL,
+  baseURL: env("NEXT_PUBLIC_API_URL"),
   headers: {
     "Content-Type": "application/json",
   },
