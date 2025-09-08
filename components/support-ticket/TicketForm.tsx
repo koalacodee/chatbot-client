@@ -8,6 +8,7 @@ import { DepartmentsApi } from "@/utils/api/generated/apis/departments-api";
 import { DepartmentService, SupportTicketService } from "@/utils/api/index";
 import { useSubmittedTicketStore } from "@/app/store/useSubmittedTicketStore";
 import { ViewAllSubDepartments200ResponseDataInner } from "@/utils/api/generated";
+import { useTicketHistoryStore } from "@/app/store/useTicketHistoryStore";
 
 // Define the Zod schema for form validation
 const ticketSchema = z.object({
@@ -21,6 +22,16 @@ const ticketSchema = z.object({
     .string()
     .min(20, "Description must be at least 20 characters")
     .max(2000, "Description must not exceed 2000 characters"),
+  guestName: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must not exceed 50 characters"),
+  guestPhone: z
+    .string()
+    .min(10, "Phone number must be at least 10 characters")
+    .max(15, "Phone number must not exceed 15 characters")
+    .regex(/^\+?[\d\s\-\(\)]+$/, "Please enter a valid phone number"),
+  guestEmail: z.email("Please enter a valid email address"),
 });
 
 type TicketFormData = z.infer<typeof ticketSchema>;
@@ -39,6 +50,7 @@ export default function TicketForm() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const setTickets = useTicketHistoryStore((state) => state.setTickets);
 
   const {
     register,
@@ -54,10 +66,14 @@ export default function TicketForm() {
       subDepartment: "",
       subject: "",
       description: "",
+      guestName: "",
+      guestPhone: "",
+      guestEmail: "",
     },
   });
 
   const selectedCategoryId = watch("mainCategory");
+  const phone = watch("guestPhone");
 
   // Fetch categories and sub-departments from API
   useEffect(() => {
@@ -105,11 +121,26 @@ export default function TicketForm() {
     }
   }, [selectedCategoryId]);
 
+  useEffect(() => {
+    const phoneResult = ticketSchema.shape.guestPhone.safeParse(phone);
+
+    if (phoneResult.success) {
+      const fetchTickets = async () => {
+        const tickets = await SupportTicketService.getTicketHistory(phone);
+        setTickets(tickets.data.data.tickets);
+      };
+      fetchTickets();
+    }
+  }, [phone]);
+
   const onSubmit = async (data: TicketFormData) => {
     try {
       const response = await SupportTicketService.createSupportTicket({
         subject: data.subject,
         description: data.description,
+        guestName: data.guestName,
+        guestPhone: data.guestPhone,
+        guestEmail: data.guestEmail,
         departmentId: data.subDepartment || data.mainCategory,
       });
 
@@ -238,6 +269,81 @@ export default function TicketForm() {
               {errors.subDepartment && (
                 <p className="mt-1 text-sm text-red-600">
                   {errors.subDepartment.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] md:items-center gap-2 md:gap-4">
+            <label
+              htmlFor="guestName"
+              className="md:text-right text-sm font-medium text-slate-700"
+            >
+              Full Name
+            </label>
+            <div>
+              <input
+                type="text"
+                id="guestName"
+                {...register("guestName")}
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background ${
+                  errors.guestName ? "border-destructive" : "border-border"
+                } transition-colors animate-fade-in`}
+                placeholder="Enter your full name"
+              />
+              {errors.guestName && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.guestName.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] md:items-center gap-2 md:gap-4">
+            <label
+              htmlFor="guestEmail"
+              className="md:text-right text-sm font-medium text-slate-700"
+            >
+              Email Address
+            </label>
+            <div>
+              <input
+                type="email"
+                id="guestEmail"
+                {...register("guestEmail")}
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background ${
+                  errors.guestEmail ? "border-destructive" : "border-border"
+                } transition-colors animate-fade-in`}
+                placeholder="Enter your email address"
+              />
+              {errors.guestEmail && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.guestEmail.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] md:items-center gap-2 md:gap-4">
+            <label
+              htmlFor="guestPhone"
+              className="md:text-right text-sm font-medium text-slate-700"
+            >
+              Phone Number
+            </label>
+            <div>
+              <input
+                type="tel"
+                id="guestPhone"
+                {...register("guestPhone")}
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background ${
+                  errors.guestPhone ? "border-destructive" : "border-border"
+                } transition-colors animate-fade-in`}
+                placeholder="Enter your phone number"
+              />
+              {errors.guestPhone && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.guestPhone.message}
                 </p>
               )}
             </div>

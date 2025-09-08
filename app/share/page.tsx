@@ -5,5 +5,8 @@ export default async function SharedDepartmentPage({
 }: {
   searchParams: Promise<{ key: string }>;
 }) {
-  return <ShareCategory key={(await searchParams).key} />;
+  const params = await searchParams;
+  const key = params.key;
+
+  return <ShareCategory shareKey={key} />;
 }

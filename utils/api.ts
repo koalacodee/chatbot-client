@@ -67,42 +67,42 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle 401 errors with token refresh
-api.interceptors.response.use(
-  async (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+// // Response interceptor to handle 401 errors with token refresh
+// api.interceptors.response.use(
+//   async (response) => response,
+//   async (error) => {
+//     const originalRequest = error.config;
 
-    // If the error is not 401, or if we've already tried to refresh, reject
-    if (error.response?.status !== 401 || originalRequest._retry) {
-      throw error;
-    }
+//     // If the error is not 401, or if we've already tried to refresh, reject
+//     if (error.response?.status !== 401 || originalRequest._retry) {
+//       throw error;
+//     }
 
-    // Check if the 401 is from the refresh endpoint itself
-    if (originalRequest.url === "/auth/guest/refresh") {
-      throw error;
-    }
+//     // Check if the 401 is from the refresh endpoint itself
+//     if (originalRequest.url === "/auth/guest/refresh") {
+//       throw error;
+//     }
 
-    // Mark this request as retried to prevent infinite loops
-    originalRequest._retry = true;
+//     // Mark this request as retried to prevent infinite loops
+//     originalRequest._retry = true;
 
-    try {
-      // Attempt to refresh the token
-      const response = await api.post<{ data: { accessToken: string } }>(
-        "/auth/guest/refresh"
-      );
-      const accessToken = response.data.data.accessToken;
-      await setCookie("accessToken", accessToken);
+//     try {
+//       // Attempt to refresh the token
+//       const response = await api.post<{ data: { accessToken: string } }>(
+//         "/auth/guest/refresh"
+//       );
+//       const accessToken = response.data.data.accessToken;
+//       await setCookie("accessToken", accessToken);
 
-      // Retry the original request with the new token
-      return await api(originalRequest);
-    } catch (refreshError) {
-      // If refresh fails (401 or other error), reject with the original error
+//       // Retry the original request with the new token
+//       return await api(originalRequest);
+//     } catch (refreshError) {
+//       // If refresh fails (401 or other error), reject with the original error
 
-      throw error;
-    }
-  }
-);
+//       throw error;
+//     }
+//   }
+// );
 
 // Auth service functions
 export const authService = {

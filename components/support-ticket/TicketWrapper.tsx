@@ -1,25 +1,12 @@
 "use client";
-import { SupportTicketService } from "@/utils/api/index";
 import TicketHistory from "./TicketHistory";
 import TicketForm from "./TicketForm";
 import { useSubmittedTicketStore } from "@/app/store/useSubmittedTicketStore";
-import { GetTicketHistory200ResponseDataTicketsInner } from "@/utils/api/generated";
-import { useEffect, useState } from "react";
+import { useTicketHistoryStore } from "@/app/store/useTicketHistoryStore";
 
 export default function TicketWrapper() {
   const { submittedTicket } = useSubmittedTicketStore();
-  const [tickets, setTickets] = useState<
-    GetTicketHistory200ResponseDataTicketsInner[]
-  >([]);
-
-  useEffect(() => {
-    if (submittedTicket) return;
-    const fetchTickets = async () => {
-      const tickets = await SupportTicketService.getTicketHistory();
-      setTickets(tickets.data.data.tickets);
-    };
-    fetchTickets();
-  }, [submittedTicket]);
+  const { tickets } = useTicketHistoryStore();
 
   return (
     <>
@@ -49,7 +36,7 @@ export default function TicketWrapper() {
           </p>
           <p className="text-muted-foreground">Your reference number is:</p>
           <p className="text-2xl font-mono bg-success/20 text-success inline-block px-4 py-2 rounded-md mt-2 animate-bounce">
-            {submittedTicket.code}
+            {submittedTicket.ticket.code}
           </p>
         </div>
       )}

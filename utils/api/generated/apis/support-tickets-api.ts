@@ -165,6 +165,7 @@ export const SupportTicketsApiAxiosParamCreator = function (
      * @throws {RequiredError}
      */
     getTicketHistory: async (
+      phone: string,
       options: RawAxiosRequestConfig = {}
     ): Promise<RequestArgs> => {
       const localVarPath = `/support-tickets/my-tickets`;
@@ -181,7 +182,7 @@ export const SupportTicketsApiAxiosParamCreator = function (
         ...options,
       };
       const localVarHeaderParameter = {} as any;
-      const localVarQueryParameter = {} as any;
+      const localVarQueryParameter = { phone } as any;
 
       // authentication bearer required
       // http bearer authentication required
@@ -648,6 +649,7 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
      * @throws {RequiredError}
      */
     async getTicketHistory(
+      phone: string,
       options?: RawAxiosRequestConfig
     ): Promise<
       (
@@ -656,7 +658,7 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
       ) => AxiosPromise<GetTicketHistory200Response>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.getTicketHistory(options);
+        await localVarAxiosParamCreator.getTicketHistory(phone, options);
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap["SupportTicketsApi.getTicketHistory"]?.[
@@ -950,10 +952,11 @@ export const SupportTicketsApiFactory = function (
      * @throws {RequiredError}
      */
     getTicketHistory(
+      phone: string,
       options?: RawAxiosRequestConfig
     ): AxiosPromise<GetTicketHistory200Response> {
       return localVarFp
-        .getTicketHistory(options)
+        .getTicketHistory(phone, options)
         .then((request) => request(axios, basePath));
     },
     /**
@@ -1114,9 +1117,9 @@ export class SupportTicketsApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof SupportTicketsApi
    */
-  public getTicketHistory(options?: RawAxiosRequestConfig) {
+  public getTicketHistory(phone: string, options?: RawAxiosRequestConfig) {
     return SupportTicketsApiFp(this.configuration)
-      .getTicketHistory(options)
+      .getTicketHistory(phone, options)
       .then((request) => request(this.axios, this.basePath));
   }
 

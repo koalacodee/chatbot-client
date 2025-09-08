@@ -147,6 +147,10 @@
   :root.dark ::selection {
     @apply bg-blue-600 text-white;
   }
+
+  button {
+    @apply cursor-pointer;
+  }
 }
 
 /* Animations */

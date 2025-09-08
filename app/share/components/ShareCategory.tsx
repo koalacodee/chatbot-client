@@ -5,7 +5,7 @@ import { ViewAllSubDepartments200ResponseDataInner } from "@/utils/api/generated
 import { DepartmentService, FAQService } from "@/utils/api/index";
 import { useEffect, useState } from "react";
 
-export default function ShareCategory({ key }: { key: string }) {
+export default function ShareCategory({ shareKey }: { shareKey: string }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [subDepartments, setSubDepartments] = useState<
@@ -58,7 +58,7 @@ export default function ShareCategory({ key }: { key: string }) {
   };
 
   useEffect(() => {
-    if (!key) {
+    if (!shareKey) {
       setError("No access key provided");
       setLoading(false);
       return;
@@ -76,8 +76,8 @@ export default function ShareCategory({ key }: { key: string }) {
 
         // Load initial data
         await Promise.all([
-          fetchSubDepartments(key),
-          fetchSharedDepartmentFaqs(key),
+          fetchSubDepartments(shareKey),
+          fetchSharedDepartmentFaqs(shareKey),
         ]);
       } catch (err) {
         setError(
@@ -89,30 +89,30 @@ export default function ShareCategory({ key }: { key: string }) {
     };
 
     loadInitialData();
-  }, [key]);
+  }, [shareKey]);
 
   // Handle sub-department selection
   useEffect(() => {
-    if (!key) return;
+    if (!shareKey) return;
 
     const loadSubDepartmentFaqs = async () => {
       if (selectedSubDepartment) {
         // Fetch FAQs for selected sub-department
-        await fetchSubDepartmentFaqs(selectedSubDepartment, key);
+        await fetchSubDepartmentFaqs(selectedSubDepartment, shareKey);
       } else {
         // Fetch FAQs for the main shared department
-        await fetchSharedDepartmentFaqs(key);
+        await fetchSharedDepartmentFaqs(shareKey);
       }
     };
 
     loadSubDepartmentFaqs();
-  }, [selectedSubDepartment, key]);
+  }, [selectedSubDepartment, shareKey]);
 
   const handleSetSelectedSubDepartment = (id: string | null) => {
     setSelectedSubDepartment(id);
   };
 
-  if (!key) {
+  if (!shareKey) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">

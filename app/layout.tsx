@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import { PublicEnvScript } from "next-runtime-env";
+import { env, PublicEnvScript } from "next-runtime-env";
 
 const roboto = localFont({
   src: "../public/fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf",
@@ -34,9 +34,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-  ),
+  metadataBase: new URL(env("NEXT_PUBLIC_BASE_URL") || "http://localhost:3000"),
   openGraph: {
     title: "AI Chatbot Support",
     description: "Intelligent chatbot with support ticket integration",
