@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import ChatHistory from "./ChatHistory";
 import { MessageCircle, X } from "lucide-react";
+import { chatService } from "@/utils/api";
 
 export default function FloatingChatWindowRight() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +27,18 @@ export default function FloatingChatWindowRight() {
     if (e.target === e.currentTarget) {
       handleClose();
     }
+  };
+
+  const handleSend = async (message: string) => {
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now().toString(), text: message, sender: "user", avatar: "" },
+    ]);
+    const response = await chatService.ask(message);
+    setMessages((prev) => [
+      ...prev,
+      { id: response.id, text: response.text, avatar: "", sender: "bot" },
+    ]);
   };
 
   useEffect(() => {
@@ -106,7 +119,7 @@ export default function FloatingChatWindowRight() {
 
               {/* Chat Content */}
               <div className="flex-1 flex flex-col">
-                <ChatHistory messages={messages} onSendMessage={() => {}} />
+                <ChatHistory messages={messages} onSendMessage={handleSend} />
               </div>
             </div>
           </div>

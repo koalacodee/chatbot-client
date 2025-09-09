@@ -19,10 +19,10 @@ export default function Home() {
                 title="Welcome to Our Chatbot"
                 description="Ask us anything! We're here to help with your administrative and business needs"
               />
-            <div className="flex items-center gap-2">
-              <ThemeToggle />
-              <LogoutButton />
-            </div>
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <LogoutButton />
+              </div>
             </div>
           </div>
         </header>

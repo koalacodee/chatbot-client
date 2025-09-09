@@ -4,11 +4,12 @@ import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { DepartmentsApi } from "@/utils/api/generated/apis/departments-api";
 import { DepartmentService, SupportTicketService } from "@/utils/api/index";
+import api from "@/utils/api";
 import { useSubmittedTicketStore } from "@/app/store/useSubmittedTicketStore";
 import { ViewAllSubDepartments200ResponseDataInner } from "@/utils/api/generated";
 import { useTicketHistoryStore } from "@/app/store/useTicketHistoryStore";
+import { useVerificationStore } from "@/app/store/useVerificationStore";
 
 // Define the Zod schema for form validation
 const ticketSchema = z.object({
@@ -135,7 +136,19 @@ export default function TicketForm() {
 
   const onSubmit = async (data: TicketFormData) => {
     try {
-      const response = await SupportTicketService.createSupportTicket({
+      // Debug: Log the request payload
+      const requestPayload = {
+        subject: data.subject,
+        description: data.description,
+        guestName: data.guestName,
+        guestPhone: data.guestPhone,
+        guestEmail: data.guestEmail,
+        departmentId: data.subDepartment || data.mainCategory,
+      };
+      console.log("Sending createSupportTicket request:", requestPayload);
+
+      // Use direct axios call to ensure all data is sent
+      const response = await api.post("/support-tickets", {
         subject: data.subject,
         description: data.description,
         guestName: data.guestName,
@@ -143,10 +156,12 @@ export default function TicketForm() {
         guestEmail: data.guestEmail,
         departmentId: data.subDepartment || data.mainCategory,
       });
+      console.log("Response from createSupportTicket:", response.data);
 
-      // Add the newly created ticket to the store
-      const { setSubmittedTicket } = useSubmittedTicketStore.getState();
-      setSubmittedTicket(response.data.data);
+      // Store ticket data for verification instead of showing success
+      const { setTicketData, setIsVerifying } = useVerificationStore.getState();
+      setTicketData(response.data.data.ticketId, data.guestEmail);
+      setIsVerifying(true);
 
       // Reset form after successful submission
       reset();
