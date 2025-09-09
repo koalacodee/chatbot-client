@@ -35,6 +35,12 @@ export interface CreateSupportTicketRequest {
    * @type {string}
    * @memberof CreateSupportTicketRequest
    */
+  departmentId: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CreateSupportTicketRequest
+   */
   guestName: string;
   /**
    *
@@ -48,10 +54,4 @@ export interface CreateSupportTicketRequest {
    * @memberof CreateSupportTicketRequest
    */
   guestEmail: string;
-  /**
-   *
-   * @type {string}
-   * @memberof CreateSupportTicketRequest
-   */
-  departmentId: string;
 }

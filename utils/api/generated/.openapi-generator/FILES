@@ -10,6 +10,9 @@ apis/support-tickets-api.ts
 base.ts
 common.ts
 configuration.ts
+docs/CompleteSupportTicketVerification201Response.md
+docs/CompleteSupportTicketVerification201ResponseData.md
+docs/CompleteSupportTicketVerification201ResponseDataTicket.md
 docs/CreateSupportTicket201Response.md
 docs/CreateSupportTicket201ResponseData.md
 docs/CreateSupportTicketRequest.md
@@ -38,6 +41,8 @@ docs/RegisterGuest201ResponseData.md
 docs/RegisterGuest201ResponseDataGuest.md
 docs/RegisterGuestRequest.md
 docs/SupportTicketsApi.md
+docs/TrackSupportTicket200Response.md
+docs/TrackSupportTicket200ResponseData.md
 docs/VerifyGuestLogin200Response.md
 docs/VerifyGuestLogin200ResponseData.md
 docs/VerifyGuestLogin200ResponseDataGuest.md
@@ -52,6 +57,9 @@ docs/ViewAllSubDepartments200Response.md
 docs/ViewAllSubDepartments200ResponseDataInner.md
 git_push.sh
 index.ts
+models/complete-support-ticket-verification201-response-data-ticket.ts
+models/complete-support-ticket-verification201-response-data.ts
+models/complete-support-ticket-verification201-response.ts
 models/create-support-ticket-request.ts
 models/create-support-ticket201-response-data.ts
 models/create-support-ticket201-response.ts
@@ -76,6 +84,8 @@ models/register-guest-request.ts
 models/register-guest201-response-data-guest.ts
 models/register-guest201-response-data.ts
 models/register-guest201-response.ts
+models/track-support-ticket200-response-data.ts
+models/track-support-ticket200-response.ts
 models/verify-guest-login200-response-data-guest.ts
 models/verify-guest-login200-response-data.ts
 models/verify-guest-login200-response.ts

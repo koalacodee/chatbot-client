@@ -17,56 +17,62 @@
 /**
  * 
  * @export
- * @interface GetTicketHistory200ResponseDataTicketsInner
+ * @interface TrackSupportTicket200ResponseData
  */
-export interface GetTicketHistory200ResponseDataTicketsInner {
+export interface TrackSupportTicket200ResponseData {
     /**
      * 
      * @type {string}
-     * @memberof GetTicketHistory200ResponseDataTicketsInner
+     * @memberof TrackSupportTicket200ResponseData
      */
     'id': string;
     /**
      * 
      * @type {string}
-     * @memberof GetTicketHistory200ResponseDataTicketsInner
+     * @memberof TrackSupportTicket200ResponseData
+     */
+    'guestId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrackSupportTicket200ResponseData
      */
     'subject': string;
     /**
      * 
      * @type {string}
-     * @memberof GetTicketHistory200ResponseDataTicketsInner
+     * @memberof TrackSupportTicket200ResponseData
      */
     'description': string;
     /**
      * 
      * @type {string}
-     * @memberof GetTicketHistory200ResponseDataTicketsInner
-     */
-    'answer'?: string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetTicketHistory200ResponseDataTicketsInner
-     */
-    'isRated': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetTicketHistory200ResponseDataTicketsInner
+     * @memberof TrackSupportTicket200ResponseData
      */
     'departmentId': string;
     /**
      * 
      * @type {string}
-     * @memberof GetTicketHistory200ResponseDataTicketsInner
+     * @memberof TrackSupportTicket200ResponseData
+     */
+    'status': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrackSupportTicket200ResponseData
      */
     'createdAt': string;
     /**
      * 
      * @type {string}
-     * @memberof GetTicketHistory200ResponseDataTicketsInner
+     * @memberof TrackSupportTicket200ResponseData
      */
     'updatedAt': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrackSupportTicket200ResponseData
+     */
+    'code': string;
 }
 

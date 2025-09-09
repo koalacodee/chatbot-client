@@ -1,3 +1,6 @@
+export * from './complete-support-ticket-verification201-response';
+export * from './complete-support-ticket-verification201-response-data';
+export * from './complete-support-ticket-verification201-response-data-ticket';
 export * from './create-support-ticket201-response';
 export * from './create-support-ticket201-response-data';
 export * from './create-support-ticket-request';
@@ -21,6 +24,8 @@ export * from './register-guest201-response';
 export * from './register-guest201-response-data';
 export * from './register-guest201-response-data-guest';
 export * from './register-guest-request';
+export * from './track-support-ticket200-response';
+export * from './track-support-ticket200-response-data';
 export * from './verify-guest-login200-response';
 export * from './verify-guest-login200-response-data';
 export * from './verify-guest-login200-response-data-guest';

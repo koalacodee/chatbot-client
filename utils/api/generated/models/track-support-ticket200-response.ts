@@ -13,30 +13,27 @@
  */
 
 
+// May contain unused imports in some cases
+// @ts-ignore
+import type { TrackSupportTicket200ResponseData } from './track-support-ticket200-response-data';
 
 /**
  * 
  * @export
- * @interface CreateSupportTicket201ResponseData
+ * @interface TrackSupportTicket200Response
  */
-export interface CreateSupportTicket201ResponseData {
+export interface TrackSupportTicket200Response {
     /**
      * 
      * @type {string}
-     * @memberof CreateSupportTicket201ResponseData
+     * @memberof TrackSupportTicket200Response
      */
-    'message': string;
+    'status': string;
     /**
      * 
-     * @type {string}
-     * @memberof CreateSupportTicket201ResponseData
+     * @type {TrackSupportTicket200ResponseData}
+     * @memberof TrackSupportTicket200Response
      */
-    'ticketId': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CreateSupportTicket201ResponseData
-     */
-    'verificationEmailSent': boolean;
+    'data': TrackSupportTicket200ResponseData;
 }
 

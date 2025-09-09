@@ -1,23 +1,21 @@
-# CreateSupportTicket201ResponseData
+# CompleteSupportTicketVerification201ResponseData
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**ticket** | [**CompleteSupportTicketVerification201ResponseDataTicket**](CompleteSupportTicketVerification201ResponseDataTicket.md) |  | [default to undefined]
 **message** | **string** |  | [default to undefined]
-**ticketId** | **string** |  | [default to undefined]
-**verificationEmailSent** | **boolean** |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { CreateSupportTicket201ResponseData } from './api';
+import { CompleteSupportTicketVerification201ResponseData } from './api';
 
-const instance: CreateSupportTicket201ResponseData = {
+const instance: CompleteSupportTicketVerification201ResponseData = {
+    ticket,
     message,
-    ticketId,
-    verificationEmailSent,
 };
 ```
 

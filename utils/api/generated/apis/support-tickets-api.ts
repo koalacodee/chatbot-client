@@ -39,6 +39,8 @@ import {
   operationServerMap,
 } from "../base";
 // @ts-ignore
+import type { CompleteSupportTicketVerification201Response } from "../models";
+// @ts-ignore
 import type { CreateSupportTicket201Response } from "../models";
 // @ts-ignore
 import type { CreateSupportTicketRequest } from "../models";
@@ -46,6 +48,10 @@ import type { CreateSupportTicketRequest } from "../models";
 import type { GetTicketHistory200Response } from "../models";
 // @ts-ignore
 import type { RecordSatisfaction201Response } from "../models";
+// @ts-ignore
+import type { TrackSupportTicket200Response } from "../models";
+// @ts-ignore
+import type { VerifyGuestRegistrationRequest } from "../models";
 /**
  * SupportTicketsApi - axios parameter creator
  * @export
@@ -54,6 +60,102 @@ export const SupportTicketsApiAxiosParamCreator = function (
   configuration?: Configuration
 ) {
   return {
+    /**
+     *
+     * @summary Complete Support Ticket Verification
+     * @param {VerifyGuestRegistrationRequest} [verifyGuestRegistrationRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    completeSupportTicketVerification: async (
+      verifyGuestRegistrationRequest?: VerifyGuestRegistrationRequest,
+      options: RawAxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/support-tickets/verify`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: "POST",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter["Content-Type"] = "application/json";
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        verifyGuestRegistrationRequest,
+        localVarRequestOptions,
+        configuration
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Complete Support Ticket Verification
+     * @param {VerifyGuestRegistrationRequest} [verifyGuestRegistrationRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    completeSupportTicketVerification_1: async (
+      verifyGuestRegistrationRequest?: VerifyGuestRegistrationRequest,
+      options: RawAxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/support-tickets/verify`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: "POST",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter["Content-Type"] = "application/json";
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        verifyGuestRegistrationRequest,
+        localVarRequestOptions,
+        configuration
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
     /**
      *
      * @summary Create a new support ticket
@@ -113,7 +215,7 @@ export const SupportTicketsApiAxiosParamCreator = function (
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createSupportTicket_1: async (
+    createSupportTicket_2: async (
       createSupportTicketRequest?: CreateSupportTicketRequest,
       options: RawAxiosRequestConfig = {}
     ): Promise<RequestArgs> => {
@@ -161,6 +263,7 @@ export const SupportTicketsApiAxiosParamCreator = function (
     /**
      *
      * @summary Get Ticket History
+     * @param {string} phone
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -168,6 +271,8 @@ export const SupportTicketsApiAxiosParamCreator = function (
       phone: string,
       options: RawAxiosRequestConfig = {}
     ): Promise<RequestArgs> => {
+      // verify required parameter 'phone' is not null or undefined
+      assertParamExists("getTicketHistory", "phone", phone);
       const localVarPath = `/support-tickets/my-tickets`;
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -182,11 +287,11 @@ export const SupportTicketsApiAxiosParamCreator = function (
         ...options,
       };
       const localVarHeaderParameter = {} as any;
-      const localVarQueryParameter = { phone } as any;
+      const localVarQueryParameter = {} as any;
 
-      // authentication bearer required
-      // http bearer authentication required
-      await setBearerAuthToObject(localVarHeaderParameter, configuration);
+      if (phone !== undefined) {
+        localVarQueryParameter["phone"] = phone;
+      }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter);
       let headersFromBaseOptions =
@@ -205,12 +310,16 @@ export const SupportTicketsApiAxiosParamCreator = function (
     /**
      *
      * @summary Get Ticket History
+     * @param {string} phone
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getTicketHistory_2: async (
+    getTicketHistory_3: async (
+      phone: string,
       options: RawAxiosRequestConfig = {}
     ): Promise<RequestArgs> => {
+      // verify required parameter 'phone' is not null or undefined
+      assertParamExists("getTicketHistory_3", "phone", phone);
       const localVarPath = `/support-tickets/my-tickets`;
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -227,9 +336,9 @@ export const SupportTicketsApiAxiosParamCreator = function (
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication bearer required
-      // http bearer authentication required
-      await setBearerAuthToObject(localVarHeaderParameter, configuration);
+      if (phone !== undefined) {
+        localVarQueryParameter["phone"] = phone;
+      }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter);
       let headersFromBaseOptions =
@@ -302,12 +411,12 @@ export const SupportTicketsApiAxiosParamCreator = function (
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    recordTicketDissatisfaction_3: async (
+    recordTicketDissatisfaction_4: async (
       id: string,
       options: RawAxiosRequestConfig = {}
     ): Promise<RequestArgs> => {
       // verify required parameter 'id' is not null or undefined
-      assertParamExists("recordTicketDissatisfaction_3", "id", id);
+      assertParamExists("recordTicketDissatisfaction_4", "id", id);
       const localVarPath = `/support-tickets/dissatisfaction/{id}`.replace(
         `{${"id"}}`,
         encodeURIComponent(String(id))
@@ -402,12 +511,12 @@ export const SupportTicketsApiAxiosParamCreator = function (
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    recordTicketSatisfaction_4: async (
+    recordTicketSatisfaction_5: async (
       id: string,
       options: RawAxiosRequestConfig = {}
     ): Promise<RequestArgs> => {
       // verify required parameter 'id' is not null or undefined
-      assertParamExists("recordTicketSatisfaction_4", "id", id);
+      assertParamExists("recordTicketSatisfaction_5", "id", id);
       const localVarPath = `/support-tickets/satisfaction/{id}`.replace(
         `{${"id"}}`,
         encodeURIComponent(String(id))
@@ -512,13 +621,13 @@ export const SupportTicketsApiAxiosParamCreator = function (
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    trackSupportTicket_5: async (
+    trackSupportTicket_6: async (
       code: string,
       body?: object,
       options: RawAxiosRequestConfig = {}
     ): Promise<RequestArgs> => {
       // verify required parameter 'code' is not null or undefined
-      assertParamExists("trackSupportTicket_5", "code", code);
+      assertParamExists("trackSupportTicket_6", "code", code);
       const localVarPath = `/support-tickets/track/{code}`.replace(
         `{${"code"}}`,
         encodeURIComponent(String(code))
@@ -576,6 +685,74 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
+     * @summary Complete Support Ticket Verification
+     * @param {VerifyGuestRegistrationRequest} [verifyGuestRegistrationRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async completeSupportTicketVerification(
+      verifyGuestRegistrationRequest?: VerifyGuestRegistrationRequest,
+      options?: RawAxiosRequestConfig
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string
+      ) => AxiosPromise<CompleteSupportTicketVerification201Response>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.completeSupportTicketVerification(
+          verifyGuestRegistrationRequest,
+          options
+        );
+      const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+      const localVarOperationServerBasePath =
+        operationServerMap[
+          "SupportTicketsApi.completeSupportTicketVerification"
+        ]?.[localVarOperationServerIndex]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration
+        )(axios, localVarOperationServerBasePath || basePath);
+    },
+    /**
+     *
+     * @summary Complete Support Ticket Verification
+     * @param {VerifyGuestRegistrationRequest} [verifyGuestRegistrationRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async completeSupportTicketVerification_1(
+      verifyGuestRegistrationRequest?: VerifyGuestRegistrationRequest,
+      options?: RawAxiosRequestConfig
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string
+      ) => AxiosPromise<CompleteSupportTicketVerification201Response>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.completeSupportTicketVerification_1(
+          verifyGuestRegistrationRequest,
+          options
+        );
+      const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+      const localVarOperationServerBasePath =
+        operationServerMap[
+          "SupportTicketsApi.completeSupportTicketVerification_1"
+        ]?.[localVarOperationServerIndex]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration
+        )(axios, localVarOperationServerBasePath || basePath);
+    },
+    /**
+     *
      * @summary Create a new support ticket
      * @param {CreateSupportTicketRequest} [createSupportTicketRequest]
      * @param {*} [options] Override http request option.
@@ -615,7 +792,7 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    async createSupportTicket_1(
+    async createSupportTicket_2(
       createSupportTicketRequest?: CreateSupportTicketRequest,
       options?: RawAxiosRequestConfig
     ): Promise<
@@ -625,13 +802,13 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
       ) => AxiosPromise<CreateSupportTicket201Response>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.createSupportTicket_1(
+        await localVarAxiosParamCreator.createSupportTicket_2(
           createSupportTicketRequest,
           options
         );
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
-        operationServerMap["SupportTicketsApi.createSupportTicket_1"]?.[
+        operationServerMap["SupportTicketsApi.createSupportTicket_2"]?.[
           localVarOperationServerIndex
         ]?.url;
       return (axios, basePath) =>
@@ -645,6 +822,7 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get Ticket History
+     * @param {string} phone
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -675,10 +853,12 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get Ticket History
+     * @param {string} phone
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    async getTicketHistory_2(
+    async getTicketHistory_3(
+      phone: string,
       options?: RawAxiosRequestConfig
     ): Promise<
       (
@@ -687,10 +867,10 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
       ) => AxiosPromise<GetTicketHistory200Response>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.getTicketHistory_2(options);
+        await localVarAxiosParamCreator.getTicketHistory_3(phone, options);
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
-        operationServerMap["SupportTicketsApi.getTicketHistory_2"]?.[
+        operationServerMap["SupportTicketsApi.getTicketHistory_3"]?.[
           localVarOperationServerIndex
         ]?.url;
       return (axios, basePath) =>
@@ -742,7 +922,7 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    async recordTicketDissatisfaction_3(
+    async recordTicketDissatisfaction_4(
       id: string,
       options?: RawAxiosRequestConfig
     ): Promise<
@@ -752,13 +932,13 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
       ) => AxiosPromise<RecordSatisfaction201Response>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.recordTicketDissatisfaction_3(
+        await localVarAxiosParamCreator.recordTicketDissatisfaction_4(
           id,
           options
         );
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
-        operationServerMap["SupportTicketsApi.recordTicketDissatisfaction_3"]?.[
+        operationServerMap["SupportTicketsApi.recordTicketDissatisfaction_4"]?.[
           localVarOperationServerIndex
         ]?.url;
       return (axios, basePath) =>
@@ -807,7 +987,7 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    async recordTicketSatisfaction_4(
+    async recordTicketSatisfaction_5(
       id: string,
       options?: RawAxiosRequestConfig
     ): Promise<
@@ -817,10 +997,10 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
       ) => AxiosPromise<RecordSatisfaction201Response>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.recordTicketSatisfaction_4(id, options);
+        await localVarAxiosParamCreator.recordTicketSatisfaction_5(id, options);
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
-        operationServerMap["SupportTicketsApi.recordTicketSatisfaction_4"]?.[
+        operationServerMap["SupportTicketsApi.recordTicketSatisfaction_5"]?.[
           localVarOperationServerIndex
         ]?.url;
       return (axios, basePath) =>
@@ -847,7 +1027,7 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
       (
         axios?: AxiosInstance,
         basePath?: string
-      ) => AxiosPromise<CreateSupportTicket201Response>
+      ) => AxiosPromise<TrackSupportTicket200Response>
     > {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.trackSupportTicket(code, body, options);
@@ -872,7 +1052,7 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    async trackSupportTicket_5(
+    async trackSupportTicket_6(
       code: string,
       body?: object,
       options?: RawAxiosRequestConfig
@@ -880,17 +1060,17 @@ export const SupportTicketsApiFp = function (configuration?: Configuration) {
       (
         axios?: AxiosInstance,
         basePath?: string
-      ) => AxiosPromise<CreateSupportTicket201Response>
+      ) => AxiosPromise<TrackSupportTicket200Response>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.trackSupportTicket_5(
+        await localVarAxiosParamCreator.trackSupportTicket_6(
           code,
           body,
           options
         );
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
-        operationServerMap["SupportTicketsApi.trackSupportTicket_5"]?.[
+        operationServerMap["SupportTicketsApi.trackSupportTicket_6"]?.[
           localVarOperationServerIndex
         ]?.url;
       return (axios, basePath) =>
@@ -917,6 +1097,42 @@ export const SupportTicketsApiFactory = function (
   return {
     /**
      *
+     * @summary Complete Support Ticket Verification
+     * @param {VerifyGuestRegistrationRequest} [verifyGuestRegistrationRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    completeSupportTicketVerification(
+      verifyGuestRegistrationRequest?: VerifyGuestRegistrationRequest,
+      options?: RawAxiosRequestConfig
+    ): AxiosPromise<CompleteSupportTicketVerification201Response> {
+      return localVarFp
+        .completeSupportTicketVerification(
+          verifyGuestRegistrationRequest,
+          options
+        )
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @summary Complete Support Ticket Verification
+     * @param {VerifyGuestRegistrationRequest} [verifyGuestRegistrationRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    completeSupportTicketVerification_1(
+      verifyGuestRegistrationRequest?: VerifyGuestRegistrationRequest,
+      options?: RawAxiosRequestConfig
+    ): AxiosPromise<CompleteSupportTicketVerification201Response> {
+      return localVarFp
+        .completeSupportTicketVerification_1(
+          verifyGuestRegistrationRequest,
+          options
+        )
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     *
      * @summary Create a new support ticket
      * @param {CreateSupportTicketRequest} [createSupportTicketRequest]
      * @param {*} [options] Override http request option.
@@ -937,17 +1153,18 @@ export const SupportTicketsApiFactory = function (
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createSupportTicket_1(
+    createSupportTicket_2(
       createSupportTicketRequest?: CreateSupportTicketRequest,
       options?: RawAxiosRequestConfig
     ): AxiosPromise<CreateSupportTicket201Response> {
       return localVarFp
-        .createSupportTicket_1(createSupportTicketRequest, options)
+        .createSupportTicket_2(createSupportTicketRequest, options)
         .then((request) => request(axios, basePath));
     },
     /**
      *
      * @summary Get Ticket History
+     * @param {string} phone
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -962,14 +1179,16 @@ export const SupportTicketsApiFactory = function (
     /**
      *
      * @summary Get Ticket History
+     * @param {string} phone
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getTicketHistory_2(
+    getTicketHistory_3(
+      phone: string,
       options?: RawAxiosRequestConfig
     ): AxiosPromise<GetTicketHistory200Response> {
       return localVarFp
-        .getTicketHistory_2(options)
+        .getTicketHistory_3(phone, options)
         .then((request) => request(axios, basePath));
     },
     /**
@@ -994,12 +1213,12 @@ export const SupportTicketsApiFactory = function (
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    recordTicketDissatisfaction_3(
+    recordTicketDissatisfaction_4(
       id: string,
       options?: RawAxiosRequestConfig
     ): AxiosPromise<RecordSatisfaction201Response> {
       return localVarFp
-        .recordTicketDissatisfaction_3(id, options)
+        .recordTicketDissatisfaction_4(id, options)
         .then((request) => request(axios, basePath));
     },
     /**
@@ -1024,12 +1243,12 @@ export const SupportTicketsApiFactory = function (
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    recordTicketSatisfaction_4(
+    recordTicketSatisfaction_5(
       id: string,
       options?: RawAxiosRequestConfig
     ): AxiosPromise<RecordSatisfaction201Response> {
       return localVarFp
-        .recordTicketSatisfaction_4(id, options)
+        .recordTicketSatisfaction_5(id, options)
         .then((request) => request(axios, basePath));
     },
     /**
@@ -1044,7 +1263,7 @@ export const SupportTicketsApiFactory = function (
       code: string,
       body?: object,
       options?: RawAxiosRequestConfig
-    ): AxiosPromise<CreateSupportTicket201Response> {
+    ): AxiosPromise<TrackSupportTicket200Response> {
       return localVarFp
         .trackSupportTicket(code, body, options)
         .then((request) => request(axios, basePath));
@@ -1057,13 +1276,13 @@ export const SupportTicketsApiFactory = function (
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    trackSupportTicket_5(
+    trackSupportTicket_6(
       code: string,
       body?: object,
       options?: RawAxiosRequestConfig
-    ): AxiosPromise<CreateSupportTicket201Response> {
+    ): AxiosPromise<TrackSupportTicket200Response> {
       return localVarFp
-        .trackSupportTicket_5(code, body, options)
+        .trackSupportTicket_6(code, body, options)
         .then((request) => request(axios, basePath));
     },
   };
@@ -1076,6 +1295,46 @@ export const SupportTicketsApiFactory = function (
  * @extends {BaseAPI}
  */
 export class SupportTicketsApi extends BaseAPI {
+  /**
+   *
+   * @summary Complete Support Ticket Verification
+   * @param {VerifyGuestRegistrationRequest} [verifyGuestRegistrationRequest]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SupportTicketsApi
+   */
+  public completeSupportTicketVerification(
+    verifyGuestRegistrationRequest?: VerifyGuestRegistrationRequest,
+    options?: RawAxiosRequestConfig
+  ) {
+    return SupportTicketsApiFp(this.configuration)
+      .completeSupportTicketVerification(
+        verifyGuestRegistrationRequest,
+        options
+      )
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @summary Complete Support Ticket Verification
+   * @param {VerifyGuestRegistrationRequest} [verifyGuestRegistrationRequest]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SupportTicketsApi
+   */
+  public completeSupportTicketVerification_1(
+    verifyGuestRegistrationRequest?: VerifyGuestRegistrationRequest,
+    options?: RawAxiosRequestConfig
+  ) {
+    return SupportTicketsApiFp(this.configuration)
+      .completeSupportTicketVerification_1(
+        verifyGuestRegistrationRequest,
+        options
+      )
+      .then((request) => request(this.axios, this.basePath));
+  }
+
   /**
    *
    * @summary Create a new support ticket
@@ -1101,18 +1360,19 @@ export class SupportTicketsApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof SupportTicketsApi
    */
-  public createSupportTicket_1(
+  public createSupportTicket_2(
     createSupportTicketRequest?: CreateSupportTicketRequest,
     options?: RawAxiosRequestConfig
   ) {
     return SupportTicketsApiFp(this.configuration)
-      .createSupportTicket_1(createSupportTicketRequest, options)
+      .createSupportTicket_2(createSupportTicketRequest, options)
       .then((request) => request(this.axios, this.basePath));
   }
 
   /**
    *
    * @summary Get Ticket History
+   * @param {string} phone
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof SupportTicketsApi
@@ -1126,13 +1386,14 @@ export class SupportTicketsApi extends BaseAPI {
   /**
    *
    * @summary Get Ticket History
+   * @param {string} phone
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof SupportTicketsApi
    */
-  public getTicketHistory_2(options?: RawAxiosRequestConfig) {
+  public getTicketHistory_3(phone: string, options?: RawAxiosRequestConfig) {
     return SupportTicketsApiFp(this.configuration)
-      .getTicketHistory_2(options)
+      .getTicketHistory_3(phone, options)
       .then((request) => request(this.axios, this.basePath));
   }
 
@@ -1161,12 +1422,12 @@ export class SupportTicketsApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof SupportTicketsApi
    */
-  public recordTicketDissatisfaction_3(
+  public recordTicketDissatisfaction_4(
     id: string,
     options?: RawAxiosRequestConfig
   ) {
     return SupportTicketsApiFp(this.configuration)
-      .recordTicketDissatisfaction_3(id, options)
+      .recordTicketDissatisfaction_4(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
 
@@ -1192,12 +1453,12 @@ export class SupportTicketsApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof SupportTicketsApi
    */
-  public recordTicketSatisfaction_4(
+  public recordTicketSatisfaction_5(
     id: string,
     options?: RawAxiosRequestConfig
   ) {
     return SupportTicketsApiFp(this.configuration)
-      .recordTicketSatisfaction_4(id, options)
+      .recordTicketSatisfaction_5(id, options)
       .then((request) => request(this.axios, this.basePath));
   }
 
@@ -1229,13 +1490,13 @@ export class SupportTicketsApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof SupportTicketsApi
    */
-  public trackSupportTicket_5(
+  public trackSupportTicket_6(
     code: string,
     body?: object,
     options?: RawAxiosRequestConfig
   ) {
     return SupportTicketsApiFp(this.configuration)
-      .trackSupportTicket_5(code, body, options)
+      .trackSupportTicket_6(code, body, options)
       .then((request) => request(this.axios, this.basePath));
   }
 }
