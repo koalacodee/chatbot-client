@@ -147,7 +147,9 @@ export const authService = {
 // Chat service functions
 export const chatService = {
   ask: async (question: string, conversationId?: string, faqId?: string) => {
-    const response = await api.post("/chat/ask", {
+    const response = await api.post<{
+      data: { answer: string; conversationId: string };
+    }>("/chat/ask", {
       question,
       conversationId,
       faqId,

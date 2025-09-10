@@ -10,6 +10,7 @@ export default function FloatingChatWindowRight() {
   const [messages, setMessages] = useState<
     Array<{ id: string; text: string; avatar: string; sender: "user" | "bot" }>
   >([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -32,13 +33,25 @@ export default function FloatingChatWindowRight() {
   const handleSend = async (message: string) => {
     setMessages((prev) => [
       ...prev,
-      { id: Date.now().toString(), text: message, sender: "user", avatar: "" },
+      {
+        id: Date.now().toString(),
+        text: message,
+        sender: "user",
+        avatar: "/user.svg",
+      },
     ]);
+    setIsLoading(true);
     const response = await chatService.ask(message);
     setMessages((prev) => [
       ...prev,
-      { id: response.id, text: response.text, avatar: "", sender: "bot" },
+      {
+        id: Date.now().toString(),
+        text: response.answer,
+        avatar: "/assistant.svg",
+        sender: "bot",
+      },
     ]);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -65,15 +78,15 @@ export default function FloatingChatWindowRight() {
       {!isOpen && (
         <button
           onClick={toggleChat}
-          className="fixed bottom-6 right-6 z-50 w-13 h-13 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background"
+          className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-br from-primary via-primary/90 to-secondary/80 text-primary-foreground rounded-full shadow-2xl shadow-primary/30 hover:shadow-3xl hover:shadow-primary/40 transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background group"
           aria-label="Open chat"
         >
           <div className="relative w-full h-full flex items-center justify-center">
-            <div className="transition-all duration-300">
-              <MessageCircle className="w-7 h-7" />
+            <div className="transition-all duration-300 group-hover:rotate-12">
+              <MessageCircle className="w-8 h-8" />
             </div>
             {messages.length > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-destructive rounded-full animate-bounce">
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-destructive to-orange-500 rounded-full animate-bounce shadow-lg shadow-destructive/50">
                 <span className="absolute inset-0 rounded-full bg-destructive animate-ping" />
               </span>
             )}
@@ -86,25 +99,25 @@ export default function FloatingChatWindowRight() {
         <>
           {/* Overlay */}
           <div
-            className="fixed inset-0 z-30 transition-opacity duration-300"
+            className="fixed inset-0 z-30 transition-opacity duration-300 overflow-y-auto"
             onClick={handleOverlayClick}
             aria-hidden="true"
           />
           <div className="fixed bottom-6 right-6 z-40 transition-all duration-300 ease-in-out">
-            <div className="bg-card/95 backdrop-blur-md border border-border/50 rounded-2xl shadow-2xl w-[430px] h-[550px] flex flex-col overflow-hidden">
+            <div className="bg-card/95 backdrop-blur-xl border border-border/30 rounded-2xl shadow-2xl shadow-primary/10 w-[550px] h-[750px] flex flex-col overflow-hidden transform transition-all duration-300 hover:shadow-3xl hover:shadow-primary/20">
               {/* Header */}
-              <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border-b border-border/30 px-5 py-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
+              <div className="bg-gradient-to-r from-primary/20 via-secondary/15 to-accent/20 border-b border-border/20 px-6 py-5 flex items-center justify-between">
+                <div className="flex items-center gap-4">
                   <div className="relative">
-                    <div className="w-3 h-3 bg-success rounded-full animate-pulse" />
-                    <div className="absolute inset-0 w-3 h-3 bg-success rounded-full animate-ping" />
+                    <div className="w-4 h-4 bg-success rounded-full animate-pulse shadow-lg shadow-success/50" />
+                    <div className="absolute inset-0 w-4 h-4 bg-success rounded-full animate-ping" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-card-foreground">
+                    <h3 className="text-lg font-bold text-card-foreground">
                       AI Assistant
                     </h3>
-                    <p className="text-xs text-muted-foreground">
-                      Always here to help
+                    <p className="text-sm text-muted-foreground">
+                      Ready to assist you 24/7
                     </p>
                   </div>
                 </div>
@@ -118,8 +131,12 @@ export default function FloatingChatWindowRight() {
               </div>
 
               {/* Chat Content */}
-              <div className="flex-1 flex flex-col">
-                <ChatHistory messages={messages} onSendMessage={handleSend} />
+              <div className="flex-1 flex flex-col overflow-hidden">
+                <ChatHistory
+                  messages={messages}
+                  onSendMessage={handleSend}
+                  isLoading={isLoading}
+                />
               </div>
             </div>
           </div>

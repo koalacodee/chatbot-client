@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import TypingIndicator from "./TypingIndicator";
 import ChatInput from "./ChatInput";
@@ -15,16 +15,28 @@ interface ChatHistoryProps {
   messages: Message[];
   onSendMessage: (message: string) => void;
   isTyping?: boolean;
+  isLoading?: boolean;
 }
 
 export default function ChatHistory({
   messages,
   onSendMessage,
   isTyping = false,
+  isLoading = false,
 }: ChatHistoryProps) {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
+
   return (
     <div className="flex h-full flex-col">
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4 scroll-smooth">
         <div className="mx-auto max-w-4xl">
           {messages.length === 0 ? (
             <div className="flex h-full items-center justify-center">
@@ -45,15 +57,17 @@ export default function ChatHistory({
                   key={message.id}
                   message={message.text}
                   {...message}
+                  isLoading={false}
                 />
               ))}
-              {isTyping && <TypingIndicator />}
+              {isLoading && <TypingIndicator />}
             </div>
           )}
+          <div ref={messagesEndRef} className="h-4" />
         </div>
       </div>
 
-      <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t border-border/20">
         <div className="mx-auto max-w-4xl p-4">
           <ChatInput onSendMessage={onSendMessage} disabled={isTyping} />
         </div>

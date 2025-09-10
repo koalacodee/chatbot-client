@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-
+import ReactMarkdown from "react-markdown";
 // Add isLoading prop support for existing implementation
 interface ChatMessageProps {
   message: string;
@@ -22,8 +22,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   return (
     <div
       className={cn(
-        "flex gap-3 px-4 py-3 group",
-        "hover:bg-muted/30 transition-colors duration-200",
+        "flex gap-3 px-4 py-3 group animate-in fade-in slide-in-from-bottom-2 duration-300",
+        "transition-colors duration-200",
         isUser ? "flex-row-reverse" : "flex-row"
       )}
     >
@@ -36,7 +36,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
         />
       </div>
 
-      <div className={cn("flex flex-col gap-1", isUser ? "items-end" : "items-start")}>
+      <div
+        className={cn(
+          "flex flex-col gap-1",
+          isUser ? "items-end" : "items-start"
+        )}
+      >
         <div className="flex items-baseline gap-2">
           <span className="text-xs font-medium text-muted-foreground">
             {isUser ? "You" : "Assistant"}
@@ -53,12 +58,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 
         <div
           className={cn(
-            "max-w-lg px-4 py-2 rounded-2xl",
-            "text-sm leading-relaxed",
-            "transition-all duration-200",
+            "max-w-lg px-5 py-3 rounded-2xl",
+            "text-sm leading-relaxed shadow-sm",
+            "transition-all duration-300 hover:shadow-md",
             isUser
-              ? "bg-primary text-primary-foreground rounded-br-md"
-              : "bg-muted text-foreground rounded-bl-md",
+              ? "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-br-md shadow-primary/20"
+              : "bg-gradient-to-br from-muted to-muted/90 text-foreground rounded-bl-md shadow-muted/20",
             isLoading && "animate-pulse"
           )}
         >
@@ -69,7 +74,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
               <div className="w-2 h-2 bg-current rounded-full animate-bounce [animation-delay:0.2s]" />
             </div>
           ) : (
-            <div className="whitespace-pre-wrap break-words">{message}</div>
+            <div className="whitespace-pre-wrap break-words">
+              <ReactMarkdown>{message}</ReactMarkdown>
+            </div>
           )}
         </div>
       </div>
