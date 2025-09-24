@@ -2,6 +2,13 @@
 import { FAQService } from "@/utils/api/index";
 import { useEffect, useState } from "react";
 import ChevronDownIcon from "../ui/icons/ChevronDownIcon";
+import { useAttachmentsStore } from "@/app/store/useAttachmentsStore";
+import {
+  AttachmentMetadata,
+  useAttachmentMetadataStore,
+} from "@/app/store/useAttachmentMetadataStore";
+import { AttachmentService } from "@/utils/api";
+import AttachmentPreview from "../ui/AttachmentPreview";
 
 export default function FaqItem({
   text,
@@ -19,16 +26,44 @@ export default function FaqItem({
   const [isOpen, setIsOpen] = useState(false);
   const [isRated, setIsRated] = useState(rate);
   const [isViewed, setIsViewed] = useState(viewed);
-
+  const { getAttachmentsForFaq, attachments } = useAttachmentsStore();
+  const { setMetadataForAttachment, getMetadataForAttachment, metadata } =
+    useAttachmentMetadataStore();
   const toggleOpen = () => {
     setIsOpen(!isOpen);
   };
+  const [currentPreview, setCurrentPreview] = useState<{
+    attachmentKey: string;
+    metadata: AttachmentMetadata;
+  }>();
 
   useEffect(() => {
     if (isOpen && !isViewed) {
       FAQService.viewFaq(id).then(() => setIsViewed(true));
+    } else if (isOpen) {
+      const populateMetadata = async () => {
+        const attachments = getAttachmentsForFaq(id);
+        const promises = attachments.map((attachment) =>
+          AttachmentService.getAttachmentMetadata(attachment).then((metadata) =>
+            setMetadataForAttachment(attachment, metadata)
+          )
+        );
+        await Promise.all(promises);
+      };
+      populateMetadata();
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    const attachment = getAttachmentsForFaq(id)[0];
+    const metadata = getMetadataForAttachment(attachment);
+    if (attachment && metadata) {
+      setCurrentPreview({
+        attachmentKey: attachment,
+        metadata,
+      });
+    }
+  }, [attachments, metadata]);
 
   const handleRate = async (rate: "satisfied" | "dissatisfied") => {
     switch (rate) {
@@ -96,6 +131,12 @@ export default function FaqItem({
               </div>
             )}
           </div>
+          {currentPreview && (
+            <AttachmentPreview
+              attachmentKey={currentPreview.attachmentKey}
+              meta={currentPreview.metadata}
+            />
+          )}
         </div>
       </div>
     </div>

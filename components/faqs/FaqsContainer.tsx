@@ -4,17 +4,22 @@ import FaqItem from "./FaqItem";
 import { useDepartmentPairsStore } from "@/app/store/useDepartmentPairsStore";
 import { useEffect } from "react";
 import { FAQService } from "@/utils/api/index";
+import { useAttachmentsStore } from "@/app/store/useAttachmentsStore";
 
 export default function FaqsContainer() {
   const { setFaqs, faqs } = useFaqsStore();
   const { mainDepartmentId, subDepartmentId } = useDepartmentPairsStore();
+  const { appendAttachments } = useAttachmentsStore();
 
   useEffect(() => {
     FAQService.viewAll(
       undefined,
       undefined,
       subDepartmentId ?? mainDepartmentId ?? undefined
-    ).then((res) => setFaqs(res.data.data));
+    ).then((res) => {
+      setFaqs(res.data.data.faqs);
+      appendAttachments(res.data.data.attachments);
+    });
   }, [mainDepartmentId, subDepartmentId]);
 
   return (

@@ -250,4 +250,23 @@ export const ticketService = {
   },
 };
 
+interface AttachmentMetadataResponse {
+  data: {
+    fileType: string;
+    originalName: string;
+    sizeInBytes: number;
+    expiryDate: string;
+    contentType: string;
+  };
+}
+
+export const AttachmentService = {
+  getAttachmentMetadata: async (tokenOrId: string) => {
+    const res = await api.get<AttachmentMetadataResponse>(
+      `/attachment/${tokenOrId}/metadata`
+    );
+    return res.data.data;
+  },
+};
+
 export default api;
