@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { LogoutButton } from "@/components/ui/LogoutButton";
 import WelcomeSection from "@/components/ui/WelcomeSection";
 import FloatingChatWindowRight from "@/components/chat/FloatingChatWindowRight";
+import Promotion from "@/components/Promotion";
 
 export default function Home() {
   return (
@@ -60,6 +61,7 @@ export default function Home() {
 
       {/* Floating Chat Window - Bottom Right */}
       <FloatingChatWindowRight />
+      <Promotion />
     </PageLayout>
   );
 }

@@ -21,34 +21,33 @@ const FileIcon: React.FC<{ className?: string }> = ({
   </svg>
 );
 
-interface AttachmentPreviewProps {
+interface PromotionAttachmentPreviewProps {
   attachmentKey: string;
   meta: AttachmentMetadata;
 }
 
-const AttachmentPreview: React.FC<AttachmentPreviewProps> = ({
+const PromotionAttachmentPreview: React.FC<PromotionAttachmentPreviewProps> = ({
   attachmentKey,
   meta,
 }) => {
   const { contentType, originalName } = meta;
   const url = `${api.defaults.baseURL}/attachment/${attachmentKey}`;
+
   const renderPreview = () => {
     if (!attachmentKey) {
       return (
-        <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-xl">
+        <div className="flex items-center gap-4 p-4 bg-black/20 rounded-xl">
           <div className="flex-shrink-0">
-            <FileIcon className="w-12 h-12 text-muted-foreground" />
+            <FileIcon className="w-12 h-12 text-white" />
           </div>
           <div className="flex-grow min-w-0">
             <p
-              className="font-medium text-foreground truncate text-sm"
+              className="font-medium text-white truncate text-sm"
               title={originalName}
             >
               {originalName}
             </p>
-            <p className="text-xs text-destructive mt-1">
-              Preview not available.
-            </p>
+            <p className="text-xs text-red-300 mt-1">Preview not available.</p>
           </div>
         </div>
       );
@@ -56,64 +55,53 @@ const AttachmentPreview: React.FC<AttachmentPreviewProps> = ({
 
     if (contentType.startsWith("image/")) {
       return (
-        <div className="w-full overflow-hidden rounded-xl">
-          <img
-            src={url}
-            alt={originalName}
-            className="w-full h-auto object-contain block"
-            style={{
-              display: "block",
-              maxHeight: "400px",
-            }}
-          />
-        </div>
-      );
-    }
-    if (contentType.startsWith("video/")) {
-      return (
-        <div className="w-full overflow-hidden rounded-xl">
-          <video
-            src={url}
-            className="w-full h-auto block"
-            style={{
-              display: "block",
-              maxHeight: "400px",
-            }}
-            autoPlay
-            loop
-            muted
-            playsInline
-            controls
-          />
-        </div>
-      );
-    }
-    if (contentType.startsWith("audio/")) {
-      return (
-        <audio
-          controls
+        <img
           src={url}
-          className="w-full rounded-xl"
+          alt={originalName}
+          className="w-full h-auto object-contain block rounded-xl"
           style={{
             borderRadius: "12px",
+            display: "block",
+            maxHeight: "none",
           }}
         />
       );
     }
+    if (contentType.startsWith("video/")) {
+      return (
+        <video
+          src={url}
+          className="w-full h-auto block rounded-xl"
+          style={{
+            borderRadius: "12px",
+            display: "block",
+            maxHeight: "none",
+          }}
+          autoPlay
+          loop
+          muted
+          playsInline
+          controls
+        />
+      );
+    }
+    if (contentType.startsWith("audio/")) {
+      return <audio controls src={url} className="w-full rounded-xl" />;
+    }
     // Generic preview for other file types
     return (
-      <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-xl">
+      <div className="flex items-center gap-4 p-4 bg-black/20 rounded-xl">
         <div className="flex-shrink-0">
-          <FileIcon className="w-12 h-12 text-muted-foreground" />
+          <FileIcon className="w-12 h-12 text-white" />
         </div>
         <div className="flex-grow min-w-0">
           <p
-            className="font-medium text-foreground truncate text-sm"
+            className="font-medium text-white truncate text-sm"
             title={originalName}
           >
             {originalName}
           </p>
-          <p className="text-xs text-muted-foreground mt-1">{contentType}</p>
+          <p className="text-xs text-gray-300 mt-1">{contentType}</p>
         </div>
       </div>
     );
@@ -122,4 +110,4 @@ const AttachmentPreview: React.FC<AttachmentPreviewProps> = ({
   return <div className="px-4">{renderPreview()}</div>;
 };
 
-export default AttachmentPreview;
+export default PromotionAttachmentPreview;

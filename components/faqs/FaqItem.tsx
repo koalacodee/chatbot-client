@@ -9,6 +9,7 @@ import {
 } from "@/app/store/useAttachmentMetadataStore";
 import { AttachmentService } from "@/utils/api";
 import AttachmentPreview from "../ui/AttachmentPreview";
+import PromotionAttachmentPreview from "../ui/PromotionAttachmentPreview";
 
 export default function FaqItem({
   text,
@@ -132,7 +133,7 @@ export default function FaqItem({
             )}
           </div>
           {currentPreview && (
-            <AttachmentPreview
+            <PromotionAttachmentPreview
               attachmentKey={currentPreview.attachmentKey}
               meta={currentPreview.metadata}
             />

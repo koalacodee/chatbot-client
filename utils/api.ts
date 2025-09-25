@@ -269,4 +269,29 @@ export const AttachmentService = {
   },
 };
 
+export interface PromotionResponse {
+  data: {
+    promotion: {
+      id: string;
+      title: string;
+      audience: string;
+      isActive: boolean;
+      createdAt: string; // ISO date string
+      updatedAt: string; // ISO date string
+      startDate: string; // ISO date string
+      endDate: string; // ISO date string
+    };
+    attachments: {
+      [promotionId: string]: string[];
+    };
+  };
+}
+
+export const PromotionService = {
+  getPromotion: async () => {
+    const res = await api.get<PromotionResponse>("/promotions/customer");
+    return res.data.data;
+  },
+};
+
 export default api;
