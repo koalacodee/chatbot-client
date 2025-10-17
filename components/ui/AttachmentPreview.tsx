@@ -1,6 +1,7 @@
 import React from "react";
 import { AttachmentMetadata } from "@/app/store/useAttachmentMetadataStore";
-import api from "@/utils/api";
+import api, { AttachmentService } from "@/utils/api";
+import { env } from "next-runtime-env";
 
 const FileIcon: React.FC<{ className?: string }> = ({
   className = "w-12 h-12",
@@ -26,12 +27,18 @@ interface AttachmentPreviewProps {
   meta: AttachmentMetadata;
 }
 
-const AttachmentPreview: React.FC<AttachmentPreviewProps> = ({
+const AttachmentPreview: React.FC<AttachmentPreviewProps> = async ({
   attachmentKey,
   meta,
 }) => {
   const { contentType, originalName } = meta;
-  const url = `${api.defaults.baseURL}/attachment/${attachmentKey}`;
+  let url: string;
+  if (env("NEXT_PUBLIC_MEDIA_ACCESS_TYPE") === "signed-url") {
+    url = (await AttachmentService.getAttachmentSignedUrl(attachmentKey))
+      .signedUrl;
+  } else {
+    url = `${api.defaults.baseURL}/attachment/${attachmentKey}`;
+  }
   const renderPreview = () => {
     if (!attachmentKey) {
       return (

@@ -260,12 +260,39 @@ interface AttachmentMetadataResponse {
   };
 }
 
+export interface AttachmentSignedUrlResponse {
+  signedUrl: string;
+}
+
 export const AttachmentService = {
   getAttachmentMetadata: async (tokenOrId: string) => {
     const res = await api.get<AttachmentMetadataResponse>(
       `/attachment/${tokenOrId}/metadata`
     );
     return res.data.data;
+  },
+
+  getAttachmentSignedUrl: async (
+    tokenOrId: string
+  ): Promise<AttachmentSignedUrlResponse> => {
+    return api
+      .get<{ data: AttachmentSignedUrlResponse }>(
+        `/attachment/signed/${tokenOrId}`
+      )
+      .then((res) => res.data.data);
+  },
+
+  uploadFiles: async (uploadKey: string, files: File[]): Promise<void> => {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append("files", file);
+    });
+    return api.post("/files/multiple", formData, {
+      headers: {
+        "x-upload-key": uploadKey,
+        "Content-Type": "multipart/form-data",
+      },
+    });
   },
 };
 

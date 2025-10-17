@@ -6,10 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { DepartmentService, SupportTicketService } from "@/utils/api/index";
 import api from "@/utils/api";
-import { useSubmittedTicketStore } from "@/app/store/useSubmittedTicketStore";
 import { ViewAllSubDepartments200ResponseDataInner } from "@/utils/api/generated";
 import { useTicketHistoryStore } from "@/app/store/useTicketHistoryStore";
 import { useVerificationStore } from "@/app/store/useVerificationStore";
+import { useAttachmentStore } from "./useAttachmentStore";
+import { useAttachmentsStore } from "@/app/store/useAttachmentsStore";
 
 // Define the Zod schema for form validation
 const ticketSchema = z.object({
@@ -47,11 +48,15 @@ export default function TicketForm() {
   const [availableSubDepts, setAvailableSubDepts] = useState<
     ViewAllSubDepartments200ResponseDataInner[]
   >([]);
-  const [attachment, setAttachment] = useState<File | null>(null);
+  const attachments = useAttachmentStore((state) => state.attachments);
+  const setAttachments = useAttachmentStore((state) => state.setAttachments);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const setTickets = useTicketHistoryStore((state) => state.setTickets);
+  const setTicketAttachments = useAttachmentsStore(
+    (state) => state.setAttachments
+  );
 
   const {
     register,
@@ -129,6 +134,7 @@ export default function TicketForm() {
       const fetchTickets = async () => {
         const tickets = await SupportTicketService.getTicketHistory(phone);
         setTickets(tickets.data.data.tickets);
+        setTicketAttachments(tickets.data.data.attachments);
       };
       fetchTickets();
     }
@@ -155,6 +161,7 @@ export default function TicketForm() {
         guestPhone: data.guestPhone,
         guestEmail: data.guestEmail,
         departmentId: data.subDepartment || data.mainCategory,
+        attach: attachments.length > 0,
       });
       console.log("Response from createSupportTicket:", response.data);
 
@@ -165,7 +172,6 @@ export default function TicketForm() {
 
       // Reset form after successful submission
       reset();
-      setAttachment(null);
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -175,19 +181,22 @@ export default function TicketForm() {
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        // 10MB limit
-        alert("File size must not exceed 10MB");
-        return;
+    const files = event.target.files;
+    if (files) {
+      for (const file of files) {
+        if (file.size > 10 * 1024 * 1024) {
+          // 10MB limit
+          alert("File size must not exceed 10MB");
+          return;
+        }
       }
-      setAttachment(file);
+      setAttachments(Array.from(files));
+      console.log("Attachments:", attachments);
     }
   };
 
   const removeAttachment = () => {
-    setAttachment(null);
+    setAttachments([]);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -432,10 +441,12 @@ export default function TicketForm() {
                 onChange={handleFileChange}
                 className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-colors animate-fade-in"
               />
-              {attachment && (
+              {attachments && (
                 <div className="mt-2 flex items-center justify-between p-2 bg-secondary rounded-md text-sm border border-border animate-slide-in">
                   <p className="text-foreground truncate pr-2">
-                    {attachment.name}
+                    {attachments.length > 0
+                      ? `Attachments: ${attachments.length}`
+                      : "No attachments"}
                   </p>
                   <button
                     type="button"

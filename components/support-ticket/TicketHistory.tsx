@@ -3,8 +3,10 @@ import TicketHistoryItem from "./TicketHistoryItem";
 
 export default function TicketHistory({
   tickets,
+  attachments,
 }: {
   tickets: GetTicketHistory200ResponseDataTicketsInner[];
+  attachments: Record<string, Array<string>>;
 }) {
   return (
     <div className="space-y-4">
@@ -14,7 +16,11 @@ export default function TicketHistory({
         </div>
       ) : (
         tickets.map((ticket) => (
-          <TicketHistoryItem key={ticket.id} ticket={ticket} />
+          <TicketHistoryItem
+            key={ticket.id}
+            ticket={ticket}
+            attachments={attachments[ticket.id] || []}
+          />
         ))
       )}
     </div>

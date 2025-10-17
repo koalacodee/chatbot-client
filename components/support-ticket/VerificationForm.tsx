@@ -7,6 +7,8 @@ import { z } from "zod";
 import { SupportTicketService } from "@/utils/api/index";
 import { useVerificationStore } from "@/app/store/useVerificationStore";
 import { useSubmittedTicketStore } from "@/app/store/useSubmittedTicketStore";
+import { useAttachmentStore } from "./useAttachmentStore";
+import { AttachmentService } from "@/utils/api";
 
 const verificationSchema = z.object({
   code: z
@@ -27,6 +29,7 @@ export default function VerificationForm() {
     resetVerification,
   } = useVerificationStore();
   const { setSubmittedTicket } = useSubmittedTicketStore();
+  const attachments = useAttachmentStore((state) => state.attachments);
 
   const {
     register,
@@ -50,6 +53,14 @@ export default function VerificationForm() {
         await SupportTicketService.completeSupportTicketVerification({
           code: data.code,
         });
+
+      if (attachments.length > 0 && response.data.data.uploadKey) {
+        console.log("Uploading attachments...");
+        await AttachmentService.uploadFiles(
+          response.data.data.uploadKey,
+          attachments
+        );
+      }
 
       const ticketData = response.data.data.ticket;
 

@@ -5,12 +5,13 @@ import VerificationForm from "./VerificationForm";
 import { useSubmittedTicketStore } from "@/app/store/useSubmittedTicketStore";
 import { useTicketHistoryStore } from "@/app/store/useTicketHistoryStore";
 import { useVerificationStore } from "@/app/store/useVerificationStore";
+import { useAttachmentsStore } from "@/app/store/useAttachmentsStore";
 
 export default function TicketWrapper() {
   const { submittedTicket } = useSubmittedTicketStore();
   const { tickets } = useTicketHistoryStore();
   const { isVerifying } = useVerificationStore();
-
+  const attachments = useAttachmentsStore((state) => state.attachments);
   return (
     <>
       {!submittedTicket && !isVerifying ? (
@@ -23,7 +24,7 @@ export default function TicketWrapper() {
           </p>
 
           <div className="space-y-4 max-w-3xl mx-auto">
-            <TicketHistory tickets={tickets} />
+            <TicketHistory tickets={tickets} attachments={attachments} />
             <hr className="!my-6 border-border" />
             <TicketForm />
           </div>

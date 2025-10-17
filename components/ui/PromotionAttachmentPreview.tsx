@@ -1,6 +1,9 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { AttachmentMetadata } from "@/app/store/useAttachmentMetadataStore";
-import api from "@/utils/api";
+import api, { AttachmentService } from "@/utils/api";
+import { env } from "next-runtime-env";
 
 const FileIcon: React.FC<{ className?: string }> = ({
   className = "w-12 h-12",
@@ -31,7 +34,36 @@ const PromotionAttachmentPreview: React.FC<PromotionAttachmentPreviewProps> = ({
   meta,
 }) => {
   const { contentType, originalName } = meta;
-  const url = `${api.defaults.baseURL}/attachment/${attachmentKey}`;
+  const [url, setUrl] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUrl = async () => {
+      try {
+        let attachmentUrl: string;
+        if (env("NEXT_PUBLIC_MEDIA_ACCESS_TYPE") === "signed-url") {
+          const response = await AttachmentService.getAttachmentSignedUrl(
+            attachmentKey
+          );
+          attachmentUrl = response.signedUrl;
+        } else {
+          attachmentUrl = `${api.defaults.baseURL}/attachment/${attachmentKey}`;
+        }
+        setUrl(attachmentUrl);
+      } catch (error) {
+        console.error("Failed to fetch attachment URL:", error);
+        setUrl(`${api.defaults.baseURL}/attachment/${attachmentKey}`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (attachmentKey) {
+      fetchUrl();
+    } else {
+      setIsLoading(false);
+    }
+  }, [attachmentKey]);
 
   const renderPreview = () => {
     if (!attachmentKey) {
@@ -48,6 +80,25 @@ const PromotionAttachmentPreview: React.FC<PromotionAttachmentPreviewProps> = ({
               {originalName}
             </p>
             <p className="text-xs text-red-300 mt-1">Preview not available.</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (isLoading) {
+      return (
+        <div className="flex items-center gap-4 p-4 bg-black/20 rounded-xl">
+          <div className="flex-shrink-0">
+            <FileIcon className="w-12 h-12 text-white" />
+          </div>
+          <div className="flex-grow min-w-0">
+            <p
+              className="font-medium text-white truncate text-sm"
+              title={originalName}
+            >
+              {originalName}
+            </p>
+            <p className="text-xs text-gray-300 mt-1">Loading preview...</p>
           </div>
         </div>
       );
