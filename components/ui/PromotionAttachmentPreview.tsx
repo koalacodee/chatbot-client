@@ -27,11 +27,15 @@ const FileIcon: React.FC<{ className?: string }> = ({
 interface PromotionAttachmentPreviewProps {
   attachmentKey: string;
   meta: AttachmentMetadata;
+  autoPlay?: boolean;
+  loop?: boolean;
 }
 
 const PromotionAttachmentPreview: React.FC<PromotionAttachmentPreviewProps> = ({
   attachmentKey,
   meta,
+  autoPlay = true,
+  loop = true,
 }) => {
   const { contentType, originalName } = meta;
   const [url, setUrl] = useState<string>("");
@@ -128,8 +132,8 @@ const PromotionAttachmentPreview: React.FC<PromotionAttachmentPreviewProps> = ({
             display: "block",
             maxHeight: "none",
           }}
-          autoPlay
-          loop
+          autoPlay={autoPlay}
+          loop={loop}
           muted
           playsInline
           controls
@@ -137,7 +141,15 @@ const PromotionAttachmentPreview: React.FC<PromotionAttachmentPreviewProps> = ({
       );
     }
     if (contentType.startsWith("audio/")) {
-      return <audio controls src={url} className="w-full rounded-xl" />;
+      return (
+        <audio
+          controls
+          src={url}
+          className="w-full rounded-xl"
+          autoPlay={autoPlay}
+          loop={loop}
+        />
+      );
     }
     // Generic preview for other file types
     return (

@@ -136,6 +136,8 @@ export default function FaqItem({
             <PromotionAttachmentPreview
               attachmentKey={currentPreview.attachmentKey}
               meta={currentPreview.metadata}
+              autoPlay={false}
+              loop={false}
             />
           )}
         </div>

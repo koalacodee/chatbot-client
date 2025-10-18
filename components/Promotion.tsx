@@ -13,7 +13,8 @@ export default function Promotion() {
     const loadPromotion = async () => {
       try {
         const promotionData = await PromotionService.getPromotion();
-        const { title, startDate, endDate } = promotionData.promotion;
+        if (!promotionData.promotion) return;
+        const { startDate, endDate } = promotionData.promotion;
 
         // Check if promotion is currently active
         const now = new Date();

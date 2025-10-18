@@ -1,5 +1,7 @@
 "use client";
 
+import { motion } from "framer-motion";
+
 export default function PublicCategory({
   handleSelectCategory,
   name,
@@ -12,15 +14,17 @@ export default function PublicCategory({
   categoryId: string;
 }) {
   return (
-    <button
+    <motion.button
+      whileHover={{ scale: 1.05, y: -2 }}
+      whileTap={{ scale: 0.95 }}
       onClick={() => handleSelectCategory(categoryId)}
-      className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+      className={`px-6 py-3 text-sm font-medium rounded-full transition-all duration-200 ${
         selectedCategoryId === categoryId
-          ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
-          : "bg-card text-card-foreground border border-border hover:bg-accent hover:text-accent-foreground"
+          ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl"
+          : "bg-card/80 text-card-foreground border border-border/50 hover:bg-accent/80 hover:border-accent/50 hover:shadow-md backdrop-blur-sm"
       }`}
     >
       {name}
-    </button>
+    </motion.button>
   );
 }

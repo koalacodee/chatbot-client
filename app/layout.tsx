@@ -13,11 +13,11 @@ const roboto = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "AI Chatbot Support - Intelligent Customer Service",
-    template: "%s | AI Chatbot Support",
+    default: "SmartHelp - Intelligent Customer Service",
+    template: "%s | SmartHelp",
   },
   description:
-    "Intelligent chatbot with support ticket integration for seamless customer service",
+    "SmartHelp intelligent chatbot with support ticket integration for seamless customer service",
   keywords: [
     "chatbot",
     "support",
@@ -25,27 +25,37 @@ export const metadata: Metadata = {
     "Next.js",
     "customer service",
     "ticket system",
+    "SmartHelp",
   ],
-  authors: [{ name: "AI Chatbot Team" }],
-  creator: "AI Chatbot Support",
-  publisher: "AI Chatbot Support",
+  authors: [{ name: "SmartHelp Team" }],
+  creator: "SmartHelp",
+  publisher: "SmartHelp",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
   metadataBase: new URL(env("NEXT_PUBLIC_BASE_URL") || "http://localhost:3000"),
+  icons: {
+    icon: [
+      { url: "/smarthelp.png", sizes: "32x32", type: "image/png" },
+      { url: "/smarthelp.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: "/smarthelp.png",
+    apple: "/smarthelp.png",
+  },
   openGraph: {
-    title: "AI Chatbot Support",
-    description: "Intelligent chatbot with support ticket integration",
+    title: "SmartHelp",
+    description:
+      "SmartHelp intelligent chatbot with support ticket integration",
     url: "/",
-    siteName: "AI Chatbot Support",
+    siteName: "SmartHelp",
     images: [
       {
-        url: "/og-image.png",
+        url: "/smarthelp.png",
         width: 1200,
         height: 630,
-        alt: "AI Chatbot Support",
+        alt: "SmartHelp",
       },
     ],
     locale: "en_US",
@@ -53,9 +63,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI Chatbot Support",
-    description: "Intelligent chatbot with support ticket integration",
-    images: ["/twitter-image.png"],
+    title: "SmartHelp",
+    description:
+      "SmartHelp intelligent chatbot with support ticket integration",
+    images: ["/smarthelp.png"],
   },
   robots: {
     index: true,
