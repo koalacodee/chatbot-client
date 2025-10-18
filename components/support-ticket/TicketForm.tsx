@@ -134,7 +134,7 @@ export default function TicketForm() {
       const fetchTickets = async () => {
         const tickets = await SupportTicketService.getTicketHistory(phone);
         setTickets(tickets.data.data.tickets);
-        setTicketAttachments(tickets.data.data.attachments);
+        setTicketAttachments(tickets.data.data.answerAttachments);
       };
       fetchTickets();
     }

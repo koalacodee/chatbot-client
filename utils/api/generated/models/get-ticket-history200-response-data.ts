@@ -40,4 +40,10 @@ export interface GetTicketHistory200ResponseData {
    * @memberof GetTicketHistory200ResponseData
    */
   attachments: Record<string, Array<string>>;
+  /**
+   *
+   * @type {Record<string, Array<string>>}
+   * @memberof GetTicketHistory200ResponseData
+   */
+  answerAttachments: Record<string, Array<string>>;
 }
