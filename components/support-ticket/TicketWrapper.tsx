@@ -7,12 +7,15 @@ import { useTicketHistoryStore } from "@/app/store/useTicketHistoryStore";
 import { useVerificationStore } from "@/app/store/useVerificationStore";
 import { useAttachmentsStore } from "@/app/store/useAttachmentsStore";
 import { motion } from "framer-motion";
+import { CommonLocales } from "@/public/locales/common/map";
+import { useLocalesStore } from "@/app/store/useLocalesStore";
 
 export default function TicketWrapper() {
   const { submittedTicket } = useSubmittedTicketStore();
   const { tickets } = useTicketHistoryStore();
   const { isVerifying } = useVerificationStore();
   const attachments = useAttachmentsStore((state) => state.attachments);
+  const locales = useLocalesStore((state) => state.locales);
   return (
     <>
       {!submittedTicket && !isVerifying ? (
@@ -36,7 +39,7 @@ export default function TicketWrapper() {
             transition={{ duration: 0.4, delay: 0.3 }}
             className="text-2xl font-bold text-center bg-gradient-to-r from-foreground via-foreground to-foreground/80 bg-clip-text text-transparent mb-2"
           >
-            Didn't find your answer?
+            {locales.tickets?.title}
           </motion.h3>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -44,7 +47,7 @@ export default function TicketWrapper() {
             transition={{ duration: 0.4, delay: 0.4 }}
             className="text-center text-muted-foreground mb-8"
           >
-            Submit a ticket and our support team will get back to you.
+            {locales.tickets?.description}
           </motion.p>
 
           <motion.div
@@ -53,7 +56,11 @@ export default function TicketWrapper() {
             transition={{ duration: 0.4, delay: 0.5 }}
             className="space-y-4 max-w-3xl mx-auto"
           >
-            <TicketHistory tickets={tickets} attachments={attachments} />
+            <TicketHistory
+              tickets={tickets}
+              attachments={attachments}
+              locales={locales.tickets}
+            />
             <hr className="!my-6 border-border/30" />
             <TicketForm />
           </motion.div>
@@ -95,7 +102,7 @@ export default function TicketWrapper() {
             transition={{ duration: 0.4, delay: 0.3 }}
             className="text-2xl font-bold text-success mb-2"
           >
-            Ticket Verified Successfully!
+            {locales.tickets?.ticket_verified}
           </motion.h3>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -103,8 +110,7 @@ export default function TicketWrapper() {
             transition={{ duration: 0.4, delay: 0.4 }}
             className="text-success-foreground mb-4"
           >
-            Your ticket has been verified and received. Our team will get back
-            to you shortly.
+            {locales.tickets?.ticket_verified_description}
           </motion.p>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -112,7 +118,7 @@ export default function TicketWrapper() {
             transition={{ duration: 0.4, delay: 0.5 }}
             className="text-muted-foreground"
           >
-            Your reference number is:
+            {locales.tickets?.reference_number}:
           </motion.p>
           <motion.p
             initial={{ opacity: 0, scale: 0.8 }}

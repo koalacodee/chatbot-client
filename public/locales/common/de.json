@@ -1,0 +1,103 @@
+{
+  "welcome": {
+    "title": "Wie können wir Ihnen helfen?",
+    "description": "Durchsuchen Sie unseren umfassenden FAQ-Bereich, um Antworten zu finden und Unterstützung zu erhalten."
+  },
+  "categories": {
+    "title": "Nach Kategorie durchsuchen"
+  },
+  "tickets": {
+    "title": "Keine Antwort gefunden?",
+    "description": "Reichen Sie ein Ticket ein, und unser Support-Team wird sich bei Ihnen melden.",
+    "ticket_verified": "Ticket erfolgreich verifiziert!",
+    "ticket_verified_description": "Ticket erfolgreich verifiziert! Unser Support-Team wird sich bei Ihnen melden.",
+    "ticket_verified_error": "Fehler beim Verifizieren des Tickets. Bitte versuchen Sie es erneut.",
+    "reference_number": "Ticket-Referenznummer",
+    "no_tickets": "Keine Tickets",
+    "no_attachments": "Keine Anhänge",
+    "form": {
+      "labels": {
+        "main_topic": "Hauptthema",
+        "specific_issue": "Spezifisches Problem",
+        "full_name": "Vollständiger Name",
+        "email_address": "E-Mail-Adresse",
+        "phone_number": "Telefonnummer",
+        "subject": "Betreff",
+        "description": "Beschreibung",
+        "submit": "Frage absenden",
+        "attachments": "Anhänge",
+        "attachments_max": "(Optional, max. 10 MB)",
+        "choose_file": "Datei auswählen",
+        "no_specific_issue": "Kein spezifisches Problem"
+      },
+      "placeholders": {
+        "main_topic": "Wählen Sie ein Hauptthema aus",
+        "specific_issue": "Wählen Sie ein spezifisches Problem aus",
+        "full_name": "Geben Sie Ihren vollständigen Namen ein",
+        "email_address": "Geben Sie Ihre E-Mail-Adresse ein",
+        "phone_number": "Geben Sie Ihre Telefonnummer ein",
+        "subject": "Geben Sie Ihren Betreff ein",
+        "description": "Geben Sie Ihre Beschreibung ein"
+      },
+      "validation": {
+        "please_select_main_topic": "Bitte wählen Sie ein Hauptthema aus",
+        "please_enter_valid_phone": "Bitte geben Sie eine gültige Telefonnummer ein",
+        "please_enter_valid_email": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+      },
+      "errors": {
+        "failed_to_load_departments": "Abteilungen konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
+      }
+    }
+  },
+  "faqs": {
+    "was_this_helpful": "War das hilfreich?",
+    "thanks_for_your_feedback": "Vielen Dank für Ihr Feedback!",
+    "quick_questions": "Schnelle Fragen",
+    "no_questions_available": "Keine Fragen für diese Abteilung verfügbar.",
+    "was_this_reply_helpful": "War diese Antwort hilfreich?",
+    "satisfied": "Zufrieden",
+    "dissatisfied": "Unzufrieden"
+  },
+  "ui": {
+    "loading": "Wird geladen...",
+    "submitting": "Wird übermittelt...",
+    "choose_files": "Dateien auswählen",
+    "select_language": "Sprache auswählen",
+    "refresh": "Aktualisieren",
+    "track": "Verfolgen",
+    "track_your_tickets": "Ihre Tickets verfolgen",
+    "enter_ticket_code": "Ticket-Code eingeben",
+    "current_ticket": "Aktuelles Ticket",
+    "ticket_details": "Ticket-Details",
+    "close_modal": "Modal schließen",
+    "status": "Status",
+    "created": "Erstellt",
+    "question": "Frage",
+    "answer": "Antwort",
+    "no_question_provided": "Keine Frage angegeben",
+    "code": "Code",
+    "failed_to_load_ticket_url": "Ticket konnte nicht von URL geladen werden",
+    "failed_to_load_saved_ticket": "Gespeichertes Ticket konnte nicht geladen werden",
+    "failed_to_track_ticket": "Ticket konnte nicht verfolgt werden. Bitte überprüfen Sie den Code und versuchen Sie es erneut.",
+    "failed_to_refresh_ticket": "Ticket konnte nicht aktualisiert werden",
+    "support_reply": "Support-Antwort",
+    "attachments": "Anhänge",
+    "loading_preview": "Vorschau wird geladen...",
+    "preview_not_available": "Vorschau für diesen Dateityp nicht verfügbar",
+    "download_file": "Datei herunterladen",
+    "verify_your_ticket": "Ihr Ticket verifizieren",
+    "verification_code_sent": "Wir haben einen Verifizierungscode an Ihre E-Mail-Adresse gesendet",
+    "verification_code": "Verifizierungscode",
+    "verifying": "Wird verifiziert...",
+    "verify_ticket": "Ticket verifizieren",
+    "didnt_receive_code": "Code nicht erhalten?",
+    "resend": "Erneut senden",
+    "invalid_verification_code": "Ungültiger Verifizierungscode oder abgelaufen. Bitte versuchen Sie es erneut."
+  },
+  "common": {
+    "yes": "Ja",
+    "no": "Nein",
+    "loading": "Wird geladen...",
+    "submitting": "Wird übermittelt..."
+  }
+}

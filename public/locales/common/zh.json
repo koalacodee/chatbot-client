@@ -1,0 +1,103 @@
+{
+  "welcome": {
+    "title": "我们如何帮助您？",
+    "description": "浏览我们全面的常见问题部分，找到答案并获得帮助。"
+  },
+  "categories": {
+    "title": "按类别浏览"
+  },
+  "tickets": {
+    "title": "没有找到答案？",
+    "description": "提交工单，我们的支持团队将与您联系。",
+    "ticket_verified": "工单验证成功！",
+    "ticket_verified_description": "工单验证成功！我们的支持团队将尽快与您联系。",
+    "ticket_verified_error": "验证工单时出错。请重试。",
+    "reference_number": "工单参考编号",
+    "no_tickets": "无工单",
+    "no_attachments": "无附件",
+    "form": {
+      "labels": {
+        "main_topic": "主要主题",
+        "specific_issue": "具体问题",
+        "full_name": "全名",
+        "email_address": "电子邮件地址",
+        "phone_number": "电话号码",
+        "subject": "主题",
+        "description": "描述",
+        "submit": "提交问题",
+        "attachments": "附件",
+        "attachments_max": "（可选，最大10MB）",
+        "choose_file": "选择文件",
+        "no_specific_issue": "无具体问题"
+      },
+      "placeholders": {
+        "main_topic": "选择主要主题",
+        "specific_issue": "选择具体问题",
+        "full_name": "输入您的全名",
+        "email_address": "输入您的电子邮件地址",
+        "phone_number": "输入您的电话号码",
+        "subject": "输入主题",
+        "description": "输入描述"
+      },
+      "validation": {
+        "please_select_main_topic": "请选择主要主题",
+        "please_enter_valid_phone": "请输入有效的电话号码",
+        "please_enter_valid_email": "请输入有效的电子邮件地址"
+      },
+      "errors": {
+        "failed_to_load_departments": "加载部门失败。请稍后重试。"
+      }
+    }
+  },
+  "faqs": {
+    "was_this_helpful": "这有帮助吗？",
+    "thanks_for_your_feedback": "感谢您的反馈！",
+    "quick_questions": "快速问题",
+    "no_questions_available": "此部门没有可用问题。",
+    "was_this_reply_helpful": "这个回复有帮助吗？",
+    "satisfied": "满意",
+    "dissatisfied": "不满意"
+  },
+  "ui": {
+    "loading": "加载中...",
+    "submitting": "提交中...",
+    "choose_files": "选择文件",
+    "select_language": "选择语言",
+    "refresh": "刷新",
+    "track": "跟踪",
+    "track_your_tickets": "跟踪您的工单",
+    "enter_ticket_code": "输入工单代码",
+    "current_ticket": "当前工单",
+    "ticket_details": "工单详情",
+    "close_modal": "关闭窗口",
+    "status": "状态",
+    "created": "创建时间",
+    "question": "问题",
+    "answer": "答案",
+    "no_question_provided": "未提供问题",
+    "code": "代码",
+    "failed_to_load_ticket_url": "从URL加载工单失败",
+    "failed_to_load_saved_ticket": "加载保存的工单失败",
+    "failed_to_track_ticket": "跟踪工单失败。请检查代码并重试。",
+    "failed_to_refresh_ticket": "刷新工单失败",
+    "support_reply": "支持回复",
+    "attachments": "附件",
+    "loading_preview": "正在加载预览...",
+    "preview_not_available": "此文件类型不支持预览",
+    "download_file": "下载文件",
+    "verify_your_ticket": "验证您的工单",
+    "verification_code_sent": "我们已向您的电子邮件地址发送了验证码",
+    "verification_code": "验证码",
+    "verifying": "验证中...",
+    "verify_ticket": "验证工单",
+    "didnt_receive_code": "没有收到验证码？",
+    "resend": "重新发送",
+    "invalid_verification_code": "验证码无效或已过期。请重试。"
+  },
+  "common": {
+    "yes": "是",
+    "no": "否",
+    "loading": "加载中...",
+    "submitting": "提交中..."
+  }
+}

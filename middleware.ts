@@ -1,37 +1,16 @@
 // middleware.ts
-import { env } from "next-runtime-env";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-
-const excludedRoutes = [
-  "/login",
-  "/register",
-  "/login/verify",
-  "/register/verify",
-];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Inject custom header in all requests
   const headers = new Headers(request.headers);
+  console.log(headers.get("accept-language"));
+  const lang = headers.get("accept-language")?.split(",")[0]?.split("-")[0];
+  headers.set("x-lang", lang || "en");
   headers.set("x-current-path", pathname);
-
-  // // Skip auth check for login page
-  // if (!excludedRoutes.includes(pathname)) {
-  //   const url = `${env("NEXT_PUBLIC_API_URL")}/auth/guest/check`;
-  //   const cookie = request.headers.get("cookie");
-
-  //   // fetch response
-  //   const apiResponse = await fetch(url, {
-  //     method: "POST",
-  //     headers: cookie ? { cookie } : {},
-  //   });
-
-  //   if (!apiResponse.ok) {
-  //     return NextResponse.redirect(new URL("/login", request.url));
-  //   }
-  // }
 
   return NextResponse.next({ headers });
 }

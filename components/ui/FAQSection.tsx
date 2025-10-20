@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { MessageCircle, Loader2 } from "lucide-react";
+import { useLocalesStore } from "@/app/store/useLocalesStore";
 
 export interface FAQ {
   content: string;
@@ -20,11 +21,12 @@ export default function FAQSection({
   isLoading = false,
   className = "",
 }: FAQSectionProps) {
+  const locales = useLocalesStore((state) => state.locales);
   if (isLoading) {
     return (
       <div className={`space-y-4 ${className}`}>
         <h3 className="text-sm font-semibold text-foreground">
-          Quick Questions
+          {locales.faqs?.quick_questions}
         </h3>
         <div className="flex items-center justify-center py-4">
           <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
@@ -37,10 +39,10 @@ export default function FAQSection({
     return (
       <div className={`space-y-4 ${className}`}>
         <h3 className="text-sm font-semibold text-foreground">
-          Quick Questions
+          {locales.faqs?.quick_questions}
         </h3>
         <p className="text-xs text-muted-foreground">
-          No questions available for this department.
+          {locales.faqs?.no_questions_available}
         </p>
       </div>
     );
@@ -48,7 +50,9 @@ export default function FAQSection({
 
   return (
     <div className={`space-y-4 ${className}`}>
-      <h3 className="text-sm font-semibold text-foreground">Quick Questions</h3>
+      <h3 className="text-sm font-semibold text-foreground">
+        {locales.faqs?.quick_questions}
+      </h3>
       <div className="space-y-2">
         {questions.slice(0, 5).map((question) => (
           <button

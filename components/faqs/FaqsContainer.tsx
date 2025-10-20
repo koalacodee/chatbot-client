@@ -6,11 +6,13 @@ import { useEffect } from "react";
 import { FAQService } from "@/utils/api/index";
 import { useAttachmentsStore } from "@/app/store/useAttachmentsStore";
 import { motion } from "framer-motion";
+import { useFaqTranslationStore } from "@/app/store/useFaqTranslationStore";
 
 export default function FaqsContainer() {
   const { setFaqs, faqs } = useFaqsStore();
   const { mainDepartmentId, subDepartmentId } = useDepartmentPairsStore();
   const { appendAttachments } = useAttachmentsStore();
+  const { setFaqTranslations } = useFaqTranslationStore();
 
   useEffect(() => {
     FAQService.viewAll(
@@ -20,6 +22,7 @@ export default function FaqsContainer() {
     ).then((res) => {
       setFaqs(res.data.data.faqs);
       appendAttachments(res.data.data.attachments);
+      setFaqTranslations(res.data.data.translations);
     });
   }, [mainDepartmentId, subDepartmentId]);
 

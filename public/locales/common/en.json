@@ -1,0 +1,103 @@
+{
+  "welcome": {
+    "title": "How can we help you?",
+    "description": "Browse our comprehensive FAQ section to find answers and get assistance."
+  },
+  "categories": {
+    "title": "Browse By Category"
+  },
+  "tickets": {
+    "title": "Didn't find answer?",
+    "description": "Submit a ticket and our support team will get back to you.",
+    "ticket_verified": "Ticket verified successfully!",
+    "ticket_verified_description": "Ticket verified successfully! Our support team will get back to you.",
+    "ticket_verified_error": "Error verifying ticket. Please try again.",
+    "reference_number": "Ticket Reference Number",
+    "no_tickets": "No tickets",
+    "no_attachments": "No attachments",
+    "form": {
+      "labels": {
+        "main_topic": "Main Topic",
+        "specific_issue": "Specific Issue",
+        "full_name": "Full Name",
+        "email_address": "Email Address",
+        "phone_number": "Phone Number",
+        "subject": "Subject",
+        "description": "Description",
+        "submit": "Submit Question",
+        "attachments": "Attachments",
+        "attachments_max": "(Optional, max 10MB)",
+        "choose_file": "Choose File",
+        "no_specific_issue": "No specific issue"
+      },
+      "placeholders": {
+        "main_topic": "Select a main topic",
+        "specific_issue": "Select a specific issue",
+        "full_name": "Enter your full name",
+        "email_address": "Enter your email address",
+        "phone_number": "Enter your phone number",
+        "subject": "Enter your subject",
+        "description": "Enter your description"
+      },
+      "validation": {
+        "please_select_main_topic": "Please select a main topic",
+        "please_enter_valid_phone": "Please enter a valid phone number",
+        "please_enter_valid_email": "Please enter a valid email address"
+      },
+      "errors": {
+        "failed_to_load_departments": "Failed to load departments. Please try again later."
+      }
+    }
+  },
+  "faqs": {
+    "was_this_helpful": "Was this helpful?",
+    "thanks_for_your_feedback": "Thank you for your feedback!",
+    "quick_questions": "Quick Questions",
+    "no_questions_available": "No questions available for this department.",
+    "was_this_reply_helpful": "Was this reply helpful?",
+    "satisfied": "Satisfied",
+    "dissatisfied": "Dissatisfied"
+  },
+  "ui": {
+    "loading": "Loading...",
+    "submitting": "Submitting...",
+    "choose_files": "Choose Files",
+    "select_language": "Select language",
+    "refresh": "Refresh",
+    "track": "Track",
+    "track_your_tickets": "Track Your Tickets",
+    "enter_ticket_code": "Enter ticket code",
+    "current_ticket": "Current Ticket",
+    "ticket_details": "Ticket Details",
+    "close_modal": "Close modal",
+    "status": "Status",
+    "created": "Created",
+    "question": "Question",
+    "answer": "Answer",
+    "no_question_provided": "No question provided",
+    "code": "Code",
+    "failed_to_load_ticket_url": "Failed to load ticket from URL",
+    "failed_to_load_saved_ticket": "Failed to load saved ticket",
+    "failed_to_track_ticket": "Failed to track ticket. Please check the code and try again.",
+    "failed_to_refresh_ticket": "Failed to refresh ticket",
+    "support_reply": "Support Reply",
+    "attachments": "Attachments",
+    "loading_preview": "Loading preview...",
+    "preview_not_available": "Preview not available for this file type",
+    "download_file": "Download File",
+    "verify_your_ticket": "Verify Your Ticket",
+    "verification_code_sent": "We've sent a verification code to your email address",
+    "verification_code": "Verification Code",
+    "verifying": "Verifying...",
+    "verify_ticket": "Verify Ticket",
+    "didnt_receive_code": "Didn't receive the code?",
+    "resend": "Resend",
+    "invalid_verification_code": "Invalid verification code or expired. Please try again."
+  },
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading...",
+    "submitting": "Submitting..."
+  }
+}

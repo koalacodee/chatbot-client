@@ -1,0 +1,103 @@
+{
+  "welcome": {
+    "title": "كيف يمكننا مساعدتك؟",
+    "description": "تصفح قسم الأسئلة الشائعة الشامل لدينا للعثور على الإجابات والحصول على المساعدة."
+  },
+  "categories": {
+    "title": "تصفح حسب الفئة"
+  },
+  "tickets": {
+    "title": "لم تجد الإجابة؟",
+    "description": "أرسل تذكرة وسيتواصل معك فريق الدعم لدينا.",
+    "ticket_verified": "تم التحقق من التذكرة بنجاح!",
+    "ticket_verified_description": "تم التحقق من التذكرة بنجاح! سيتواصل معك فريق الدعم لدينا في أقرب وقت ممكن.",
+    "ticket_verified_error": "حدث خطأ أثناء التحقق من التذكرة. يرجى المحاولة مرة أخرى.",
+    "reference_number": "رقم التذكرة",
+    "no_tickets": "لا يوجد تذاكر",
+    "no_attachments": "لا توجد مرفقات",
+    "form": {
+      "labels": {
+        "main_topic": "الموضوع الرئيسي",
+        "specific_issue": "المشكلة المحددة",
+        "full_name": "الاسم الكامل",
+        "email_address": "عنوان البريد الإلكتروني",
+        "phone_number": "رقم الهاتف",
+        "subject": "الموضوع",
+        "description": "الوصف",
+        "submit": "إرسال السؤال",
+        "attachments": "المرفقات",
+        "attachments_max": "(اختياري، بحد أقصى 10 ميغابايت)",
+        "choose_file": "اختر ملفًا",
+        "no_specific_issue": "لا يوجد مشكلة محددة"
+      },
+      "placeholders": {
+        "main_topic": "اختر الموضوع الرئيسي",
+        "specific_issue": "اختر المشكلة المحددة",
+        "full_name": "أدخل اسمك الكامل",
+        "email_address": "أدخل بريدك الإلكتروني",
+        "phone_number": "أدخل رقم هاتفك",
+        "subject": "أدخل الموضوع",
+        "description": "أدخل الوصف"
+      },
+      "validation": {
+        "please_select_main_topic": "يرجى اختيار الموضوع الرئيسي",
+        "please_enter_valid_phone": "يرجى إدخال رقم هاتف صحيح",
+        "please_enter_valid_email": "يرجى إدخال عنوان بريد إلكتروني صحيح"
+      },
+      "errors": {
+        "failed_to_load_departments": "فشل في تحميل الأقسام. يرجى المحاولة مرة أخرى لاحقًا."
+      }
+    }
+  },
+  "faqs": {
+    "was_this_helpful": "هل كان هذا مفيدًا؟",
+    "thanks_for_your_feedback": "شكرًا لك على ملاحظاتك!",
+    "quick_questions": "الأسئلة السريعة",
+    "no_questions_available": "لا توجد أسئلة متاحة لهذا القسم.",
+    "was_this_reply_helpful": "هل كانت هذه الإجابة مفيدة؟",
+    "satisfied": "راضٍ",
+    "dissatisfied": "غير راضٍ"
+  },
+  "ui": {
+    "loading": "جاري التحميل...",
+    "submitting": "جاري الإرسال...",
+    "choose_files": "اختر الملفات",
+    "select_language": "اختر اللغة",
+    "refresh": "تحديث",
+    "track": "تتبع",
+    "track_your_tickets": "تتبع تذاكرك",
+    "enter_ticket_code": "أدخل رمز التذكرة",
+    "current_ticket": "التذكرة الحالية",
+    "ticket_details": "تفاصيل التذكرة",
+    "close_modal": "إغلاق النافذة",
+    "status": "الحالة",
+    "created": "تم الإنشاء",
+    "question": "السؤال",
+    "answer": "الإجابة",
+    "no_question_provided": "لم يتم تقديم سؤال",
+    "code": "الرمز",
+    "failed_to_load_ticket_url": "فشل في تحميل التذكرة من الرابط",
+    "failed_to_load_saved_ticket": "فشل في تحميل التذكرة المحفوظة",
+    "failed_to_track_ticket": "فشل في تتبع التذكرة. يرجى التحقق من الرمز والمحاولة مرة أخرى.",
+    "failed_to_refresh_ticket": "فشل في تحديث التذكرة",
+    "support_reply": "رد الدعم",
+    "attachments": "المرفقات",
+    "loading_preview": "جاري تحميل المعاينة...",
+    "preview_not_available": "المعاينة غير متاحة لهذا النوع من الملفات",
+    "download_file": "تحميل الملف",
+    "verify_your_ticket": "تحقق من تذكرتك",
+    "verification_code_sent": "لقد أرسلنا رمز التحقق إلى عنوان بريدك الإلكتروني",
+    "verification_code": "رمز التحقق",
+    "verifying": "جاري التحقق...",
+    "verify_ticket": "تحقق من التذكرة",
+    "didnt_receive_code": "لم تستلم الرمز؟",
+    "resend": "إعادة إرسال",
+    "invalid_verification_code": "رمز التحقق غير صالح او منتهى الصلاحية. يرجى المحاولة مرة أخرى."
+  },
+  "common": {
+    "yes": "نعم",
+    "no": "لا",
+    "loading": "جاري التحميل...",
+    "submitting": "جاري الإرسال..."
+  }
+}

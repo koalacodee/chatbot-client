@@ -9,6 +9,7 @@ import { useVerificationStore } from "@/app/store/useVerificationStore";
 import { useSubmittedTicketStore } from "@/app/store/useSubmittedTicketStore";
 import { useAttachmentStore } from "./useAttachmentStore";
 import { AttachmentService } from "@/utils/api";
+import { useLocalesStore } from "@/app/store/useLocalesStore";
 
 const verificationSchema = z.object({
   code: z
@@ -27,9 +28,11 @@ export default function VerificationForm() {
     setIsVerified,
     setVerificationError,
     resetVerification,
+    verificationError,
   } = useVerificationStore();
   const { setSubmittedTicket } = useSubmittedTicketStore();
   const attachments = useAttachmentStore((state) => state.attachments);
+  const locales = useLocalesStore((state) => state.locales);
 
   const {
     register,
@@ -89,10 +92,9 @@ export default function VerificationForm() {
       resetVerification();
     } catch (error: any) {
       console.error("Error verifying ticket:", error);
-      setVerificationError(
-        error.response?.data?.message ||
-          "Invalid verification code. Please try again."
-      );
+      console.log(locales);
+
+      setVerificationError(locales.ui?.invalid_verification_code || "");
     } finally {
       setIsSubmitting(false);
     }
@@ -117,10 +119,11 @@ export default function VerificationForm() {
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
       <div className="text-center">
         <h3 className="text-2xl font-bold text-card-foreground mb-2">
-          Verify Your Ticket
+          {locales.ui?.verify_your_ticket || "Verify Your Ticket"}
         </h3>
         <p className="text-muted-foreground">
-          We've sent a verification code to your email address{" "}
+          {locales.ui?.verification_code_sent ||
+            "We've sent a verification code to your email address"}{" "}
           {verifiedTicketData?.guestEmail}.
         </p>
       </div>
@@ -131,7 +134,7 @@ export default function VerificationForm() {
             htmlFor="code"
             className="block text-sm font-medium text-slate-700 mb-2"
           >
-            Verification Code
+            {locales.ui?.verification_code || "Verification Code"}
           </label>
           <input
             type="text"
@@ -143,8 +146,8 @@ export default function VerificationForm() {
             } transition-colors animate-fade-in`}
             placeholder="000000"
           />
-          {errors.code && (
-            <p className="mt-1 text-sm text-red-600">{errors.code.message}</p>
+          {verificationError && (
+            <p className="mt-1 text-sm text-red-600">{verificationError}</p>
           )}
         </div>
 
@@ -153,7 +156,9 @@ export default function VerificationForm() {
           disabled={isSubmitting}
           className="w-full px-4 py-2 bg-primary text-primary-foreground font-medium rounded-md shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105 active:scale-95 animate-fade-in"
         >
-          {isSubmitting ? "Verifying..." : "Verify Ticket"}
+          {isSubmitting
+            ? locales.ui?.verifying || "Verifying..."
+            : locales.ui?.verify_ticket || "Verify Ticket"}
         </button>
       </form>
 
@@ -163,7 +168,8 @@ export default function VerificationForm() {
           onClick={handleResendCode}
           className="text-sm text-primary hover:text-primary/80 underline transition-colors"
         >
-          Didn't receive the code? Resend
+          {locales.ui?.didnt_receive_code || "Didn't receive the code?"}{" "}
+          {locales.ui?.resend || "Resend"}
         </button>
       </div>
     </div>

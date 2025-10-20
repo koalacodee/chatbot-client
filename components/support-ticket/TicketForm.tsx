@@ -11,6 +11,10 @@ import { useTicketHistoryStore } from "@/app/store/useTicketHistoryStore";
 import { useVerificationStore } from "@/app/store/useVerificationStore";
 import { useAttachmentStore } from "./useAttachmentStore";
 import { useAttachmentsStore } from "@/app/store/useAttachmentsStore";
+import { CommonLocales } from "@/public/locales/common/map";
+import { useLocalesStore } from "@/app/store/useLocalesStore";
+import { isRTL } from "@/lib/utils";
+import { useLangStore } from "@/app/store/useLangStore";
 
 // Define the Zod schema for form validation
 const ticketSchema = z.object({
@@ -57,7 +61,8 @@ export default function TicketForm() {
   const setTicketAttachments = useAttachmentsStore(
     (state) => state.setAttachments
   );
-
+  const locales = useLocalesStore((state) => state.locales.tickets?.form);
+  const lang = useLangStore((state) => state.lang);
   const {
     register,
     handleSubmit,
@@ -101,7 +106,11 @@ export default function TicketForm() {
         setCategories(mappedCategories);
       } catch (error) {
         console.error("Error fetching departments:", error);
-        setError("Failed to load departments. Please try again later.");
+        setError(
+          useLocalesStore.getState().locales.tickets?.form?.errors
+            ?.failed_to_load_departments ||
+            "Failed to load departments. Please try again later."
+        );
 
         // Fallback to empty arrays if API fails
         setCategories([]);
@@ -223,7 +232,7 @@ export default function TicketForm() {
         <div className="flex items-center justify-center p-4 animate-fade-in">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           <span className="ml-2 text-muted-foreground">
-            Loading departments...
+            {useLocalesStore.getState().locales.ui?.loading || "Loading..."}
           </span>
         </div>
       )}
@@ -235,7 +244,7 @@ export default function TicketForm() {
               htmlFor="mainCategory"
               className="md:text-right text-sm font-medium text-slate-700"
             >
-              Main Topic
+              {locales?.labels.main_topic}
             </label>
             <div>
               <select
@@ -247,7 +256,10 @@ export default function TicketForm() {
                 disabled={loading}
               >
                 <option value="" disabled>
-                  {loading ? "Loading..." : "Select a main topic..."}
+                  {loading
+                    ? useLocalesStore.getState().locales.ui?.loading ||
+                      "Loading..."
+                    : locales?.placeholders.main_topic}
                 </option>
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
@@ -268,7 +280,7 @@ export default function TicketForm() {
               htmlFor="subDepartment"
               className="md:text-right text-sm font-medium text-slate-700"
             >
-              Specific Issue
+              {locales?.labels.specific_issue}
             </label>
             <div>
               <select
@@ -281,8 +293,8 @@ export default function TicketForm() {
               >
                 <option value="" disabled>
                   {availableSubDepts.length > 0
-                    ? "Select a specific issue..."
-                    : "No specific issue required"}
+                    ? locales?.placeholders.specific_issue
+                    : locales?.labels.no_specific_issue}
                 </option>
                 {availableSubDepts.map((subDept) => (
                   <option key={subDept.id} value={subDept.id}>
@@ -303,7 +315,7 @@ export default function TicketForm() {
               htmlFor="guestName"
               className="md:text-right text-sm font-medium text-slate-700"
             >
-              Full Name
+              {locales?.labels.full_name}
             </label>
             <div>
               <input
@@ -313,7 +325,7 @@ export default function TicketForm() {
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background ${
                   errors.guestName ? "border-destructive" : "border-border"
                 } transition-colors animate-fade-in`}
-                placeholder="Enter your full name"
+                placeholder={locales?.placeholders.full_name}
               />
               {errors.guestName && (
                 <p className="mt-1 text-sm text-red-600">
@@ -328,7 +340,7 @@ export default function TicketForm() {
               htmlFor="guestEmail"
               className="md:text-right text-sm font-medium text-slate-700"
             >
-              Email Address
+              {locales?.labels.email_address}
             </label>
             <div>
               <input
@@ -338,7 +350,7 @@ export default function TicketForm() {
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background ${
                   errors.guestEmail ? "border-destructive" : "border-border"
                 } transition-colors animate-fade-in`}
-                placeholder="Enter your email address"
+                placeholder={locales?.placeholders.email_address}
               />
               {errors.guestEmail && (
                 <p className="mt-1 text-sm text-red-600">
@@ -353,7 +365,7 @@ export default function TicketForm() {
               htmlFor="guestPhone"
               className="md:text-right text-sm font-medium text-slate-700"
             >
-              Phone Number
+              {locales?.labels.phone_number}
             </label>
             <div>
               <input
@@ -362,8 +374,10 @@ export default function TicketForm() {
                 {...register("guestPhone")}
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background ${
                   errors.guestPhone ? "border-destructive" : "border-border"
-                } transition-colors animate-fade-in`}
-                placeholder="Enter your phone number"
+                } transition-colors animate-fade-in ${
+                  isRTL(lang) ? "placeholder-rtl" : ""
+                }`}
+                placeholder={locales?.placeholders.phone_number}
               />
               {errors.guestPhone && (
                 <p className="mt-1 text-sm text-red-600">
@@ -378,7 +392,7 @@ export default function TicketForm() {
               htmlFor="subject"
               className="md:text-right text-sm font-medium text-slate-700"
             >
-              Subject
+              {locales?.labels.subject}
             </label>
             <div>
               <input
@@ -388,7 +402,7 @@ export default function TicketForm() {
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background ${
                   errors.subject ? "border-destructive" : "border-border"
                 } transition-colors animate-fade-in`}
-                placeholder="e.g., Issue with my order"
+                placeholder={locales?.placeholders.subject}
               />
               {errors.subject && (
                 <p className="mt-1 text-sm text-red-600">
@@ -403,7 +417,7 @@ export default function TicketForm() {
               htmlFor="description"
               className="md:text-right md:pt-2 text-sm font-medium text-slate-700"
             >
-              Description
+              {locales?.labels.description}
             </label>
             <div>
               <textarea
@@ -413,7 +427,7 @@ export default function TicketForm() {
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background ${
                   errors.description ? "border-destructive" : "border-border"
                 } transition-colors animate-fade-in`}
-                placeholder="Describe your issue in detail..."
+                placeholder={locales?.placeholders.description}
               />
               {errors.description && (
                 <p className="mt-1 text-sm text-red-600">
@@ -428,9 +442,9 @@ export default function TicketForm() {
               htmlFor="attachment"
               className="md:text-right md:pt-2 text-sm font-medium text-slate-700"
             >
-              Attachment
+              {locales?.labels.attachments}
               <span className="block text-xs text-slate-500 leading-tight">
-                (Optional, max 10MB)
+                {locales?.labels.attachments_max}
               </span>
             </label>
             <div>
@@ -439,14 +453,19 @@ export default function TicketForm() {
                 id="attachment"
                 ref={fileInputRef}
                 onChange={handleFileChange}
-                className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-colors animate-fade-in"
+                className="hidden"
+                multiple
               />
-              {attachments && (
+              <label
+                htmlFor="attachment"
+                className="inline-flex items-center justify-center px-4 py-2 bg-primary/10 text-primary border border-primary/20 rounded-md hover:bg-primary/20 hover:border-primary/30 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95 font-medium text-sm animate-fade-in"
+              >
+                {locales?.labels.choose_file || "Choose Files"}
+              </label>
+              {attachments && attachments.length > 0 && (
                 <div className="mt-2 flex items-center justify-between p-2 bg-secondary rounded-md text-sm border border-border animate-slide-in">
                   <p className="text-foreground truncate pr-2">
-                    {attachments.length > 0
-                      ? `Attachments: ${attachments.length}`
-                      : "No attachments"}
+                    {`${locales?.labels.attachments}: ${attachments.length}`}
                   </p>
                   <button
                     type="button"
@@ -467,7 +486,7 @@ export default function TicketForm() {
                 disabled={isSubmitting}
                 className="w-full md:w-auto px-4 py-2 bg-primary text-primary-foreground font-medium rounded-md shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105 active:scale-95 animate-fade-in"
               >
-                {isSubmitting ? "Submitting..." : "Submit Ticket"}
+                {isSubmitting ? "Submitting..." : locales?.labels.submit}
               </button>
             </div>
           </div>

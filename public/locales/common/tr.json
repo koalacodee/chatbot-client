@@ -1,0 +1,103 @@
+{
+  "welcome": {
+    "title": "Size nasıl yardımcı olabiliriz?",
+    "description": "Yanıtları bulmak ve yardım almak için kapsamlı SSS bölümümüzü inceleyin."
+  },
+  "categories": {
+    "title": "Kategoriye göre göz at"
+  },
+  "tickets": {
+    "title": "Cevap bulamadınız mı?",
+    "description": "Bir talep gönderin, destek ekibimiz sizinle iletişime geçecektir.",
+    "ticket_verified": "Talep başarıyla doğrulandı!",
+    "ticket_verified_description": "Talep başarıyla doğrulandı! Destek ekibimiz sizinle iletişime geçecektir.",
+    "ticket_verified_error": "Talep doğrulama hatası. Lütfen tekrar deneyin.",
+    "reference_number": "Talep referans numarası",
+    "no_tickets": "Talep yok",
+    "no_attachments": "Ek yok",
+    "form": {
+      "labels": {
+        "main_topic": "Ana konu",
+        "specific_issue": "Belirli sorun",
+        "full_name": "Tam ad",
+        "email_address": "E-posta adresi",
+        "phone_number": "Telefon numarası",
+        "subject": "Konu",
+        "description": "Açıklama",
+        "submit": "Soruyu gönder",
+        "attachments": "Ekler",
+        "attachments_max": "(İsteğe bağlı, en fazla 10 MB)",
+        "choose_file": "Dosya seç",
+        "no_specific_issue": "Belirli bir sorun yok"
+      },
+      "placeholders": {
+        "main_topic": "Bir ana konu seçin",
+        "specific_issue": "Bir belirli sorun seçin",
+        "full_name": "Tam adınızı girin",
+        "email_address": "E-posta adresinizi girin",
+        "phone_number": "Telefon numaranızı girin",
+        "subject": "Konunuzu girin",
+        "description": "Açıklamanızı girin"
+      },
+      "validation": {
+        "please_select_main_topic": "Lütfen bir ana konu seçin",
+        "please_enter_valid_phone": "Lütfen geçerli bir telefon numarası girin",
+        "please_enter_valid_email": "Lütfen geçerli bir e-posta adresi girin"
+      },
+      "errors": {
+        "failed_to_load_departments": "Departmanlar yüklenemedi. Lütfen daha sonra tekrar deneyin."
+      }
+    }
+  },
+  "faqs": {
+    "was_this_helpful": "Bu yardımcı oldu mu?",
+    "thanks_for_your_feedback": "Geri bildiriminiz için teşekkürler!",
+    "quick_questions": "Hızlı Sorular",
+    "no_questions_available": "Bu departman için mevcut soru yok.",
+    "was_this_reply_helpful": "Bu yanıt yardımcı oldu mu?",
+    "satisfied": "Memnun",
+    "dissatisfied": "Memnun değil"
+  },
+  "ui": {
+    "loading": "Yükleniyor...",
+    "submitting": "Gönderiliyor...",
+    "choose_files": "Dosya Seç",
+    "select_language": "Dil seç",
+    "refresh": "Yenile",
+    "track": "İzle",
+    "track_your_tickets": "Taleplerinizi İzleyin",
+    "enter_ticket_code": "Talep kodunu girin",
+    "current_ticket": "Mevcut Talep",
+    "ticket_details": "Talep Detayları",
+    "close_modal": "Pencereyi kapat",
+    "status": "Durum",
+    "created": "Oluşturuldu",
+    "question": "Soru",
+    "answer": "Yanıt",
+    "no_question_provided": "Soru sağlanmadı",
+    "code": "Kod",
+    "failed_to_load_ticket_url": "URL'den talep yüklenemedi",
+    "failed_to_load_saved_ticket": "Kaydedilen talep yüklenemedi",
+    "failed_to_track_ticket": "Talep izlenemedi. Lütfen kodu kontrol edin ve tekrar deneyin.",
+    "failed_to_refresh_ticket": "Talep yenilenemedi",
+    "support_reply": "Destek Yanıtı",
+    "attachments": "Ekler",
+    "loading_preview": "Önizleme yükleniyor...",
+    "preview_not_available": "Bu dosya türü için önizleme mevcut değil",
+    "download_file": "Dosyayı İndir",
+    "verify_your_ticket": "Talebinizi Doğrulayın",
+    "verification_code_sent": "E-posta adresinize bir doğrulama kodu gönderdik",
+    "verification_code": "Doğrulama Kodu",
+    "verifying": "Doğrulanıyor...",
+    "verify_ticket": "Talebi Doğrula",
+    "didnt_receive_code": "Kodu almadınız mı?",
+    "resend": "Yeniden Gönder",
+    "invalid_verification_code": "Doğrulama kodu geçersiz veya süresi doldu. Lütfen tekrar deneyin."
+  },
+  "common": {
+    "yes": "Evet",
+    "no": "Hayır",
+    "loading": "Yükleniyor...",
+    "submitting": "Gönderiliyor..."
+  }
+}

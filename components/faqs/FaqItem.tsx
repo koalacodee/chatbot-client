@@ -10,6 +10,10 @@ import {
 import { AttachmentService } from "@/utils/api";
 import AttachmentPreview from "../ui/AttachmentPreview";
 import PromotionAttachmentPreview from "../ui/PromotionAttachmentPreview";
+import { useFaqTranslationStore } from "@/app/store/useFaqTranslationStore";
+import { SupportedLanguage } from "@/types/translation";
+import { useLangStore } from "@/app/store/useLangStore";
+import { useLocalesStore } from "@/app/store/useLocalesStore";
 
 export default function FaqItem({
   text,
@@ -20,7 +24,7 @@ export default function FaqItem({
 }: {
   id: string;
   text: string;
-  answer?: string;
+  answer: string;
   isRated: boolean;
   isViewed: boolean;
 }) {
@@ -37,6 +41,27 @@ export default function FaqItem({
     attachmentKey: string;
     metadata: AttachmentMetadata;
   }>();
+  const getFaqTranslationsForLanguage = useFaqTranslationStore(
+    (state) => state.getFaqTranslationsForLanguage
+  );
+  const lang = useLangStore((state) => state.lang);
+  const locales = useLocalesStore((state) => state.locales);
+  const [faqQuestionTranslation, setFaqQuestionTranslation] = useState(text);
+  const [faqAnswerTranslation, setFaqAnswerTranslation] = useState(answer);
+
+  useEffect(() => {
+    const translations = getFaqTranslationsForLanguage(id, lang);
+    const questionTranslation = translations.find(
+      (translation) => translation.type === "question"
+    )?.content;
+    setFaqQuestionTranslation(questionTranslation ?? text);
+
+    const answerTranslation = translations.find(
+      (translation) => translation.type === "answer"
+    )?.content;
+    setFaqAnswerTranslation(answerTranslation ?? answer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, lang, getFaqTranslationsForLanguage, text, answer]);
 
   useEffect(() => {
     if (isOpen && !isViewed) {
@@ -79,13 +104,18 @@ export default function FaqItem({
   };
 
   return (
-    <div className="border-b border-border last:border-b-0 transition-all duration-200">
+    <div
+      dir="auto"
+      className="border-b border-border last:border-b-0 transition-all duration-200"
+    >
       <button
         className="w-full flex justify-between items-center text-left py-2 px-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md hover:bg-accent/50 transition-colors"
         onClick={toggleOpen}
         aria-expanded={isOpen}
       >
-        <span className="text-lg font-medium text-foreground">{text}</span>
+        <span className="text-lg font-medium text-foreground">
+          {faqQuestionTranslation}
+        </span>
         <ChevronDownIcon
           className={`w-5 h-5 text-muted-foreground transition-transform duration-300 ${
             isOpen ? "rotate-180" : ""
@@ -99,28 +129,34 @@ export default function FaqItem({
       >
         <div className="overflow-hidden">
           <div className="prose prose-slate max-w-none text-muted-foreground p-4 pt-0">
-            <p className="mt-0 leading-relaxed">{answer}</p>
+            <p
+              className="mt-0 leading-relaxed"
+              style={{ unicodeBidi: "plaintext" }}
+              dir="auto"
+            >
+              {faqAnswerTranslation}
+            </p>
           </div>
           <div className="px-4 pb-4">
             {!isRated ? (
               <div className="flex items-center gap-4 mt-4 p-3 bg-secondary/50 rounded-lg border border-border">
                 <p className="text-sm font-medium text-secondary-foreground">
-                  Was this answer helpful?
+                  {locales.faqs?.was_this_helpful}
                 </p>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => handleRate("satisfied")}
                     className="flex items-center justify-center w-10 h-10 text-xl bg-success/10 text-success rounded-full hover:bg-success/20 transition-colors"
-                    aria-label="Satisfied"
-                    title="Satisfied"
+                    aria-label={locales.faqs?.satisfied || "Satisfied"}
+                    title={locales.faqs?.satisfied || "Satisfied"}
                   >
                     👍
                   </button>
                   <button
                     onClick={() => handleRate("dissatisfied")}
                     className="flex items-center justify-center w-10 h-10 text-xl bg-destructive/10 text-destructive rounded-full hover:bg-destructive/20 transition-colors"
-                    aria-label="Dissatisfied"
-                    title="Dissatisfied"
+                    aria-label={locales.faqs?.dissatisfied || "Dissatisfied"}
+                    title={locales.faqs?.dissatisfied || "Dissatisfied"}
                   >
                     👎
                   </button>
@@ -128,7 +164,7 @@ export default function FaqItem({
               </div>
             ) : (
               <div className="mt-4 p-3 bg-accent/50 text-accent-foreground rounded-lg text-sm font-medium text-center animate-fade-in">
-                Thank you for your feedback!
+                {locales.faqs?.thanks_for_your_feedback}
               </div>
             )}
           </div>

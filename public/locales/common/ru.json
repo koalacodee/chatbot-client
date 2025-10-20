@@ -1,0 +1,103 @@
+{
+  "welcome": {
+    "title": "Как мы можем вам помочь?",
+    "description": "Просмотрите наш полный раздел часто задаваемых вопросов, чтобы найти ответы и получить помощь."
+  },
+  "categories": {
+    "title": "Просмотр по категориям"
+  },
+  "tickets": {
+    "title": "Не нашли ответ?",
+    "description": "Отправьте тикет, и наша команда поддержки свяжется с вами.",
+    "ticket_verified": "Тикет успешно подтвержден!",
+    "ticket_verified_description": "Тикет успешно подтвержден! Наша команда поддержки свяжется с вами.",
+    "ticket_verified_error": "Ошибка при подтверждении тикета. Попробуйте еще раз.",
+    "reference_number": "Номер тикета",
+    "no_tickets": "Нет тикетов",
+    "no_attachments": "Нет вложений",
+    "form": {
+      "labels": {
+        "main_topic": "Основная тема",
+        "specific_issue": "Конкретная проблема",
+        "full_name": "Полное имя",
+        "email_address": "Адрес электронной почты",
+        "phone_number": "Номер телефона",
+        "subject": "Тема",
+        "description": "Описание",
+        "submit": "Отправить вопрос",
+        "attachments": "Вложения",
+        "attachments_max": "(Необязательно, макс. 10 МБ)",
+        "choose_file": "Выбрать файл",
+        "no_specific_issue": "Нет конкретной проблемы"
+      },
+      "placeholders": {
+        "main_topic": "Выберите основную тему",
+        "specific_issue": "Выберите конкретную проблему",
+        "full_name": "Введите ваше полное имя",
+        "email_address": "Введите ваш адрес электронной почты",
+        "phone_number": "Введите ваш номер телефона",
+        "subject": "Введите тему",
+        "description": "Введите описание"
+      },
+      "validation": {
+        "please_select_main_topic": "Пожалуйста, выберите основную тему",
+        "please_enter_valid_phone": "Пожалуйста, введите действительный номер телефона",
+        "please_enter_valid_email": "Пожалуйста, введите действительный адрес электронной почты"
+      },
+      "errors": {
+        "failed_to_load_departments": "Не удалось загрузить отделы. Попробуйте позже."
+      }
+    }
+  },
+  "faqs": {
+    "was_this_helpful": "Было ли это полезно?",
+    "thanks_for_your_feedback": "Спасибо за ваш отзыв!",
+    "quick_questions": "Быстрые вопросы",
+    "no_questions_available": "Нет доступных вопросов для этого отдела.",
+    "was_this_reply_helpful": "Был ли этот ответ полезен?",
+    "satisfied": "Доволен",
+    "dissatisfied": "Недоволен"
+  },
+  "ui": {
+    "loading": "Загрузка...",
+    "submitting": "Отправка...",
+    "choose_files": "Выбрать файлы",
+    "select_language": "Выбрать язык",
+    "refresh": "Обновить",
+    "track": "Отследить",
+    "track_your_tickets": "Отследить ваши тикеты",
+    "enter_ticket_code": "Введите код тикета",
+    "current_ticket": "Текущий тикет",
+    "ticket_details": "Детали тикета",
+    "close_modal": "Закрыть окно",
+    "status": "Статус",
+    "created": "Создан",
+    "question": "Вопрос",
+    "answer": "Ответ",
+    "no_question_provided": "Вопрос не предоставлен",
+    "code": "Код",
+    "failed_to_load_ticket_url": "Не удалось загрузить тикет по URL",
+    "failed_to_load_saved_ticket": "Не удалось загрузить сохраненный тикет",
+    "failed_to_track_ticket": "Не удалось отследить тикет. Проверьте код и попробуйте еще раз.",
+    "failed_to_refresh_ticket": "Не удалось обновить тикет",
+    "support_reply": "Ответ поддержки",
+    "attachments": "Вложения",
+    "loading_preview": "Загрузка предварительного просмотра...",
+    "preview_not_available": "Предварительный просмотр недоступен для этого типа файла",
+    "download_file": "Скачать файл",
+    "verify_your_ticket": "Подтвердите ваш тикет",
+    "verification_code_sent": "Мы отправили код подтверждения на ваш адрес электронной почты",
+    "verification_code": "Код подтверждения",
+    "verifying": "Подтверждение...",
+    "verify_ticket": "Подтвердить тикет",
+    "didnt_receive_code": "Не получили код?",
+    "resend": "Отправить повторно",
+    "invalid_verification_code": "Неверный код подтверждения или срок действия истек. Пожалуйста, попробуйте еще раз."
+  },
+  "common": {
+    "yes": "Да",
+    "no": "Нет",
+    "loading": "Загрузка...",
+    "submitting": "Отправка..."
+  }
+}

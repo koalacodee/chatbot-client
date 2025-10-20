@@ -4,6 +4,7 @@ import TicketHistoryItemRating from "./TicketHistoryItemRating";
 import { useEffect, useState } from "react";
 import { AttachmentService, api } from "@/utils/api";
 import { env } from "next-runtime-env";
+import { useLocalesStore } from "@/app/store/useLocalesStore";
 
 interface Attachment {
   fileType: string;
@@ -21,6 +22,7 @@ export default function TicketHistoryItem({
   ticket: GetTicketHistory200ResponseDataTicketsInner;
   attachments: Array<string>;
 }) {
+  const locales = useLocalesStore((state) => state.locales);
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
       open: "bg-primary/10 text-primary",
@@ -121,13 +123,15 @@ export default function TicketHistoryItem({
         </div>
 
         <div className="flex justify-between items-center text-sm text-muted-foreground">
-          <span>Ticket #{ticket.code}</span>
+          <span>
+            {locales.ui?.code || "Code"} #{ticket.code}
+          </span>
           <span>{new Date(ticket.createdAt).toLocaleDateString()}</span>
         </div>
         {ticket.answer && (
           <div className="p-3 bg-primary/10 border-l-4 border-primary text-card-foreground mt-2">
             <p className="font-semibold text-xs text-primary mb-1">
-              Support Reply
+              {locales.ui?.support_reply || "Support Reply"}
             </p>
             {ticket.answer}
           </div>
@@ -149,7 +153,8 @@ export default function TicketHistoryItem({
                 />
               </svg>
               <span className="text-sm font-medium text-muted-foreground">
-                Attachments ({attachments.length})
+                {locales.ui?.attachments || "Attachments"} ({attachments.length}
+                )
               </span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -290,7 +295,7 @@ export default function TicketHistoryItem({
                   <div className="flex items-center gap-3">
                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
                     <span className="text-muted-foreground">
-                      Loading preview...
+                      {locales.ui?.loading_preview || "Loading preview..."}
                     </span>
                   </div>
                 </div>
@@ -367,7 +372,8 @@ export default function TicketHistoryItem({
                             </svg>
                           </div>
                           <p className="text-muted-foreground mb-2">
-                            Preview not available for this file type
+                            {locales.ui?.preview_not_available ||
+                              "Preview not available for this file type"}
                           </p>
                           <a
                             href={previewModal.url}
@@ -388,7 +394,7 @@ export default function TicketHistoryItem({
                                 d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                               />
                             </svg>
-                            Download File
+                            {locales.ui?.download_file || "Download File"}
                           </a>
                         </div>
                       </div>

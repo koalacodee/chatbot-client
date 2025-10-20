@@ -1,0 +1,103 @@
+{
+  "welcome": {
+    "title": "Comment pouvons-nous vous aider ?",
+    "description": "Parcourez notre section FAQ complète pour trouver des réponses et obtenir de l'aide."
+  },
+  "categories": {
+    "title": "Parcourir par catégorie"
+  },
+  "tickets": {
+    "title": "Vous n'avez pas trouvé de réponse ?",
+    "description": "Soumettez un ticket et notre équipe de support vous contactera.",
+    "ticket_verified": "Ticket vérifié avec succès !",
+    "ticket_verified_description": "Ticket vérifié avec succès ! Notre équipe de support vous contactera.",
+    "ticket_verified_error": "Erreur lors de la vérification du ticket. Veuillez réessayer.",
+    "reference_number": "Numéro de référence du ticket",
+    "no_tickets": "Aucun ticket",
+    "no_attachments": "Aucune pièce jointe",
+    "form": {
+      "labels": {
+        "main_topic": "Sujet principal",
+        "specific_issue": "Problème spécifique",
+        "full_name": "Nom complet",
+        "email_address": "Adresse e-mail",
+        "phone_number": "Numéro de téléphone",
+        "subject": "Sujet",
+        "description": "Description",
+        "submit": "Soumettre la question",
+        "attachments": "Pièces jointes",
+        "attachments_max": "(Optionnel, max 10 MB)",
+        "choose_file": "Choisir un fichier",
+        "no_specific_issue": "Aucun problème spécifique"
+      },
+      "placeholders": {
+        "main_topic": "Sélectionnez un sujet principal",
+        "specific_issue": "Sélectionnez un problème spécifique",
+        "full_name": "Entrez votre nom complet",
+        "email_address": "Entrez votre adresse e-mail",
+        "phone_number": "Entrez votre numéro de téléphone",
+        "subject": "Entrez votre sujet",
+        "description": "Entrez votre description"
+      },
+      "validation": {
+        "please_select_main_topic": "Veuillez sélectionner un sujet principal",
+        "please_enter_valid_phone": "Veuillez entrer un numéro de téléphone valide",
+        "please_enter_valid_email": "Veuillez entrer une adresse e-mail valide"
+      },
+      "errors": {
+        "failed_to_load_departments": "Échec du chargement des départements. Veuillez réessayer plus tard."
+      }
+    }
+  },
+  "faqs": {
+    "was_this_helpful": "Cela vous a-t-il été utile ?",
+    "thanks_for_your_feedback": "Merci pour vos commentaires !",
+    "quick_questions": "Questions Rapides",
+    "no_questions_available": "Aucune question disponible pour ce département.",
+    "was_this_reply_helpful": "Cette réponse vous a-t-elle été utile ?",
+    "satisfied": "Satisfait",
+    "dissatisfied": "Mécontent"
+  },
+  "ui": {
+    "loading": "Chargement...",
+    "submitting": "Soumission...",
+    "choose_files": "Choisir des Fichiers",
+    "select_language": "Sélectionner la langue",
+    "refresh": "Actualiser",
+    "track": "Suivre",
+    "track_your_tickets": "Suivre Vos Tickets",
+    "enter_ticket_code": "Entrez le code du ticket",
+    "current_ticket": "Ticket Actuel",
+    "ticket_details": "Détails du Ticket",
+    "close_modal": "Fermer la fenêtre",
+    "status": "Statut",
+    "created": "Créé",
+    "question": "Question",
+    "answer": "Réponse",
+    "no_question_provided": "Aucune question fournie",
+    "code": "Code",
+    "failed_to_load_ticket_url": "Échec du chargement du ticket depuis l'URL",
+    "failed_to_load_saved_ticket": "Échec du chargement du ticket sauvegardé",
+    "failed_to_track_ticket": "Échec du suivi du ticket. Veuillez vérifier le code et réessayer.",
+    "failed_to_refresh_ticket": "Échec de l'actualisation du ticket",
+    "support_reply": "Réponse du Support",
+    "attachments": "Pièces jointes",
+    "loading_preview": "Chargement de l'aperçu...",
+    "preview_not_available": "Aperçu non disponible pour ce type de fichier",
+    "download_file": "Télécharger le fichier",
+    "verify_your_ticket": "Vérifiez votre ticket",
+    "verification_code_sent": "Nous avons envoyé un code de vérification à votre adresse e-mail",
+    "verification_code": "Code de vérification",
+    "verifying": "Vérification...",
+    "verify_ticket": "Vérifier le ticket",
+    "didnt_receive_code": "Vous n'avez pas reçu le code ?",
+    "resend": "Renvoyer",
+    "invalid_verification_code": "Code de vérification invalide ou expiré. Veuillez réessayer."
+  },
+  "common": {
+    "yes": "Oui",
+    "no": "Non",
+    "loading": "Chargement...",
+    "submitting": "Soumission..."
+  }
+}

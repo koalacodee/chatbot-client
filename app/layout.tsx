@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { env, PublicEnvScript } from "next-runtime-env";
+import { getLocale, isRTL } from "@/lib/utils";
+import { RTL_LANGUAGES } from "@/constants/translations";
 
 const roboto = localFont({
   src: "../public/fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf",
@@ -95,13 +97,19 @@ export const viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = await getLocale();
   return (
-    <html lang="en" suppressHydrationWarning className={`${roboto.variable}`}>
+    <html
+      lang={lang}
+      suppressHydrationWarning
+      dir={isRTL(lang ?? "en") ? "rtl" : "ltr"}
+      className={`${roboto.variable}`}
+    >
       <head>
         <PublicEnvScript />
       </head>

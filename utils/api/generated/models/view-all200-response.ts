@@ -14,7 +14,14 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
+import { SupportedLanguage } from "@/types/translation";
 import type { ViewAll200ResponseDataInner } from "./view-all200-response-data-inner";
+
+export type FAqTranslation = {
+  lang: SupportedLanguage;
+  content: string;
+  type: "question" | "answer";
+};
 
 /**
  *
@@ -36,5 +43,6 @@ export interface ViewAll200Response {
   data: {
     faqs: Array<ViewAll200ResponseDataInner>;
     attachments: Record<string, Array<string>>;
+    translations: Record<string, FAqTranslation[]>;
   };
 }
