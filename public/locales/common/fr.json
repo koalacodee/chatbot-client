@@ -92,7 +92,12 @@
     "verify_ticket": "Vérifier le ticket",
     "didnt_receive_code": "Vous n'avez pas reçu le code ?",
     "resend": "Renvoyer",
-    "invalid_verification_code": "Code de vérification invalide ou expiré. Veuillez réessayer."
+    "invalid_verification_code": "Code de vérification invalide ou expiré. Veuillez réessayer.",
+    "ai_assistant": "Assistant IA",
+    "ready_to_assist": "Prêt à vous aider 24h/24",
+    "start_conversation": "Commencer une conversation",
+    "ask_anything": "Demandez-moi n'importe quoi sur nos services ou support",
+    "type_question": "Tapez votre question ici..."
   },
   "common": {
     "yes": "Oui",

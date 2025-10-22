@@ -92,7 +92,12 @@
     "verify_ticket": "Ticket verifizieren",
     "didnt_receive_code": "Code nicht erhalten?",
     "resend": "Erneut senden",
-    "invalid_verification_code": "Ungültiger Verifizierungscode oder abgelaufen. Bitte versuchen Sie es erneut."
+    "invalid_verification_code": "Ungültiger Verifizierungscode oder abgelaufen. Bitte versuchen Sie es erneut.",
+    "ai_assistant": "KI-Assistent",
+    "ready_to_assist": "Bereit, Ihnen 24/7 zu helfen",
+    "start_conversation": "Gespräch beginnen",
+    "ask_anything": "Fragen Sie mich alles über unsere Dienstleistungen oder Support",
+    "type_question": "Geben Sie hier Ihre Frage ein..."
   },
   "common": {
     "yes": "Ja",

@@ -16,6 +16,7 @@ import { SupportedLanguage } from "@/types/translation";
 import { useLangStore } from "./store/useLangStore";
 import { useEffect } from "react";
 import { useLocalesStore } from "./store/useLocalesStore";
+import StreamingChatWindow from "@/components/chat/StreamingChatWindow";
 
 export default function PageClient({
   locales,
@@ -206,7 +207,7 @@ export default function PageClient({
       </div>
 
       {/* Floating Chat Window - Bottom Right */}
-      <FloatingChatWindowRight />
+      <StreamingChatWindow />
       <Promotion />
     </PageLayout>
   );

@@ -92,7 +92,12 @@
     "verify_ticket": "チケットを確認",
     "didnt_receive_code": "コードを受信しませんでしたか？",
     "resend": "再送信",
-    "invalid_verification_code": "確認コードが無効か期限切れです。もう一度お試しください。"
+    "invalid_verification_code": "確認コードが無効か期限切れです。もう一度お試しください。",
+    "ai_assistant": "AIアシスタント",
+    "ready_to_assist": "24時間いつでもお手伝いします",
+    "start_conversation": "会話を始める",
+    "ask_anything": "サービスやサポートについて何でもお聞きください",
+    "type_question": "ここに質問を入力してください..."
   },
   "common": {
     "yes": "はい",

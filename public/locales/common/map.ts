@@ -106,6 +106,11 @@ export type CommonLocales = {
     didnt_receive_code: string;
     resend: string;
     invalid_verification_code: string;
+    ai_assistant: string;
+    ready_to_assist: string;
+    start_conversation: string;
+    ask_anything: string;
+    type_question: string;
   };
   common: {
     yes: string;

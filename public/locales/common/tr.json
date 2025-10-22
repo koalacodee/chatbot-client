@@ -92,7 +92,12 @@
     "verify_ticket": "Talebi Doğrula",
     "didnt_receive_code": "Kodu almadınız mı?",
     "resend": "Yeniden Gönder",
-    "invalid_verification_code": "Doğrulama kodu geçersiz veya süresi doldu. Lütfen tekrar deneyin."
+    "invalid_verification_code": "Doğrulama kodu geçersiz veya süresi doldu. Lütfen tekrar deneyin.",
+    "ai_assistant": "AI Asistanı",
+    "ready_to_assist": "Size 7/24 yardım etmeye hazır",
+    "start_conversation": "Sohbet başlat",
+    "ask_anything": "Hizmetlerimiz veya destek hakkında her şeyi sorabilirsiniz",
+    "type_question": "Sorunuzu buraya yazın..."
   },
   "common": {
     "yes": "Evet",

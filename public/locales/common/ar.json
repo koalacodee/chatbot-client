@@ -92,7 +92,12 @@
     "verify_ticket": "تحقق من التذكرة",
     "didnt_receive_code": "لم تستلم الرمز؟",
     "resend": "إعادة إرسال",
-    "invalid_verification_code": "رمز التحقق غير صالح او منتهى الصلاحية. يرجى المحاولة مرة أخرى."
+    "invalid_verification_code": "رمز التحقق غير صالح او منتهى الصلاحية. يرجى المحاولة مرة أخرى.",
+    "ai_assistant": "مساعد الذكاء الاصطناعي",
+    "ready_to_assist": "جاهز لمساعدتك على مدار الساعة",
+    "start_conversation": "ابدأ محادثة",
+    "ask_anything": "اسألني أي شيء حول خدماتنا أو الدعم",
+    "type_question": "اكتب سؤالك هنا..."
   },
   "common": {
     "yes": "نعم",

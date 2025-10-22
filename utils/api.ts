@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getCookie, setCookie } from "./cookies";
 import { env } from "next-runtime-env";
+import { Readable } from "stream";
 
 // Types for authentication
 interface User {
@@ -144,6 +145,11 @@ export const authService = {
   },
 };
 
+interface AskParams {
+  question: string;
+  conversationId?: string;
+}
+
 // Chat service functions
 export const chatService = {
   ask: async (question: string, conversationId?: string, faqId?: string) => {
@@ -157,6 +163,20 @@ export const chatService = {
     return response.data.data;
   },
 
+  chat: async (params: AskParams) => {
+    const { question, conversationId } = params;
+    return api.post(
+      "/chat",
+      { question, conversationId },
+      {
+        responseType: "stream",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        adapter: "fetch",
+      }
+    );
+  },
   askGuest: async (
     question: string,
     conversationId?: string,

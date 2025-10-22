@@ -92,7 +92,12 @@
     "verify_ticket": "验证工单",
     "didnt_receive_code": "没有收到验证码？",
     "resend": "重新发送",
-    "invalid_verification_code": "验证码无效或已过期。请重试。"
+    "invalid_verification_code": "验证码无效或已过期。请重试。",
+    "ai_assistant": "AI助手",
+    "ready_to_assist": "随时为您提供24/7帮助",
+    "start_conversation": "开始对话",
+    "ask_anything": "询问我关于我们的服务或支持的任何问题",
+    "type_question": "在此输入您的问题..."
   },
   "common": {
     "yes": "是",
