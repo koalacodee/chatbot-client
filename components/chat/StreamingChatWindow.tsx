@@ -151,6 +151,7 @@ export default function StreamingChatWindow() {
                   handleConversationMeta(payload.data);
                 } else if (payload.data == "[DONE]") {
                   handleDone();
+                  setIsLoading(false);
                 }
               } catch (parseErr) {
                 console.warn("Bad JSON in SSE line:", line, parseErr);
@@ -160,7 +161,6 @@ export default function StreamingChatWindow() {
         }
 
         // ---- stream ended ----
-        setIsLoading(false);
       } finally {
         reader.releaseLock(); // always unlock
         console.log("Stream ended");
