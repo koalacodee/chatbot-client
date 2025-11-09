@@ -229,6 +229,30 @@ export const departmentService = {
   },
 };
 
+interface TrackSupportTicketResponse {
+  id: string;
+  subject: string;
+  description: string;
+  departmentId: string;
+  department: Department;
+  answer?: string,
+  status: string,
+  createdAt: string,
+  updatedAt: string,
+  code: string,
+  guestName: string,
+  guestPhone: string,
+  guestEmail: string
+}
+
+
+export interface TrackTicketOutput {
+  ticket: TrackSupportTicketResponse;
+  attachments: { [ticketId: string]: string[] };
+  answerAttachments: { [ticketId: string]: string[] };
+  isRated: boolean
+}
+
 export const ticketService = {
   createTicket: async ({
     departmentId,
@@ -260,6 +284,12 @@ export const ticketService = {
   trackTicket: async (code: string) => {
     return api
       .get<{ data: TrackTicketResponse }>(`/tickets/${code}`)
+      .then((res) => res.data.data);
+  },
+
+  trackSupportTicket: async (code: string) => {
+    return api
+      .get<{ data: TrackTicketOutput }>(`/support-tickets/track/${code}`)
       .then((res) => res.data.data);
   },
 

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "-": "^0.0.1",
+    "@headlessui/react": "^2.2.9",
     "@hookform/resolvers": "^5.2.1",
     "@types/js-cookie": "^3.0.6",
     "axios": "^1.11.0",

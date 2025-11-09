@@ -45,8 +45,63 @@
         "please_enter_valid_email": "Veuillez entrer une adresse e-mail valide"
       },
       "errors": {
-        "failed_to_load_departments": "Échec du chargement des départements. Veuillez réessayer plus tard."
+        "failed_to_load_departments": "Échec du chargement des départements. Veuillez réessayer plus tard.",
+        "failed_to_create_ticket": "Échec de la création du ticket. Veuillez réessayer."
       }
+    },
+    "tracking": {
+      "title": "Suivre le ticket de support",
+      "description": "Entrez votre numéro de référence pour voir les détails du ticket",
+      "reference_number_label": "Numéro de référence",
+      "reference_number_placeholder": "Entrez votre numéro de référence de ticket",
+      "track_button": "Suivre le ticket",
+      "searching": "Recherche...",
+      "back_to_home": "Retour à l'accueil",
+      "track_another": "Suivre un autre ticket",
+      "description_label": "Description",
+      "department_label": "Département",
+      "response_label": "Réponse",
+      "contact_information": "Informations de contact",
+      "timeline_label": "Chronologie",
+      "created_label": "Créé",
+      "last_updated": "Dernière mise à jour",
+      "open_support_ticket": "Ouvrir un ticket de support",
+      "feedback_help_text": "Vos commentaires nous aident à améliorer notre support",
+      "not_available": "N/A",
+      "name": "Nom",
+      "email": "Adresse e-mail",
+      "phone": "Téléphone"
+    },
+    "modal": {
+      "create_title": "Créer un ticket de support",
+      "verify_title": "Vérifier votre ticket",
+      "loading_departments": "Chargement des départements...",
+      "main_topic_label": "Sujet principal",
+      "main_topic_placeholder": "Sélectionnez un sujet principal",
+      "specific_issue_label": "Problème spécifique",
+      "specific_issue_placeholder": "Sélectionnez un problème spécifique (optionnel)",
+      "full_name_label": "Nom complet",
+      "full_name_placeholder": "Entrez votre nom complet",
+      "email_label": "Adresse e-mail",
+      "email_placeholder": "Entrez votre adresse e-mail",
+      "phone_label": "Numéro de téléphone",
+      "phone_placeholder": "Entrez votre numéro de téléphone",
+      "subject_label": "Sujet",
+      "subject_placeholder": "Entrez le sujet du ticket",
+      "description_label": "Description",
+      "description_placeholder": "Décrivez votre problème en détail",
+      "attachments_label": "Pièces jointes",
+      "attachments_max_size": "Maximum 10 Mo par fichier",
+      "choose_files": "Choisir des fichiers",
+      "files_selected": "fichier(s) sélectionné(s)",
+      "cancel": "Annuler",
+      "submit": "Soumettre le ticket",
+      "submitting": "Soumission..."
+    },
+    "toast": {
+      "success_message": "Ticket créé avec succès !",
+      "reference_label": "Référence :",
+      "copy_tooltip": "Copier le numéro de référence"
     }
   },
   "faqs": {

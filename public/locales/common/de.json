@@ -45,8 +45,63 @@
         "please_enter_valid_email": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
       },
       "errors": {
-        "failed_to_load_departments": "Abteilungen konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
+        "failed_to_load_departments": "Abteilungen konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+        "failed_to_create_ticket": "Ticket konnte nicht erstellt werden. Bitte versuchen Sie es erneut."
       }
+    },
+    "tracking": {
+      "title": "Support-Ticket verfolgen",
+      "description": "Geben Sie Ihre Referenznummer ein, um Ticket-Details anzuzeigen",
+      "reference_number_label": "Referenznummer",
+      "reference_number_placeholder": "Geben Sie Ihre Ticket-Referenznummer ein",
+      "track_button": "Ticket verfolgen",
+      "searching": "Suche...",
+      "back_to_home": "Zurück zur Startseite",
+      "track_another": "Weiteres Ticket verfolgen",
+      "description_label": "Beschreibung",
+      "department_label": "Abteilung",
+      "response_label": "Antwort",
+      "contact_information": "Kontaktinformationen",
+      "timeline_label": "Zeitachse",
+      "created_label": "Erstellt",
+      "last_updated": "Zuletzt aktualisiert",
+      "open_support_ticket": "Support-Ticket öffnen",
+      "feedback_help_text": "Ihr Feedback hilft uns, unseren Support zu verbessern",
+      "not_available": "N/V",
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon"
+    },
+    "modal": {
+      "create_title": "Support-Ticket erstellen",
+      "verify_title": "Ihr Ticket verifizieren",
+      "loading_departments": "Abteilungen werden geladen...",
+      "main_topic_label": "Hauptthema",
+      "main_topic_placeholder": "Wählen Sie ein Hauptthema aus",
+      "specific_issue_label": "Spezifisches Problem",
+      "specific_issue_placeholder": "Wählen Sie ein spezifisches Problem aus (optional)",
+      "full_name_label": "Vollständiger Name",
+      "full_name_placeholder": "Geben Sie Ihren vollständigen Namen ein",
+      "email_label": "E-Mail-Adresse",
+      "email_placeholder": "Geben Sie Ihre E-Mail-Adresse ein",
+      "phone_label": "Telefonnummer",
+      "phone_placeholder": "Geben Sie Ihre Telefonnummer ein",
+      "subject_label": "Betreff",
+      "subject_placeholder": "Geben Sie den Ticket-Betreff ein",
+      "description_label": "Beschreibung",
+      "description_placeholder": "Beschreiben Sie Ihr Problem im Detail",
+      "attachments_label": "Anhänge",
+      "attachments_max_size": "Maximal 10 MB pro Datei",
+      "choose_files": "Dateien auswählen",
+      "files_selected": "Datei(en) ausgewählt",
+      "cancel": "Abbrechen",
+      "submit": "Ticket absenden",
+      "submitting": "Wird übermittelt..."
+    },
+    "toast": {
+      "success_message": "Ticket erfolgreich erstellt!",
+      "reference_label": "Referenz:",
+      "copy_tooltip": "Referenznummer kopieren"
     }
   },
   "faqs": {

@@ -45,8 +45,63 @@
         "please_enter_valid_email": "Lütfen geçerli bir e-posta adresi girin"
       },
       "errors": {
-        "failed_to_load_departments": "Departmanlar yüklenemedi. Lütfen daha sonra tekrar deneyin."
+        "failed_to_load_departments": "Departmanlar yüklenemedi. Lütfen daha sonra tekrar deneyin.",
+        "failed_to_create_ticket": "Talep oluşturulamadı. Lütfen tekrar deneyin."
       }
+    },
+    "tracking": {
+      "title": "Destek Talebini İzle",
+      "description": "Talep detaylarını görmek için referans numaranızı girin",
+      "reference_number_label": "Referans Numarası",
+      "reference_number_placeholder": "Talep referans numaranızı girin",
+      "track_button": "Talebi İzle",
+      "searching": "Aranıyor...",
+      "back_to_home": "Ana Sayfaya Dön",
+      "track_another": "Başka Bir Talep İzle",
+      "description_label": "Açıklama",
+      "department_label": "Departman",
+      "response_label": "Yanıt",
+      "contact_information": "İletişim Bilgileri",
+      "timeline_label": "Zaman Çizelgesi",
+      "created_label": "Oluşturuldu",
+      "last_updated": "Son Güncelleme",
+      "open_support_ticket": "Destek Talebi Aç",
+      "feedback_help_text": "Geri bildiriminiz desteğimizi iyileştirmemize yardımcı olur",
+      "not_available": "Mevcut değil",
+      "name": "Ad",
+      "email": "E-mail adresi",
+      "phone": "Telefon numarası"
+    },
+    "modal": {
+      "create_title": "Destek Talebi Oluştur",
+      "verify_title": "Talebinizi Doğrulayın",
+      "loading_departments": "Departmanlar yükleniyor...",
+      "main_topic_label": "Ana Konu",
+      "main_topic_placeholder": "Bir ana konu seçin",
+      "specific_issue_label": "Belirli Sorun",
+      "specific_issue_placeholder": "Belirli bir sorun seçin (isteğe bağlı)",
+      "full_name_label": "Tam Ad",
+      "full_name_placeholder": "Tam adınızı girin",
+      "email_label": "E-posta Adresi",
+      "email_placeholder": "E-posta adresinizi girin",
+      "phone_label": "Telefon Numarası",
+      "phone_placeholder": "Telefon numaranızı girin",
+      "subject_label": "Konu",
+      "subject_placeholder": "Talep konusunu girin",
+      "description_label": "Açıklama",
+      "description_placeholder": "Sorununuzu detaylı olarak açıklayın",
+      "attachments_label": "Ekler",
+      "attachments_max_size": "Dosya başına maksimum 10 MB",
+      "choose_files": "Dosya Seç",
+      "files_selected": "dosya seçildi",
+      "cancel": "İptal",
+      "submit": "Talebi Gönder",
+      "submitting": "Gönderiliyor..."
+    },
+    "toast": {
+      "success_message": "Talep başarıyla oluşturuldu!",
+      "reference_label": "Referans:",
+      "copy_tooltip": "Referans numarasını kopyala"
     }
   },
   "faqs": {

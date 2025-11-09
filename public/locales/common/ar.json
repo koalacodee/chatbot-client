@@ -45,8 +45,63 @@
         "please_enter_valid_email": "يرجى إدخال عنوان بريد إلكتروني صحيح"
       },
       "errors": {
-        "failed_to_load_departments": "فشل في تحميل الأقسام. يرجى المحاولة مرة أخرى لاحقًا."
+        "failed_to_load_departments": "فشل في تحميل الأقسام. يرجى المحاولة مرة أخرى لاحقًا.",
+        "failed_to_create_ticket": "فشل في إنشاء التذكرة. يرجى المحاولة مرة أخرى."
       }
+    },
+    "tracking": {
+      "title": "تتبع تذكرة الدعم",
+      "description": "أدخل رقم المرجع الخاص بك لعرض تفاصيل التذكرة",
+      "reference_number_label": "رقم المرجع",
+      "reference_number_placeholder": "أدخل رقم المرجع الخاص بتذكرتك",
+      "track_button": "تتبع التذكرة",
+      "searching": "جاري البحث...",
+      "back_to_home": "العودة إلى الصفحة الرئيسية",
+      "track_another": "تتبع تذكرة أخرى",
+      "description_label": "الوصف",
+      "department_label": "القسم",
+      "response_label": "الرد",
+      "contact_information": "معلومات الاتصال",
+      "timeline_label": "الجدول الزمني",
+      "created_label": "تم الإنشاء",
+      "last_updated": "آخر تحديث",
+      "open_support_ticket": "فتح تذكرة دعم",
+      "feedback_help_text": "ملاحظاتك تساعدنا على تحسين دعمنا",
+      "not_available": "غير متاح",
+      "name": "الاسم",
+      "email": "البريد الالكتروني",
+      "phone": "رقم الهاتف"
+    },
+    "modal": {
+      "create_title": "إنشاء تذكرة دعم",
+      "verify_title": "تحقق من تذكرتك",
+      "loading_departments": "جاري تحميل الأقسام...",
+      "main_topic_label": "الموضوع الرئيسي",
+      "main_topic_placeholder": "اختر الموضوع الرئيسي",
+      "specific_issue_label": "مشكلة محددة",
+      "specific_issue_placeholder": "اختر مشكلة محددة (اختياري)",
+      "full_name_label": "الاسم الكامل",
+      "full_name_placeholder": "أدخل اسمك الكامل",
+      "email_label": "عنوان البريد الإلكتروني",
+      "email_placeholder": "أدخل عنوان بريدك الإلكتروني",
+      "phone_label": "رقم الهاتف",
+      "phone_placeholder": "أدخل رقم هاتفك",
+      "subject_label": "الموضوع",
+      "subject_placeholder": "أدخل موضوع التذكرة",
+      "description_label": "الوصف",
+      "description_placeholder": "اوصف مشكلتك بالتفصيل",
+      "attachments_label": "المرفقات",
+      "attachments_max_size": "بحد أقصى 10 ميجابايت لكل ملف",
+      "choose_files": "اختر الملفات",
+      "files_selected": "ملف(ملفات) محددة",
+      "cancel": "إلغاء",
+      "submit": "إرسال التذكرة",
+      "submitting": "جاري الإرسال..."
+    },
+    "toast": {
+      "success_message": "تم إنشاء التذكرة بنجاح!",
+      "reference_label": "المرجع:",
+      "copy_tooltip": "نسخ رقم المرجع"
     }
   },
   "faqs": {

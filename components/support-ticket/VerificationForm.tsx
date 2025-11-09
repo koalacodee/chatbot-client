@@ -89,7 +89,7 @@ export default function VerificationForm() {
       };
       setSubmittedTicket(verifiedTicket);
       setIsVerified(true);
-      resetVerification();
+      // Don't reset verification here - let the parent component handle it
     } catch (error: any) {
       console.error("Error verifying ticket:", error);
       console.log(locales);
@@ -141,9 +141,8 @@ export default function VerificationForm() {
             id="code"
             {...register("code")}
             maxLength={6}
-            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background text-center text-lg tracking-widest ${
-              errors.code ? "border-destructive" : "border-border"
-            } transition-colors animate-fade-in`}
+            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background text-center text-lg tracking-widest ${errors.code ? "border-destructive" : "border-border"
+              } transition-colors animate-fade-in`}
             placeholder="000000"
           />
           {verificationError && (

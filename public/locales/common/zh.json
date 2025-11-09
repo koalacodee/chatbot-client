@@ -45,8 +45,63 @@
         "please_enter_valid_email": "请输入有效的电子邮件地址"
       },
       "errors": {
-        "failed_to_load_departments": "加载部门失败。请稍后重试。"
+        "failed_to_load_departments": "加载部门失败。请稍后重试。",
+        "failed_to_create_ticket": "创建工单失败。请重试。"
       }
+    },
+    "tracking": {
+      "title": "跟踪支持工单",
+      "description": "输入您的参考编号以查看工单详情",
+      "reference_number_label": "参考编号",
+      "reference_number_placeholder": "输入您的工单参考编号",
+      "track_button": "跟踪工单",
+      "searching": "搜索中...",
+      "back_to_home": "返回首页",
+      "track_another": "跟踪另一个工单",
+      "description_label": "描述",
+      "department_label": "部门",
+      "response_label": "回复",
+      "contact_information": "联系信息",
+      "timeline_label": "时间线",
+      "created_label": "创建时间",
+      "last_updated": "最后更新",
+      "open_support_ticket": "打开支持工单",
+      "feedback_help_text": "您的反馈有助于我们改进支持服务",
+      "not_available": "不可用",
+      "name": "姓名",
+      "email": "电子邮件地址",
+      "phone": "电话号码"
+    },
+    "modal": {
+      "create_title": "创建支持工单",
+      "verify_title": "验证您的工单",
+      "loading_departments": "正在加载部门...",
+      "main_topic_label": "主要主题",
+      "main_topic_placeholder": "选择主要主题",
+      "specific_issue_label": "具体问题",
+      "specific_issue_placeholder": "选择具体问题（可选）",
+      "full_name_label": "全名",
+      "full_name_placeholder": "输入您的全名",
+      "email_label": "电子邮件地址",
+      "email_placeholder": "输入您的电子邮件地址",
+      "phone_label": "电话号码",
+      "phone_placeholder": "输入您的电话号码",
+      "subject_label": "主题",
+      "subject_placeholder": "输入工单主题",
+      "description_label": "描述",
+      "description_placeholder": "详细描述您的问题",
+      "attachments_label": "附件",
+      "attachments_max_size": "每个文件最大10MB",
+      "choose_files": "选择文件",
+      "files_selected": "个文件已选择",
+      "cancel": "取消",
+      "submit": "提交工单",
+      "submitting": "提交中..."
+    },
+    "toast": {
+      "success_message": "工单创建成功！",
+      "reference_label": "参考:",
+      "copy_tooltip": "复制参考编号"
     }
   },
   "faqs": {

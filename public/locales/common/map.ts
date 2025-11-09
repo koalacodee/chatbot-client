@@ -59,7 +59,62 @@ export type CommonLocales = {
       };
       errors: {
         failed_to_load_departments: string;
+        failed_to_create_ticket: string;
       };
+    };
+    tracking: {
+      title: string;
+      description: string;
+      reference_number_label: string;
+      reference_number_placeholder: string;
+      track_button: string;
+      searching: string;
+      back_to_home: string;
+      track_another: string;
+      description_label: string;
+      department_label: string;
+      response_label: string;
+      contact_information: string;
+      timeline_label: string;
+      created_label: string;
+      last_updated: string;
+      open_support_ticket: string;
+      feedback_help_text: string;
+      not_available: string;
+      name: string,
+      phone: string,
+      email: string
+    };
+    modal: {
+      create_title: string;
+      verify_title: string;
+      loading_departments: string;
+      main_topic_label: string;
+      main_topic_placeholder: string;
+      specific_issue_label: string;
+      specific_issue_placeholder: string;
+      full_name_label: string;
+      full_name_placeholder: string;
+      email_label: string;
+      email_placeholder: string;
+      phone_label: string;
+      phone_placeholder: string;
+      subject_label: string;
+      subject_placeholder: string;
+      description_label: string;
+      description_placeholder: string;
+      attachments_label: string;
+      attachments_max_size: string;
+      choose_files: string;
+      files_selected: string;
+      cancel: string;
+      submit: string;
+      submitting: string;
+    };
+    toast: {
+      success_message: string;
+      reference_label: string;
+      copy_tooltip: string;
     };
   };
   faqs: {

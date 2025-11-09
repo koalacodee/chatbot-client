@@ -45,8 +45,63 @@
         "please_enter_valid_email": "Пожалуйста, введите действительный адрес электронной почты"
       },
       "errors": {
-        "failed_to_load_departments": "Не удалось загрузить отделы. Попробуйте позже."
+        "failed_to_load_departments": "Не удалось загрузить отделы. Попробуйте позже.",
+        "failed_to_create_ticket": "Не удалось создать тикет. Попробуйте еще раз."
       }
+    },
+    "tracking": {
+      "title": "Отследить тикет поддержки",
+      "description": "Введите номер ссылки для просмотра деталей тикета",
+      "reference_number_label": "Номер ссылки",
+      "reference_number_placeholder": "Введите номер ссылки вашего тикета",
+      "track_button": "Отследить тикет",
+      "searching": "Поиск...",
+      "back_to_home": "Вернуться на главную",
+      "track_another": "Отследить другой тикет",
+      "description_label": "Описание",
+      "department_label": "Отдел",
+      "response_label": "Ответ",
+      "contact_information": "Контактная информация",
+      "timeline_label": "Временная шкала",
+      "created_label": "Создан",
+      "last_updated": "Последнее обновление",
+      "open_support_ticket": "Открыть тикет поддержки",
+      "feedback_help_text": "Ваш отзыв помогает нам улучшить нашу поддержку",
+      "not_available": "Н/Д",
+      "name": "Имя",
+      "email": "Адрес электронной почты",
+      "phone": "Телефон"
+    },
+    "modal": {
+      "create_title": "Создать тикет поддержки",
+      "verify_title": "Подтвердить ваш тикет",
+      "loading_departments": "Загрузка отделов...",
+      "main_topic_label": "Основная тема",
+      "main_topic_placeholder": "Выберите основную тему",
+      "specific_issue_label": "Конкретная проблема",
+      "specific_issue_placeholder": "Выберите конкретную проблему (необязательно)",
+      "full_name_label": "Полное имя",
+      "full_name_placeholder": "Введите ваше полное имя",
+      "email_label": "Адрес электронной почты",
+      "email_placeholder": "Введите ваш адрес электронной почты",
+      "phone_label": "Номер телефона",
+      "phone_placeholder": "Введите ваш номер телефона",
+      "subject_label": "Тема",
+      "subject_placeholder": "Введите тему тикета",
+      "description_label": "Описание",
+      "description_placeholder": "Опишите вашу проблему подробно",
+      "attachments_label": "Вложения",
+      "attachments_max_size": "Максимум 10 МБ на файл",
+      "choose_files": "Выбрать файлы",
+      "files_selected": "файл(ов) выбрано",
+      "cancel": "Отмена",
+      "submit": "Отправить тикет",
+      "submitting": "Отправка..."
+    },
+    "toast": {
+      "success_message": "Тикет успешно создан!",
+      "reference_label": "Ссылка:",
+      "copy_tooltip": "Копировать номер ссылки"
     }
   },
   "faqs": {

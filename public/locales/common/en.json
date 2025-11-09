@@ -45,8 +45,63 @@
         "please_enter_valid_email": "Please enter a valid email address"
       },
       "errors": {
-        "failed_to_load_departments": "Failed to load departments. Please try again later."
+        "failed_to_load_departments": "Failed to load departments. Please try again later.",
+        "failed_to_create_ticket": "Failed to create ticket. Please try again."
       }
+    },
+    "tracking": {
+      "title": "Track Support Ticket",
+      "description": "Enter your reference number to view ticket details",
+      "reference_number_label": "Reference Number",
+      "reference_number_placeholder": "Enter your ticket reference number",
+      "track_button": "Track Ticket",
+      "searching": "Searching...",
+      "back_to_home": "Back to Home",
+      "track_another": "Track Another Ticket",
+      "description_label": "Description",
+      "department_label": "Department",
+      "response_label": "Response",
+      "contact_information": "Contact Information",
+      "timeline_label": "Timeline",
+      "created_label": "Created",
+      "last_updated": "Last Updated",
+      "open_support_ticket": "Open Support Ticket",
+      "feedback_help_text": "Your feedback helps us improve our support",
+      "not_available": "N/A",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "modal": {
+      "create_title": "Create Support Ticket",
+      "verify_title": "Verify Your Ticket",
+      "loading_departments": "Loading departments...",
+      "main_topic_label": "Main Topic",
+      "main_topic_placeholder": "Select a main topic",
+      "specific_issue_label": "Specific Issue",
+      "specific_issue_placeholder": "Select a specific issue (optional)",
+      "full_name_label": "Full Name",
+      "full_name_placeholder": "Enter your full name",
+      "email_label": "Email Address",
+      "email_placeholder": "Enter your email address",
+      "phone_label": "Phone Number",
+      "phone_placeholder": "Enter your phone number",
+      "subject_label": "Subject",
+      "subject_placeholder": "Enter ticket subject",
+      "description_label": "Description",
+      "description_placeholder": "Describe your issue in detail",
+      "attachments_label": "Attachments",
+      "attachments_max_size": "Maximum 10MB per file",
+      "choose_files": "Choose Files",
+      "files_selected": "file(s) selected",
+      "cancel": "Cancel",
+      "submit": "Submit Ticket",
+      "submitting": "Submitting..."
+    },
+    "toast": {
+      "success_message": "Ticket created successfully!",
+      "reference_label": "Reference:",
+      "copy_tooltip": "Copy reference number"
     }
   },
   "faqs": {

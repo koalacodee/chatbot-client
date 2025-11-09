@@ -45,8 +45,63 @@
         "please_enter_valid_email": "有効なメールアドレスを入力してください"
       },
       "errors": {
-        "failed_to_load_departments": "部門の読み込みに失敗しました。後でもう一度お試しください。"
+        "failed_to_load_departments": "部門の読み込みに失敗しました。後でもう一度お試しください。",
+        "failed_to_create_ticket": "チケットの作成に失敗しました。もう一度お試しください。"
       }
+    },
+    "tracking": {
+      "title": "サポートチケットを追跡",
+      "description": "参照番号を入力してチケットの詳細を表示",
+      "reference_number_label": "参照番号",
+      "reference_number_placeholder": "チケットの参照番号を入力",
+      "track_button": "チケットを追跡",
+      "searching": "検索中...",
+      "back_to_home": "ホームに戻る",
+      "track_another": "別のチケットを追跡",
+      "description_label": "説明",
+      "department_label": "部門",
+      "response_label": "返信",
+      "contact_information": "連絡先情報",
+      "timeline_label": "タイムライン",
+      "created_label": "作成日",
+      "last_updated": "最終更新",
+      "open_support_ticket": "サポートチケットを開く",
+      "feedback_help_text": "フィードバックはサポートの改善に役立ちます",
+      "not_available": "利用不可",
+      "name": "名前",
+      "email": "メールアドレス",
+      "phone": "電話番号"
+    },
+    "modal": {
+      "create_title": "サポートチケットを作成",
+      "verify_title": "チケットを確認",
+      "loading_departments": "部門を読み込み中...",
+      "main_topic_label": "メインテーマ",
+      "main_topic_placeholder": "メインテーマを選択",
+      "specific_issue_label": "具体的な問題",
+      "specific_issue_placeholder": "具体的な問題を選択（オプション）",
+      "full_name_label": "フルネーム",
+      "full_name_placeholder": "フルネームを入力",
+      "email_label": "メールアドレス",
+      "email_placeholder": "メールアドレスを入力",
+      "phone_label": "電話番号",
+      "phone_placeholder": "電話番号を入力",
+      "subject_label": "件名",
+      "subject_placeholder": "チケットの件名を入力",
+      "description_label": "説明",
+      "description_placeholder": "問題を詳しく説明してください",
+      "attachments_label": "添付ファイル",
+      "attachments_max_size": "ファイルあたり最大10MB",
+      "choose_files": "ファイルを選択",
+      "files_selected": "ファイルが選択されました",
+      "cancel": "キャンセル",
+      "submit": "チケットを送信",
+      "submitting": "送信中..."
+    },
+    "toast": {
+      "success_message": "チケットが正常に作成されました！",
+      "reference_label": "参照:",
+      "copy_tooltip": "参照番号をコピー"
     }
   },
   "faqs": {
