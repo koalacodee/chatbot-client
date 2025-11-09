@@ -16,7 +16,8 @@ import { useEffect } from "react";
 import { useLocalesStore } from "./store/useLocalesStore";
 import StreamingChatWindow from "@/components/chat/StreamingChatWindow";
 import Link from "next/link";
-import { Ticket, ArrowRight } from "lucide-react";
+import { Ticket, ArrowRight, ArrowLeft } from "lucide-react";
+import { isRTL } from "@/lib/utils";
 
 export default function PageClient({
   locales,
@@ -27,6 +28,7 @@ export default function PageClient({
 }) {
   const { setLang } = useLangStore();
   const { setLocales } = useLocalesStore();
+  const rtl = isRTL(lang);
 
   useEffect(() => {
     setLang(lang);
@@ -169,12 +171,12 @@ export default function PageClient({
                 className="relative rounded-2xl bg-card/80 backdrop-blur-sm p-8 md:p-12 border border-border/20 shadow-xl"
               >
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                  <div className="flex-1 text-center md:text-left">
+                  <div className={`flex-1 text-center ${rtl ? 'md:text-right' : 'md:text-left'}`}>
                     <motion.div
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={{ opacity: 0, x: rtl ? 20 : -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.4, delay: 0.4 }}
-                      className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4 md:mb-0 md:mr-6"
+                      className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4 md:mb-0 ${rtl ? 'md:ml-6' : 'md:mr-6'}`}
                     >
                       <Ticket className="h-8 w-8 text-primary" />
                     </motion.div>
@@ -196,7 +198,7 @@ export default function PageClient({
                     </motion.p>
                   </div>
                   <motion.div
-                    initial={{ opacity: 0, x: 20 }}
+                    initial={{ opacity: 0, x: rtl ? -20 : 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.4, delay: 0.7 }}
                   >
@@ -205,7 +207,11 @@ export default function PageClient({
                       className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-all duration-200 shadow-lg hover:shadow-xl group"
                     >
                       <span>{locales.ui?.track_your_tickets || "Track Your Tickets"}</span>
-                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      {rtl ? (
+                        <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+                      ) : (
+                        <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      )}
                     </Link>
                   </motion.div>
                 </div>
