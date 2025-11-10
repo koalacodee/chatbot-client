@@ -1,6 +1,7 @@
 "use client";
 import FaqItem from "@/components/faqs/FaqItem";
 import SubDepartmentForCategory from "@/components/faqs/SubDepartmentForCategory";
+import SupportTicketCTA from "@/components/ui/SupportTicketCTA";
 import { ViewAllSubDepartments200ResponseDataInner } from "@/utils/api/generated/models";
 import { DepartmentService, FAQService } from "@/utils/api/index";
 import { useEffect, useState } from "react";
@@ -162,17 +163,18 @@ export default function ShareCategory({ shareKey }: { shareKey: string }) {
           </p>
         </div>
 
+        <SupportTicketCTA />
+
         <div className="space-y-8">
           {/* Sub-departments container */}
           {subDepartments.length > 0 && (
             <div className="max-w-4xl mx-auto flex flex-wrap justify-center gap-2 mb-8 p-4 bg-secondary/50 border border-border rounded-lg animate-fade-in">
               <button
                 onClick={() => handleSetSelectedSubDepartment(null)}
-                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 ${
-                  selectedSubDepartment === null
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 ${selectedSubDepartment === null
                     ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
                     : "bg-card text-card-foreground border border-border hover:bg-accent hover:text-accent-foreground"
-                }`}
+                  }`}
               >
                 All
               </button>
