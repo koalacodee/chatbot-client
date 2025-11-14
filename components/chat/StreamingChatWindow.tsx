@@ -130,9 +130,17 @@ export default function StreamingChatWindow() {
       let buffer = ""; // leftover from previous chunk
 
       try {
+        let streamDone = false;
         while (true) {
           const { done, value } = await reader.read();
-          if (done) break; // stream finished cleanly
+          if (done) {
+            // Stream ended naturally - finalize message and stop loading
+            if (currentBotMessageRef.current) {
+              handleDone();
+            }
+            setIsLoading(false);
+            break;
+          }
 
           buffer += decoder.decode(value, { stream: true }); // keep partial lines
           const lines = buffer.split("\n");
@@ -149,20 +157,35 @@ export default function StreamingChatWindow() {
                   handleSSEStream(payload.data);
                 } else if (payload.type == "conversation_meta") {
                   handleConversationMeta(payload.data);
-                } else if (payload.data == "[DONE]") {
+                } else if (
+                  payload.data == "[DONE]" ||
+                  payload === "[DONE]" ||
+                  (typeof payload === "string" && payload === "[DONE]") ||
+                  (payload.data && String(payload.data).trim() === "[DONE]")
+                ) {
+                  // Handle [DONE] in various formats
+                  console.log("Received [DONE] signal, finalizing message");
                   handleDone();
                   setIsLoading(false);
+                  streamDone = true;
+                  break;
                 }
               } catch (parseErr) {
                 console.warn("Bad JSON in SSE line:", line, parseErr);
               }
             }
           }
+
+          if (streamDone) {
+            break;
+          }
         }
 
         // ---- stream ended ----
       } finally {
         reader.releaseLock(); // always unlock
+        // Ensure loading is false even if something went wrong
+        setIsLoading(false);
         console.log("Stream ended");
       }
     } catch (error) {
