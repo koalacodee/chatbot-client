@@ -2,16 +2,40 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ticketService, AttachmentService, api } from "@/utils/api";
-import { SupportTicketService } from "@/utils/api/index";
+import {
+  ticketService,
+  AttachmentService,
+  api,
+  departmentService,
+} from "@/utils/api";
+import { SupportTicketService, DepartmentService } from "@/utils/api/index";
 import PageLayout from "@/components/layout/PageLayout";
-import { Search, CheckCircle2, Clock, User, Mail, Phone, Building2, FileText, Calendar, Hash, Plus, X, Download, ArrowLeft } from "lucide-react";
+import {
+  Search,
+  CheckCircle2,
+  Clock,
+  User,
+  Mail,
+  Phone,
+  Building2,
+  FileText,
+  Calendar,
+  Hash,
+  Plus,
+  X,
+  Download,
+  ArrowLeft,
+} from "lucide-react";
 import CreateTicketModal from "@/components/support-ticket/CreateTicketModal";
 import Toast from "@/components/ui/Toast";
 import { env } from "next-runtime-env";
 import { useLocalesStore } from "@/app/store/useLocalesStore";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import {
+  ViewAllMainDepartments200ResponseDataInner,
+  ViewAllSubDepartments200ResponseDataInner,
+} from "@/utils/api/generated";
 
 interface TicketData {
   id: string;
@@ -41,7 +65,10 @@ interface Attachment {
   token: string;
 }
 
-const statusColors: Record<string, { bg: string; text: string; border: string }> = {
+const statusColors: Record<
+  string,
+  { bg: string; text: string; border: string }
+> = {
   pending: {
     bg: "bg-warning/10",
     text: "text-warning",
@@ -81,7 +108,8 @@ export default function SupportTicketsPage() {
   const [showForm, setShowForm] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
-  const [ticketReferenceNumber, setTicketReferenceNumber] = useState<string>("");
+  const [ticketReferenceNumber, setTicketReferenceNumber] =
+    useState<string>("");
   const [previewModal, setPreviewModal] = useState<{
     isOpen: boolean;
     attachment: Attachment | null;
@@ -95,62 +123,143 @@ export default function SupportTicketsPage() {
   });
   const [isRated, setIsRated] = useState(false);
   const [isSubmittingRating, setIsSubmittingRating] = useState(false);
+  const [sharedDepartment, setSharedDepartment] =
+    useState<ViewAllMainDepartments200ResponseDataInner | null>(null);
+  const [sharedSubDepartments, setSharedSubDepartments] = useState<
+    ViewAllSubDepartments200ResponseDataInner[]
+  >([]);
+  const [shareKey, setShareKey] = useState<string | null>(null);
   const locales = useLocalesStore((state) => state.locales);
   const router = useRouter();
   const searchParams = useSearchParams();
   const isClearingRef = useRef(false);
 
-  const handleTrackTicket = useCallback(async (ticketCode: string) => {
-    if (!ticketCode.trim()) return;
+  // Helper function to build URLs while preserving shareKey
+  const buildUrlWithShareKey = useCallback(
+    (path: string, params?: Record<string, string>) => {
+      const urlParams = new URLSearchParams();
 
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const data = await ticketService.trackSupportTicket(ticketCode.trim());
-      setTicketData(data.ticket as TicketData);
-      setShowForm(false);
-      setIsRated(data.isRated); // Reset rating state for new ticket
-
-      // Update URL with code query parameter (without redirecting)
-      router.replace(`/support-tickets?code=${encodeURIComponent(ticketCode.trim())}`, { scroll: false });
-
-      // Fetch attachment metadata
-      const ticketId = (data.ticket as TicketData).id;
-      const attachmentTokens = data.attachments[ticketId] || [];
-      const answerAttachmentTokens = data.answerAttachments?.[ticketId] || [];
-
-      // Fetch metadata for question attachments
-      if (attachmentTokens.length > 0) {
-        const attachmentMetadata = await Promise.all(
-          attachmentTokens.map(async (token: string) => {
-            const metadata = await AttachmentService.getAttachmentMetadata(token);
-            return { ...metadata, token };
-          })
-        );
-        setAttachments(attachmentMetadata);
-      } else {
-        setAttachments([]);
+      // Always preserve shareKey if it exists
+      const currentShareKey = searchParams.get("shareKey");
+      if (currentShareKey) {
+        urlParams.set("shareKey", currentShareKey);
       }
 
-      // Fetch metadata for answer attachments
-      if (answerAttachmentTokens.length > 0) {
-        const answerAttachmentMetadata = await Promise.all(
-          answerAttachmentTokens.map(async (token: string) => {
-            const metadata = await AttachmentService.getAttachmentMetadata(token);
-            return { ...metadata, token };
-          })
-        );
-        setAnswerAttachments(answerAttachmentMetadata);
-      } else {
-        setAnswerAttachments([]);
+      // Add any additional params
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+          urlParams.set(key, value);
+        });
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to find ticket. Please check your reference number.");
-    } finally {
-      setIsLoading(false);
+
+      const queryString = urlParams.toString();
+      return queryString ? `${path}?${queryString}` : path;
+    },
+    [searchParams]
+  );
+
+  const handleTrackTicket = useCallback(
+    async (ticketCode: string) => {
+      if (!ticketCode.trim()) return;
+
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const data = await ticketService.trackSupportTicket(ticketCode.trim());
+        setTicketData(data.ticket as TicketData);
+        setShowForm(false);
+        setIsRated(data.isRated); // Reset rating state for new ticket
+
+        // Update URL with code query parameter (without redirecting)
+        router.replace(
+          buildUrlWithShareKey("/support-tickets", {
+            code: ticketCode.trim(),
+          }),
+          { scroll: false }
+        );
+
+        // Fetch attachment metadata
+        const ticketId = (data.ticket as TicketData).id;
+        const attachmentTokens = data.attachments[ticketId] || [];
+        const answerAttachmentTokens = data.answerAttachments?.[ticketId] || [];
+
+        // Fetch metadata for question attachments
+        if (attachmentTokens.length > 0) {
+          const attachmentMetadata = await Promise.all(
+            attachmentTokens.map(async (token: string) => {
+              const metadata = await AttachmentService.getAttachmentMetadata(
+                token
+              );
+              return { ...metadata, token };
+            })
+          );
+          setAttachments(attachmentMetadata);
+        } else {
+          setAttachments([]);
+        }
+
+        // Fetch metadata for answer attachments
+        if (answerAttachmentTokens.length > 0) {
+          const answerAttachmentMetadata = await Promise.all(
+            answerAttachmentTokens.map(async (token: string) => {
+              const metadata = await AttachmentService.getAttachmentMetadata(
+                token
+              );
+              return { ...metadata, token };
+            })
+          );
+          setAnswerAttachments(answerAttachmentMetadata);
+        } else {
+          setAnswerAttachments([]);
+        }
+      } catch (err: any) {
+        setError(
+          err.response?.data?.message ||
+            "Failed to find ticket. Please check your reference number."
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [router, buildUrlWithShareKey]
+  );
+
+  // Fetch shared department info if shareKey is present
+  useEffect(() => {
+    const urlShareKey = searchParams.get("shareKey");
+    if (urlShareKey && urlShareKey !== shareKey) {
+      setShareKey(urlShareKey);
+      const fetchSharedDepartment = async () => {
+        try {
+          const [departmentData, subDepartments] = await Promise.all([
+            departmentService.getSharedDepartmentData(urlShareKey),
+            DepartmentService.getSubDepartmentsForSharedDepartment(urlShareKey),
+          ]);
+          setSharedSubDepartments(subDepartments?.data.data || []);
+          // Convert the Department type to ViewAllMainDepartments200ResponseDataInner format
+          setSharedDepartment({
+            id: departmentData?.id,
+            name: departmentData?.name,
+            visibility: departmentData?.visibility,
+            questions: departmentData?.questions,
+            knowledgeChunks: departmentData?.knowledgeChunks,
+            subDepartments: departmentData?.subDepartments,
+          } as unknown as ViewAllMainDepartments200ResponseDataInner);
+        } catch (err) {
+          console.error("Failed to fetch shared department:", err);
+          // Act as if there's no shareKey - request failed
+          setShareKey(null);
+          setSharedDepartment(null);
+        }
+      };
+      fetchSharedDepartment();
+    } else if (!urlShareKey && shareKey) {
+      // Clear shared department if shareKey is removed from URL
+      setShareKey(null);
+      setSharedDepartment(null);
     }
-  }, [router]);
+  }, [searchParams, shareKey]);
 
   // Check for code in URL on mount and when searchParams change
   useEffect(() => {
@@ -253,8 +362,8 @@ export default function SupportTicketsPage() {
   const handleReturnToForm = () => {
     // Set flag to prevent useEffect from running
     isClearingRef.current = true;
-    // Clear the code from URL FIRST
-    router.replace("/support-tickets", { scroll: false });
+    // Clear the code from URL FIRST, but preserve shareKey
+    router.replace(buildUrlWithShareKey("/support-tickets"), { scroll: false });
     // Then reset all state
     setTicketData(null);
     setAttachments([]);
@@ -334,11 +443,14 @@ export default function SupportTicketsPage() {
                   transition={{ duration: 0.3, delay: 0.1 }}
                 >
                   <Link
-                    href="/"
+                    href={buildUrlWithShareKey("/")}
                     className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium mb-6"
                   >
                     <ArrowLeft className="h-5 w-5" />
-                    <span>{locales.tickets?.tracking?.back_to_home || "Back to Home"}</span>
+                    <span>
+                      {locales.tickets?.tracking?.back_to_home ||
+                        "Back to Home"}
+                    </span>
                   </Link>
                 </motion.div>
                 <div className="bg-card rounded-2xl shadow-lg border border-border p-8 md:p-12 backdrop-blur-sm">
@@ -365,10 +477,12 @@ export default function SupportTicketsPage() {
                       <Search className="h-8 w-8 text-primary" />
                     </motion.div>
                     <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                      {locales.tickets?.tracking?.title || "Track Support Ticket"}
+                      {locales.tickets?.tracking?.title ||
+                        "Track Support Ticket"}
                     </h1>
                     <p className="text-muted-foreground">
-                      {locales.tickets?.tracking?.description || "Enter your reference number to view ticket details"}
+                      {locales.tickets?.tracking?.description ||
+                        "Enter your reference number to view ticket details"}
                     </p>
                   </motion.div>
 
@@ -382,7 +496,8 @@ export default function SupportTicketsPage() {
                         htmlFor="code"
                         className="block text-sm font-medium text-foreground mb-2"
                       >
-                        {locales.tickets?.tracking?.reference_number_label || "Reference Number"}
+                        {locales.tickets?.tracking?.reference_number_label ||
+                          "Reference Number"}
                       </label>
                       <div className="relative">
                         <Hash className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -391,7 +506,11 @@ export default function SupportTicketsPage() {
                           type="text"
                           value={code}
                           onChange={(e) => setCode(e.target.value)}
-                          placeholder={locales.tickets?.tracking?.reference_number_placeholder || "Enter your ticket reference number"}
+                          placeholder={
+                            locales.tickets?.tracking
+                              ?.reference_number_placeholder ||
+                            "Enter your ticket reference number"
+                          }
                           className="w-full pl-12 pr-4 py-4 bg-input border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
                           disabled={isLoading}
                           autoFocus
@@ -420,13 +539,19 @@ export default function SupportTicketsPage() {
                         <span className="flex items-center justify-center gap-2">
                           <motion.div
                             animate={{ rotate: 360 }}
-                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            transition={{
+                              duration: 1,
+                              repeat: Infinity,
+                              ease: "linear",
+                            }}
                             className="h-5 w-5 border-2 border-primary-foreground border-t-transparent rounded-full"
                           />
-                          {locales.tickets?.tracking?.searching || "Searching..."}
+                          {locales.tickets?.tracking?.searching ||
+                            "Searching..."}
                         </span>
                       ) : (
-                        locales.tickets?.tracking?.track_button || "Track Ticket"
+                        locales.tickets?.tracking?.track_button ||
+                        "Track Ticket"
                       )}
                     </motion.button>
                   </form>
@@ -449,7 +574,10 @@ export default function SupportTicketsPage() {
                   className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
                 >
                   <ArrowLeft className="h-5 w-5" />
-                  <span>{locales.tickets?.tracking?.track_another || "Track Another Ticket"}</span>
+                  <span>
+                    {locales.tickets?.tracking?.track_another ||
+                      "Track Another Ticket"}
+                  </span>
                 </motion.button>
 
                 {/* Header Card */}
@@ -468,17 +596,27 @@ export default function SupportTicketsPage() {
                       </h1>
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Hash className="h-4 w-4" />
-                        <span className="font-mono text-sm">{ticketData.code}</span>
+                        <span className="font-mono text-sm">
+                          {ticketData.code}
+                        </span>
                       </div>
                     </div>
                     <motion.div
                       initial={{ scale: 0.8, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.3, delay: 0.3 }}
-                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border ${getStatusConfig(ticketData.status).bg} ${getStatusConfig(ticketData.status).text} ${getStatusConfig(ticketData.status).border}`}
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border ${
+                        getStatusConfig(ticketData.status).bg
+                      } ${getStatusConfig(ticketData.status).text} ${
+                        getStatusConfig(ticketData.status).border
+                      }`}
                     >
-                      {statusIcons[ticketData.status.toLowerCase().replace(/\s+/g, "_")] || statusIcons.pending}
-                      <span className="font-semibold capitalize">{ticketData.status}</span>
+                      {statusIcons[
+                        ticketData.status.toLowerCase().replace(/\s+/g, "_")
+                      ] || statusIcons.pending}
+                      <span className="font-semibold capitalize">
+                        {ticketData.status}
+                      </span>
                     </motion.div>
                   </div>
                 </motion.div>
@@ -499,15 +637,21 @@ export default function SupportTicketsPage() {
                   >
                     <div className="flex items-center gap-2 mb-4">
                       <FileText className="h-5 w-5 text-primary" />
-                      <h2 className="text-lg font-semibold text-foreground">{locales.tickets?.tracking?.description_label || "Description"}</h2>
+                      <h2 className="text-lg font-semibold text-foreground">
+                        {locales.tickets?.tracking?.description_label ||
+                          "Description"}
+                      </h2>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed mb-4">{ticketData.description}</p>
+                    <p className="text-muted-foreground leading-relaxed mb-4">
+                      {ticketData.description}
+                    </p>
                     {attachments.length > 0 && (
                       <div className="mt-4 pt-4 border-t border-border">
                         <div className="flex items-center gap-2 mb-3">
                           <FileText className="h-4 w-4 text-muted-foreground" />
                           <span className="text-sm font-medium text-foreground">
-                            {locales.ui?.attachments || "Attachments"} ({attachments.length})
+                            {locales.ui?.attachments || "Attachments"} (
+                            {attachments.length})
                           </span>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -517,7 +661,9 @@ export default function SupportTicketsPage() {
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ duration: 0.3, delay: 0.1 * index }}
-                              onClick={() => handleAttachmentPreview(attachment)}
+                              onClick={() =>
+                                handleAttachmentPreview(attachment)
+                              }
                               className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg border border-border/50 hover:bg-muted/70 transition-colors cursor-pointer"
                             >
                               {getFileIcon(attachment.contentType)}
@@ -526,9 +672,13 @@ export default function SupportTicketsPage() {
                                   {attachment.originalName}
                                 </p>
                                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                  <span>{attachment.fileType.toUpperCase()}</span>
+                                  <span>
+                                    {attachment.fileType.toUpperCase()}
+                                  </span>
                                   <span>•</span>
-                                  <span>{formatFileSize(attachment.sizeInBytes)}</span>
+                                  <span>
+                                    {formatFileSize(attachment.sizeInBytes)}
+                                  </span>
                                 </div>
                               </div>
                             </motion.div>
@@ -547,9 +697,16 @@ export default function SupportTicketsPage() {
                   >
                     <div className="flex items-center gap-2 mb-4">
                       <Building2 className="h-5 w-5 text-primary" />
-                      <h2 className="text-lg font-semibold text-foreground">{locales.tickets?.tracking?.department_label || "Department"}</h2>
+                      <h2 className="text-lg font-semibold text-foreground">
+                        {locales.tickets?.tracking?.department_label ||
+                          "Department"}
+                      </h2>
                     </div>
-                    <p className="text-foreground font-medium">{ticketData.department?.name || locales.tickets?.tracking?.not_available || "N/A"}</p>
+                    <p className="text-foreground font-medium">
+                      {ticketData.department?.name ||
+                        locales.tickets?.tracking?.not_available ||
+                        "N/A"}
+                    </p>
                   </motion.div>
 
                   {/* Answer Card */}
@@ -562,15 +719,21 @@ export default function SupportTicketsPage() {
                     >
                       <div className="flex items-center gap-2 mb-4">
                         <CheckCircle2 className="h-5 w-5 text-success" />
-                        <h2 className="text-lg font-semibold text-success">{locales.tickets?.tracking?.response_label || "Response"}</h2>
+                        <h2 className="text-lg font-semibold text-success">
+                          {locales.tickets?.tracking?.response_label ||
+                            "Response"}
+                        </h2>
                       </div>
-                      <p className="text-foreground leading-relaxed whitespace-pre-wrap mb-4">{ticketData.answer}</p>
+                      <p className="text-foreground leading-relaxed whitespace-pre-wrap mb-4">
+                        {ticketData.answer}
+                      </p>
                       {answerAttachments.length > 0 && (
                         <div className="mt-4 pt-4 border-t border-success/20">
                           <div className="flex items-center gap-2 mb-3">
                             <FileText className="h-4 w-4 text-success" />
                             <span className="text-sm font-medium text-success">
-                              {locales.ui?.attachments || "Attachments"} ({answerAttachments.length})
+                              {locales.ui?.attachments || "Attachments"} (
+                              {answerAttachments.length})
                             </span>
                           </div>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -579,8 +742,13 @@ export default function SupportTicketsPage() {
                                 key={index}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.3, delay: 0.1 * index }}
-                                onClick={() => handleAttachmentPreview(attachment)}
+                                transition={{
+                                  duration: 0.3,
+                                  delay: 0.1 * index,
+                                }}
+                                onClick={() =>
+                                  handleAttachmentPreview(attachment)
+                                }
                                 className="flex items-center gap-3 p-3 bg-success/10 rounded-lg border border-success/20 hover:bg-success/20 transition-colors cursor-pointer"
                               >
                                 {getFileIcon(attachment.contentType)}
@@ -589,9 +757,13 @@ export default function SupportTicketsPage() {
                                     {attachment.originalName}
                                   </p>
                                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                    <span>{attachment.fileType.toUpperCase()}</span>
+                                    <span>
+                                      {attachment.fileType.toUpperCase()}
+                                    </span>
                                     <span>•</span>
-                                    <span>{formatFileSize(attachment.sizeInBytes)}</span>
+                                    <span>
+                                      {formatFileSize(attachment.sizeInBytes)}
+                                    </span>
                                   </div>
                                 </div>
                               </motion.div>
@@ -612,10 +784,13 @@ export default function SupportTicketsPage() {
                             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl border border-primary/20 backdrop-blur-sm">
                               <div className="flex-1">
                                 <h3 className="text-base font-semibold text-foreground mb-1">
-                                  {locales.faqs?.was_this_reply_helpful || "Was this reply helpful?"}
+                                  {locales.faqs?.was_this_reply_helpful ||
+                                    "Was this reply helpful?"}
                                 </h3>
                                 <p className="text-sm text-muted-foreground">
-                                  {locales.tickets?.tracking?.feedback_help_text || "Your feedback helps us improve our support"}
+                                  {locales.tickets?.tracking
+                                    ?.feedback_help_text ||
+                                    "Your feedback helps us improve our support"}
                                 </p>
                               </div>
                               <div className="flex items-center gap-3">
@@ -626,12 +801,19 @@ export default function SupportTicketsPage() {
                                   whileHover={{ scale: 1.1, rotate: 5 }}
                                   whileTap={{ scale: 0.95 }}
                                   className="group relative p-3 bg-success/10 hover:bg-success/20 border-2 border-success/30 hover:border-success/50 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                                  aria-label={locales.faqs?.satisfied || "Satisfied"}
+                                  aria-label={
+                                    locales.faqs?.satisfied || "Satisfied"
+                                  }
                                 >
                                   <motion.span
                                     className="text-2xl"
-                                    animate={isSubmittingRating ? { rotate: 360 } : {}}
-                                    transition={{ duration: 0.5, repeat: isSubmittingRating ? Infinity : 0 }}
+                                    animate={
+                                      isSubmittingRating ? { rotate: 360 } : {}
+                                    }
+                                    transition={{
+                                      duration: 0.5,
+                                      repeat: isSubmittingRating ? Infinity : 0,
+                                    }}
                                   >
                                     👍
                                   </motion.span>
@@ -646,17 +828,25 @@ export default function SupportTicketsPage() {
                                   whileHover={{ scale: 1.1, rotate: -5 }}
                                   whileTap={{ scale: 0.95 }}
                                   className="group relative p-3 bg-destructive/10 hover:bg-destructive/20 border-2 border-destructive/30 hover:border-destructive/50 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                                  aria-label={locales.faqs?.dissatisfied || "Dissatisfied"}
+                                  aria-label={
+                                    locales.faqs?.dissatisfied || "Dissatisfied"
+                                  }
                                 >
                                   <motion.span
                                     className="text-2xl"
-                                    animate={isSubmittingRating ? { rotate: 360 } : {}}
-                                    transition={{ duration: 0.5, repeat: isSubmittingRating ? Infinity : 0 }}
+                                    animate={
+                                      isSubmittingRating ? { rotate: 360 } : {}
+                                    }
+                                    transition={{
+                                      duration: 0.5,
+                                      repeat: isSubmittingRating ? Infinity : 0,
+                                    }}
                                   >
                                     👎
                                   </motion.span>
                                   <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs font-medium text-destructive opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                    {locales.faqs?.dissatisfied || "Dissatisfied"}
+                                    {locales.faqs?.dissatisfied ||
+                                      "Dissatisfied"}
                                   </span>
                                 </motion.button>
                               </div>
@@ -671,13 +861,18 @@ export default function SupportTicketsPage() {
                               <motion.div
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
-                                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                                transition={{
+                                  delay: 0.2,
+                                  type: "spring",
+                                  stiffness: 200,
+                                }}
                                 className="text-2xl"
                               >
                                 ✨
                               </motion.div>
                               <p className="text-base font-semibold text-primary">
-                                {locales.faqs?.thanks_for_your_feedback || "Thanks for your feedback!"}
+                                {locales.faqs?.thanks_for_your_feedback ||
+                                  "Thanks for your feedback!"}
                               </p>
                             </motion.div>
                           )}
@@ -695,15 +890,22 @@ export default function SupportTicketsPage() {
                   >
                     <div className="flex items-center gap-2 mb-4">
                       <User className="h-5 w-5 text-primary" />
-                      <h2 className="text-lg font-semibold text-foreground">{locales.tickets?.tracking?.contact_information || "Contact Information"}</h2>
+                      <h2 className="text-lg font-semibold text-foreground">
+                        {locales.tickets?.tracking?.contact_information ||
+                          "Contact Information"}
+                      </h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {ticketData.guestName && (
                         <div className="flex items-center gap-2">
                           <User className="h-4 w-4 text-muted-foreground" />
                           <div>
-                            <p className="text-xs text-muted-foreground">{locales.tickets?.tracking?.name || "Name"}</p>
-                            <p className="text-foreground font-medium">{ticketData.guestName}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {locales.tickets?.tracking?.name || "Name"}
+                            </p>
+                            <p className="text-foreground font-medium">
+                              {ticketData.guestName}
+                            </p>
                           </div>
                         </div>
                       )}
@@ -711,8 +913,12 @@ export default function SupportTicketsPage() {
                         <div className="flex items-center gap-2">
                           <Mail className="h-4 w-4 text-muted-foreground" />
                           <div>
-                            <p className="text-xs text-muted-foreground">{locales.tickets?.tracking?.email || "Email"}</p>
-                            <p className="text-foreground font-medium break-all">{ticketData.guestEmail}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {locales.tickets?.tracking?.email || "Email"}
+                            </p>
+                            <p className="text-foreground font-medium break-all">
+                              {ticketData.guestEmail}
+                            </p>
                           </div>
                         </div>
                       )}
@@ -720,8 +926,12 @@ export default function SupportTicketsPage() {
                         <div className="flex items-center gap-2">
                           <Phone className="h-4 w-4 text-muted-foreground" />
                           <div>
-                            <p className="text-xs text-muted-foreground">{locales.tickets?.tracking?.phone || "Phone"}</p>
-                            <p className="text-foreground font-medium">{ticketData.guestPhone}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {locales.tickets?.tracking?.phone || "Phone"}
+                            </p>
+                            <p className="text-foreground font-medium">
+                              {ticketData.guestPhone}
+                            </p>
                           </div>
                         </div>
                       )}
@@ -737,16 +947,29 @@ export default function SupportTicketsPage() {
                   >
                     <div className="flex items-center gap-2 mb-4">
                       <Calendar className="h-5 w-5 text-primary" />
-                      <h2 className="text-lg font-semibold text-foreground">{locales.tickets?.tracking?.timeline_label || "Timeline"}</h2>
+                      <h2 className="text-lg font-semibold text-foreground">
+                        {locales.tickets?.tracking?.timeline_label ||
+                          "Timeline"}
+                      </h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-xs text-muted-foreground mb-1">{locales.tickets?.tracking?.created_label || "Created"}</p>
-                        <p className="text-foreground font-medium">{formatDate(ticketData.createdAt)}</p>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          {locales.tickets?.tracking?.created_label ||
+                            "Created"}
+                        </p>
+                        <p className="text-foreground font-medium">
+                          {formatDate(ticketData.createdAt)}
+                        </p>
                       </div>
                       <div>
-                        <p className="text-xs text-muted-foreground mb-1">{locales.tickets?.tracking?.last_updated || "Last Updated"}</p>
-                        <p className="text-foreground font-medium">{formatDate(ticketData.updatedAt)}</p>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          {locales.tickets?.tracking?.last_updated ||
+                            "Last Updated"}
+                        </p>
+                        <p className="text-foreground font-medium">
+                          {formatDate(ticketData.updatedAt)}
+                        </p>
                       </div>
                     </div>
                   </motion.div>
@@ -766,7 +989,10 @@ export default function SupportTicketsPage() {
           className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-6 py-4 bg-primary text-primary-foreground rounded-full shadow-lg hover:shadow-xl transition-all duration-200 font-semibold"
         >
           <Plus className="h-5 w-5" />
-          <span>{locales.tickets?.tracking?.open_support_ticket || "Open Support Ticket"}</span>
+          <span>
+            {locales.tickets?.tracking?.open_support_ticket ||
+              "Open Support Ticket"}
+          </span>
         </motion.button>
 
         {/* Create Ticket Modal */}
@@ -777,13 +1003,18 @@ export default function SupportTicketsPage() {
             setTicketReferenceNumber(ticketId);
             setIsToastOpen(true);
           }}
+          sharedDepartment={sharedDepartment}
+          sharedSubDepartments={sharedSubDepartments}
         />
 
         {/* Success Toast */}
         <Toast
           isOpen={isToastOpen}
           onClose={() => setIsToastOpen(false)}
-          message={locales.tickets?.toast?.success_message || "Ticket created successfully!"}
+          message={
+            locales.tickets?.toast?.success_message ||
+            "Ticket created successfully!"
+          }
           referenceNumber={ticketReferenceNumber}
         />
 
@@ -818,7 +1049,11 @@ export default function SupportTicketsPage() {
                     <div className="flex items-center gap-3">
                       <motion.div
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        transition={{
+                          duration: 1,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
                         className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full"
                       />
                       <span className="text-muted-foreground">
@@ -834,19 +1069,24 @@ export default function SupportTicketsPage() {
                         {previewModal.attachment.originalName}
                       </h3>
                       <p className="text-sm text-muted-foreground mt-1">
-                        {previewModal.attachment.contentType} • {formatFileSize(previewModal.attachment.sizeInBytes)}
+                        {previewModal.attachment.contentType} •{" "}
+                        {formatFileSize(previewModal.attachment.sizeInBytes)}
                       </p>
                     </div>
 
                     {/* Preview content */}
                     <div className="p-6">
-                      {previewModal.attachment.contentType.startsWith("image/") ? (
+                      {previewModal.attachment.contentType.startsWith(
+                        "image/"
+                      ) ? (
                         <img
                           src={previewModal.url}
                           alt={previewModal.attachment.originalName}
                           className="w-full h-auto max-h-[60vh] object-contain rounded-lg mx-auto"
                         />
-                      ) : previewModal.attachment.contentType.startsWith("video/") ? (
+                      ) : previewModal.attachment.contentType.startsWith(
+                          "video/"
+                        ) ? (
                         <video
                           src={previewModal.url}
                           className="w-full h-auto max-h-[60vh] rounded-lg mx-auto"
@@ -856,7 +1096,9 @@ export default function SupportTicketsPage() {
                           muted
                           playsInline
                         />
-                      ) : previewModal.attachment.contentType.startsWith("audio/") ? (
+                      ) : previewModal.attachment.contentType.startsWith(
+                          "audio/"
+                        ) ? (
                         <div className="flex items-center justify-center p-8">
                           <audio
                             controls
@@ -871,7 +1113,8 @@ export default function SupportTicketsPage() {
                               <FileText className="w-10 h-10 text-muted-foreground" />
                             </div>
                             <p className="text-muted-foreground mb-4">
-                              {locales.ui?.preview_not_available || "Preview not available for this file type"}
+                              {locales.ui?.preview_not_available ||
+                                "Preview not available for this file type"}
                             </p>
                             <a
                               href={previewModal.url}
@@ -896,4 +1139,3 @@ export default function SupportTicketsPage() {
     </PageLayout>
   );
 }
-

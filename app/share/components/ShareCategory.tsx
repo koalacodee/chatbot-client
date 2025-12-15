@@ -163,7 +163,7 @@ export default function ShareCategory({ shareKey }: { shareKey: string }) {
           </p>
         </div>
 
-        <SupportTicketCTA />
+        <SupportTicketCTA shareKey={shareKey} />
 
         <div className="space-y-8">
           {/* Sub-departments container */}

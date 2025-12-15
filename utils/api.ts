@@ -31,7 +31,10 @@ interface Question {
 interface Department {
   id: string;
   name: string;
+  visibility: string;
   questions: Question[];
+  knowledgeChunks: string[];
+  subDepartments: string[];
 }
 
 interface TrackTicketResponse {
@@ -227,6 +230,13 @@ export const departmentService = {
     const response = await api.get<{ data: Department[] }>("/department");
     return response.data.data;
   },
+
+  getSharedDepartmentData: async (key: string) => {
+    const response = await api.get<{ data: Department }>(
+      `/department/shared/data?key=${key}`
+    );
+    return response.data.data;
+  },
 };
 
 interface TrackSupportTicketResponse {
@@ -235,22 +245,21 @@ interface TrackSupportTicketResponse {
   description: string;
   departmentId: string;
   department: Department;
-  answer?: string,
-  status: string,
-  createdAt: string,
-  updatedAt: string,
-  code: string,
-  guestName: string,
-  guestPhone: string,
-  guestEmail: string
+  answer?: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  code: string;
+  guestName: string;
+  guestPhone: string;
+  guestEmail: string;
 }
-
 
 export interface TrackTicketOutput {
   ticket: TrackSupportTicketResponse;
   attachments: { [ticketId: string]: string[] };
   answerAttachments: { [ticketId: string]: string[] };
-  isRated: boolean
+  isRated: boolean;
 }
 
 export const ticketService = {

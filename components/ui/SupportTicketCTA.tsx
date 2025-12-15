@@ -6,10 +6,19 @@ import { Ticket, ArrowRight, ArrowLeft } from "lucide-react";
 import { useLocalesStore } from "@/app/store/useLocalesStore";
 import { useLangStore } from "@/app/store/useLangStore";
 import { isRTL } from "@/lib/utils";
-export default function SupportTicketCTA() {
+
+interface SupportTicketCTAProps {
+  shareKey?: string;
+}
+
+export default function SupportTicketCTA({ shareKey }: SupportTicketCTAProps = {}) {
   const lang = useLangStore((state) => state.lang);
   const locales = useLocalesStore((state) => state.locales);
   const rtl = isRTL(lang);
+  
+  const ticketUrl = shareKey 
+    ? `/support-tickets?shareKey=${encodeURIComponent(shareKey)}`
+    : "/support-tickets";
 
   return (
     <motion.div
@@ -69,7 +78,7 @@ export default function SupportTicketCTA() {
               transition={{ duration: 0.4, delay: 0.7 }}
             >
               <Link
-                href="/support-tickets"
+                href={ticketUrl}
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-all duration-200 shadow-lg hover:shadow-xl group"
               >
                 <span>{locales.ui?.track_your_tickets || "Track Your Tickets"}</span>
