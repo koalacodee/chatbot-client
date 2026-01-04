@@ -7,8 +7,8 @@ import { z } from "zod";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { X, Upload, XCircle, Loader2 } from "lucide-react";
-import { DepartmentService, SupportTicketService } from "@/utils/api/index";
-import api from "@/utils/api";
+import { DepartmentService } from "@/utils/api/index";
+import { SupportTicketService } from "@/lib/api";
 import {
   ViewAllSubDepartments200ResponseDataInner,
   ViewAllMainDepartments200ResponseDataInner,
@@ -75,8 +75,13 @@ export default function CreateTicketModal({
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { isVerifying, isVerified, verifiedTicketData, resetVerification } =
-    useVerificationStore();
+  const {
+    isVerifying,
+    isVerified,
+    verifiedTicketData,
+    setTicketData,
+    resetVerification,
+  } = useVerificationStore();
   const locales = useLocalesStore((state) => state.locales);
 
   const {
@@ -212,7 +217,7 @@ export default function CreateTicketModal({
       setIsSubmitting(true);
       setSubmitError(null);
 
-      const response = await api.post("/support-tickets", {
+      const response = await SupportTicketService.createWithVerification({
         subject: data.subject,
         description: data.description,
         guestName: data.guestName,
@@ -222,9 +227,15 @@ export default function CreateTicketModal({
         attach: attachments.length > 0,
       });
 
+      if (!response.data?.ticketId) {
+        throw new Error("Failed to create ticket");
+      }
+
       // Store ticket data for verification (same as TicketForm)
       const { setTicketData, setIsVerifying } = useVerificationStore.getState();
-      setTicketData(response.data.data.ticketId, data.guestEmail);
+      console.log("RESPONSE", response);
+
+      setTicketData(response.data?.ticketId, data.guestEmail);
       setIsVerifying(true);
 
       // Reset form after successful submission

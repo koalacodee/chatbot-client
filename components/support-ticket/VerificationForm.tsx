@@ -4,11 +4,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { SupportTicketService } from "@/utils/api/index";
+import { SupportTicketService } from "@/lib/api";
 import { useVerificationStore } from "@/app/store/useVerificationStore";
 import { useSubmittedTicketStore } from "@/app/store/useSubmittedTicketStore";
 import { useAttachmentStore } from "./useAttachmentStore";
-import { AttachmentService } from "@/utils/api";
+import { TusService } from "@/components/filehub/tus";
+import { env } from "next-runtime-env";
 import { useLocalesStore } from "@/app/store/useLocalesStore";
 
 const verificationSchema = z.object({
@@ -27,7 +28,6 @@ export default function VerificationForm() {
     verifiedTicketData,
     setIsVerified,
     setVerificationError,
-    resetVerification,
     verificationError,
   } = useVerificationStore();
   const { setSubmittedTicket } = useSubmittedTicketStore();
@@ -52,22 +52,39 @@ export default function VerificationForm() {
     setVerificationError(null);
 
     try {
-      const response =
-        await SupportTicketService.completeSupportTicketVerification({
-          code: data.code,
-        });
+      const response = await SupportTicketService.verifyTicket({
+        code: data.code,
+      });
 
-      if (attachments.length > 0 && response.data.data.uploadKey) {
-        console.log("Uploading attachments...");
-        await AttachmentService.uploadFiles(
-          response.data.data.uploadKey,
-          attachments
+      // Upload attachments using FileHub TUS if available
+      if (attachments.length > 0 && response.data?.fileHubUploadKey) {
+        console.log("Uploading attachments using FileHub TUS...");
+        const tusUploadUrl = env("NEXT_PUBLIC_TUS_URL");
+        if (!tusUploadUrl) {
+          throw new Error("TUS upload URL is not set");
+        }
+        const tusService = new TusService(tusUploadUrl);
+
+        for (const file of attachments) {
+          const upload = await tusService.upload({
+            file,
+            uploadKey: response.data?.fileHubUploadKey!,
+          });
+          upload.start();
+        }
+      } else if (attachments.length > 0) {
+        console.warn(
+          "Attachments present but no fileHubUploadKey provided. Skipping upload."
         );
       }
 
-      const ticketData = response.data.data.ticket;
+      const ticketData = response.data?.ticket;
 
       // Store complete ticket data with reference code
+
+      if (!ticketData) {
+        throw new Error("Failed to verify ticket");
+      }
       const verifiedTicketData = {
         ticketId: ticketData.id,
         code: ticketData.code,
@@ -141,8 +158,9 @@ export default function VerificationForm() {
             id="code"
             {...register("code")}
             maxLength={6}
-            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background text-center text-lg tracking-widest ${errors.code ? "border-destructive" : "border-border"
-              } transition-colors animate-fade-in`}
+            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background text-center text-lg tracking-widest ${
+              errors.code ? "border-destructive" : "border-border"
+            } transition-colors animate-fade-in`}
             placeholder="000000"
           />
           {verificationError && (

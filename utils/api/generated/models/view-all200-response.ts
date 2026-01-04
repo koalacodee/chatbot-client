@@ -23,6 +23,18 @@ export type FAqTranslation = {
   type: "question" | "answer";
 };
 
+export interface FileHubAttachment {
+  id: string;
+  filename: string;
+  originalName: string;
+  expirationDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+  targetId: string;
+  size: number;
+  signedUrl: string;
+}
+
 /**
  *
  * @export
@@ -44,5 +56,6 @@ export interface ViewAll200Response {
     faqs: Array<ViewAll200ResponseDataInner>;
     attachments: Record<string, Array<string>>;
     translations: Record<string, FAqTranslation[]>;
+    fileHubAttachments: FileHubAttachment[];
   };
 }

@@ -2,18 +2,10 @@
 import { FAQService } from "@/utils/api/index";
 import { useEffect, useState } from "react";
 import ChevronDownIcon from "../ui/icons/ChevronDownIcon";
-import { useAttachmentsStore } from "@/app/store/useAttachmentsStore";
-import {
-  AttachmentMetadata,
-  useAttachmentMetadataStore,
-} from "@/app/store/useAttachmentMetadataStore";
-import { AttachmentService } from "@/utils/api";
-import AttachmentPreview from "../ui/AttachmentPreview";
-import PromotionAttachmentPreview from "../ui/PromotionAttachmentPreview";
 import { useFaqTranslationStore } from "@/app/store/useFaqTranslationStore";
-import { SupportedLanguage } from "@/types/translation";
 import { useLangStore } from "@/app/store/useLangStore";
 import { useLocalesStore } from "@/app/store/useLocalesStore";
+import FileHubAttachmentViewer from "../filehub/FileHubAttachmentViewer";
 
 export default function FaqItem({
   text,
@@ -31,16 +23,9 @@ export default function FaqItem({
   const [isOpen, setIsOpen] = useState(false);
   const [isRated, setIsRated] = useState(rate);
   const [isViewed, setIsViewed] = useState(viewed);
-  const { getAttachmentsForFaq, attachments } = useAttachmentsStore();
-  const { setMetadataForAttachment, getMetadataForAttachment, metadata } =
-    useAttachmentMetadataStore();
   const toggleOpen = () => {
     setIsOpen(!isOpen);
   };
-  const [currentPreview, setCurrentPreview] = useState<{
-    attachmentKey: string;
-    metadata: AttachmentMetadata;
-  }>();
   const getFaqTranslationsForLanguage = useFaqTranslationStore(
     (state) => state.getFaqTranslationsForLanguage
   );
@@ -66,30 +51,8 @@ export default function FaqItem({
   useEffect(() => {
     if (isOpen && !isViewed) {
       FAQService.viewFaq(id).then(() => setIsViewed(true));
-    } else if (isOpen) {
-      const populateMetadata = async () => {
-        const attachments = getAttachmentsForFaq(id);
-        const promises = attachments.map((attachment) =>
-          AttachmentService.getAttachmentMetadata(attachment).then((metadata) =>
-            setMetadataForAttachment(attachment, metadata)
-          )
-        );
-        await Promise.all(promises);
-      };
-      populateMetadata();
     }
   }, [isOpen]);
-
-  useEffect(() => {
-    const attachment = getAttachmentsForFaq(id)[0];
-    const metadata = getMetadataForAttachment(attachment);
-    if (attachment && metadata) {
-      setCurrentPreview({
-        attachmentKey: attachment,
-        metadata,
-      });
-    }
-  }, [attachments, metadata]);
 
   const handleRate = async (rate: "satisfied" | "dissatisfied") => {
     switch (rate) {
@@ -168,14 +131,7 @@ export default function FaqItem({
               </div>
             )}
           </div>
-          {currentPreview && (
-            <PromotionAttachmentPreview
-              attachmentKey={currentPreview.attachmentKey}
-              meta={currentPreview.metadata}
-              autoPlay={false}
-              loop={false}
-            />
-          )}
+          <FileHubAttachmentViewer targetId={id} />
         </div>
       </div>
     </div>

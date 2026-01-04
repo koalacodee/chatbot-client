@@ -2,12 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  ticketService,
-  AttachmentService,
-  api,
-  departmentService,
-} from "@/utils/api";
+import { departmentService } from "@/utils/api";
 import { SupportTicketService, DepartmentService } from "@/utils/api/index";
 import PageLayout from "@/components/layout/PageLayout";
 import {
@@ -22,13 +17,10 @@ import {
   Calendar,
   Hash,
   Plus,
-  X,
-  Download,
   ArrowLeft,
 } from "lucide-react";
 import CreateTicketModal from "@/components/support-ticket/CreateTicketModal";
 import Toast from "@/components/ui/Toast";
-import { env } from "next-runtime-env";
 import { useLocalesStore } from "@/app/store/useLocalesStore";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -36,6 +28,9 @@ import {
   ViewAllMainDepartments200ResponseDataInner,
   ViewAllSubDepartments200ResponseDataInner,
 } from "@/utils/api/generated";
+import FileHubAttachmentViewer from "@/components/filehub/FileHubAttachmentViewer";
+import { SupportTicketService as SupportTicketServiceApi } from "@/lib/api";
+import { useFileHubAttachmentsStore } from "../store/useFileHubAttachmentsStore";
 
 interface TicketData {
   id: string;
@@ -46,7 +41,12 @@ interface TicketData {
     id: string;
     name: string;
   };
-  answer: string;
+  answer: {
+    id: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+  };
   status: string;
   createdAt: string;
   updatedAt: string;
@@ -54,15 +54,6 @@ interface TicketData {
   guestName: string;
   guestPhone: string;
   guestEmail: string;
-}
-
-interface Attachment {
-  fileType: string;
-  originalName: string;
-  sizeInBytes: number;
-  expiryDate: string;
-  contentType: string;
-  token: string;
 }
 
 const statusColors: Record<
@@ -101,8 +92,6 @@ const statusIcons: Record<string, React.ReactNode> = {
 export default function SupportTicketsPage() {
   const [code, setCode] = useState("");
   const [ticketData, setTicketData] = useState<TicketData | null>(null);
-  const [attachments, setAttachments] = useState<Attachment[]>([]);
-  const [answerAttachments, setAnswerAttachments] = useState<Attachment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(true);
@@ -110,17 +99,6 @@ export default function SupportTicketsPage() {
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [ticketReferenceNumber, setTicketReferenceNumber] =
     useState<string>("");
-  const [previewModal, setPreviewModal] = useState<{
-    isOpen: boolean;
-    attachment: Attachment | null;
-    url: string;
-    isLoading: boolean;
-  }>({
-    isOpen: false,
-    attachment: null,
-    url: "",
-    isLoading: false,
-  });
   const [isRated, setIsRated] = useState(false);
   const [isSubmittingRating, setIsSubmittingRating] = useState(false);
   const [sharedDepartment, setSharedDepartment] =
@@ -133,6 +111,7 @@ export default function SupportTicketsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isClearingRef = useRef(false);
+  const { upsertAttachment } = useFileHubAttachmentsStore();
 
   // Helper function to build URLs while preserving shareKey
   const buildUrlWithShareKey = useCallback(
@@ -166,10 +145,12 @@ export default function SupportTicketsPage() {
       setError(null);
 
       try {
-        const data = await ticketService.trackSupportTicket(ticketCode.trim());
-        setTicketData(data.ticket as TicketData);
+        const { data } = await SupportTicketServiceApi.trackTicket(
+          ticketCode.trim()
+        );
+        setTicketData(data?.ticket as TicketData);
         setShowForm(false);
-        setIsRated(data.isRated); // Reset rating state for new ticket
+        setIsRated(data?.isRated || false); // Reset rating state for new ticket
 
         // Update URL with code query parameter (without redirecting)
         router.replace(
@@ -179,40 +160,20 @@ export default function SupportTicketsPage() {
           { scroll: false }
         );
 
-        // Fetch attachment metadata
-        const ticketId = (data.ticket as TicketData).id;
-        const attachmentTokens = data.attachments[ticketId] || [];
-        const answerAttachmentTokens = data.answerAttachments?.[ticketId] || [];
-
-        // Fetch metadata for question attachments
-        if (attachmentTokens.length > 0) {
-          const attachmentMetadata = await Promise.all(
-            attachmentTokens.map(async (token: string) => {
-              const metadata = await AttachmentService.getAttachmentMetadata(
-                token
-              );
-              return { ...metadata, token };
-            })
-          );
-          setAttachments(attachmentMetadata);
-        } else {
-          setAttachments([]);
-        }
-
-        // Fetch metadata for answer attachments
-        if (answerAttachmentTokens.length > 0) {
-          const answerAttachmentMetadata = await Promise.all(
-            answerAttachmentTokens.map(async (token: string) => {
-              const metadata = await AttachmentService.getAttachmentMetadata(
-                token
-              );
-              return { ...metadata, token };
-            })
-          );
-          setAnswerAttachments(answerAttachmentMetadata);
-        } else {
-          setAnswerAttachments([]);
-        }
+        // Upsert attachments
+        data?.fileHubAttachments.forEach((attachment) => {
+          upsertAttachment({
+            id: attachment.id,
+            filename: attachment.filename,
+            signedUrl: attachment.signedUrl || "",
+            originalName: attachment.originalName,
+            expirationDate: attachment.expirationDate ?? null,
+            createdAt: attachment.createdAt,
+            updatedAt: attachment.createdAt,
+            targetId: attachment.targetId || "",
+            size: attachment.size,
+          });
+        });
       } catch (err: any) {
         setError(
           err.response?.data?.message ||
@@ -311,54 +272,6 @@ export default function SupportTicketsPage() {
     return statusColors[normalizedStatus] || statusColors.pending;
   };
 
-  const handleAttachmentPreview = async (attachment: Attachment) => {
-    setPreviewModal({
-      isOpen: true,
-      attachment,
-      url: "",
-      isLoading: true,
-    });
-
-    try {
-      let attachmentUrl: string;
-      if (env("NEXT_PUBLIC_MEDIA_ACCESS_TYPE") === "signed-url") {
-        const response = await AttachmentService.getAttachmentSignedUrl(
-          attachment.token
-        );
-        attachmentUrl = response.signedUrl;
-      } else {
-        attachmentUrl = `${api.defaults.baseURL}/attachment/${attachment.token}`;
-      }
-      setPreviewModal((prev) => ({
-        ...prev,
-        url: attachmentUrl,
-        isLoading: false,
-      }));
-    } catch (error) {
-      console.error("Failed to fetch attachment URL:", error);
-      setPreviewModal((prev) => ({
-        ...prev,
-        url: `${api.defaults.baseURL}/attachment/${attachment.token}`,
-        isLoading: false,
-      }));
-    }
-  };
-
-  const closePreviewModal = () => {
-    setPreviewModal({
-      isOpen: false,
-      attachment: null,
-      url: "",
-      isLoading: false,
-    });
-  };
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-  };
-
   const handleReturnToForm = () => {
     // Set flag to prevent useEffect from running
     isClearingRef.current = true;
@@ -366,8 +279,6 @@ export default function SupportTicketsPage() {
     router.replace(buildUrlWithShareKey("/support-tickets"), { scroll: false });
     // Then reset all state
     setTicketData(null);
-    setAttachments([]);
-    setAnswerAttachments([]);
     setCode("");
     setError(null);
     setShowForm(true);
@@ -392,34 +303,6 @@ export default function SupportTicketsPage() {
       console.error("Failed to submit rating:", error);
     } finally {
       setIsSubmittingRating(false);
-    }
-  };
-
-  const getFileIcon = (contentType: string) => {
-    if (contentType.startsWith("image/")) {
-      return (
-        <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-          <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-        </div>
-      );
-    } else if (contentType.startsWith("application/pdf")) {
-      return (
-        <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-          <FileText className="h-5 w-5 text-red-600 dark:text-red-400" />
-        </div>
-      );
-    } else if (contentType.includes("text/")) {
-      return (
-        <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-          <FileText className="h-5 w-5 text-green-600 dark:text-green-400" />
-        </div>
-      );
-    } else {
-      return (
-        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-          <FileText className="h-5 w-5 text-muted-foreground" />
-        </div>
-      );
     }
   };
 
@@ -645,47 +528,7 @@ export default function SupportTicketsPage() {
                     <p className="text-muted-foreground leading-relaxed mb-4">
                       {ticketData.description}
                     </p>
-                    {attachments.length > 0 && (
-                      <div className="mt-4 pt-4 border-t border-border">
-                        <div className="flex items-center gap-2 mb-3">
-                          <FileText className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium text-foreground">
-                            {locales.ui?.attachments || "Attachments"} (
-                            {attachments.length})
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          {attachments.map((attachment, index) => (
-                            <motion.div
-                              key={index}
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.3, delay: 0.1 * index }}
-                              onClick={() =>
-                                handleAttachmentPreview(attachment)
-                              }
-                              className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg border border-border/50 hover:bg-muted/70 transition-colors cursor-pointer"
-                            >
-                              {getFileIcon(attachment.contentType)}
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-foreground truncate">
-                                  {attachment.originalName}
-                                </p>
-                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                  <span>
-                                    {attachment.fileType.toUpperCase()}
-                                  </span>
-                                  <span>•</span>
-                                  <span>
-                                    {formatFileSize(attachment.sizeInBytes)}
-                                  </span>
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    <FileHubAttachmentViewer targetId={ticketData.id} />
                   </motion.div>
 
                   {/* Department Card */}
@@ -725,55 +568,14 @@ export default function SupportTicketsPage() {
                         </h2>
                       </div>
                       <p className="text-foreground leading-relaxed whitespace-pre-wrap mb-4">
-                        {ticketData.answer}
+                        {ticketData.answer?.content}
                       </p>
-                      {answerAttachments.length > 0 && (
-                        <div className="mt-4 pt-4 border-t border-success/20">
-                          <div className="flex items-center gap-2 mb-3">
-                            <FileText className="h-4 w-4 text-success" />
-                            <span className="text-sm font-medium text-success">
-                              {locales.ui?.attachments || "Attachments"} (
-                              {answerAttachments.length})
-                            </span>
-                          </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {answerAttachments.map((attachment, index) => (
-                              <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                  duration: 0.3,
-                                  delay: 0.1 * index,
-                                }}
-                                onClick={() =>
-                                  handleAttachmentPreview(attachment)
-                                }
-                                className="flex items-center gap-3 p-3 bg-success/10 rounded-lg border border-success/20 hover:bg-success/20 transition-colors cursor-pointer"
-                              >
-                                {getFileIcon(attachment.contentType)}
-                                <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-medium text-foreground truncate">
-                                    {attachment.originalName}
-                                  </p>
-                                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                    <span>
-                                      {attachment.fileType.toUpperCase()}
-                                    </span>
-                                    <span>•</span>
-                                    <span>
-                                      {formatFileSize(attachment.sizeInBytes)}
-                                    </span>
-                                  </div>
-                                </div>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                      <FileHubAttachmentViewer
+                        targetId={ticketData.answer?.id}
+                      />
 
                       {/* Rating Component */}
-                      {ticketData.answer && (
+                      {ticketData.answer?.content && (
                         <motion.div
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -1017,124 +819,6 @@ export default function SupportTicketsPage() {
           }
           referenceNumber={ticketReferenceNumber}
         />
-
-        {/* Attachment Preview Modal */}
-        {previewModal.isOpen && (
-          <AnimatePresence>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={closePreviewModal}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-4xl max-h-[90vh] bg-card rounded-2xl shadow-2xl overflow-hidden"
-              >
-                {/* Close button */}
-                <button
-                  onClick={closePreviewModal}
-                  className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-
-                {/* Modal content */}
-                {previewModal.isLoading ? (
-                  <div className="flex items-center justify-center p-12">
-                    <div className="flex items-center gap-3">
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{
-                          duration: 1,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }}
-                        className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full"
-                      />
-                      <span className="text-muted-foreground">
-                        {locales.ui?.loading_preview || "Loading preview..."}
-                      </span>
-                    </div>
-                  </div>
-                ) : previewModal.attachment ? (
-                  <div>
-                    {/* Header with file info */}
-                    <div className="p-6 border-b border-border">
-                      <h3 className="font-semibold text-foreground truncate text-lg">
-                        {previewModal.attachment.originalName}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {previewModal.attachment.contentType} •{" "}
-                        {formatFileSize(previewModal.attachment.sizeInBytes)}
-                      </p>
-                    </div>
-
-                    {/* Preview content */}
-                    <div className="p-6">
-                      {previewModal.attachment.contentType.startsWith(
-                        "image/"
-                      ) ? (
-                        <img
-                          src={previewModal.url}
-                          alt={previewModal.attachment.originalName}
-                          className="w-full h-auto max-h-[60vh] object-contain rounded-lg mx-auto"
-                        />
-                      ) : previewModal.attachment.contentType.startsWith(
-                          "video/"
-                        ) ? (
-                        <video
-                          src={previewModal.url}
-                          className="w-full h-auto max-h-[60vh] rounded-lg mx-auto"
-                          controls
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                        />
-                      ) : previewModal.attachment.contentType.startsWith(
-                          "audio/"
-                        ) ? (
-                        <div className="flex items-center justify-center p-8">
-                          <audio
-                            controls
-                            src={previewModal.url}
-                            className="w-full max-w-md"
-                          />
-                        </div>
-                      ) : (
-                        <div className="flex items-center justify-center p-12">
-                          <div className="text-center">
-                            <div className="w-20 h-20 bg-muted rounded-xl flex items-center justify-center mx-auto mb-4">
-                              <FileText className="w-10 h-10 text-muted-foreground" />
-                            </div>
-                            <p className="text-muted-foreground mb-4">
-                              {locales.ui?.preview_not_available ||
-                                "Preview not available for this file type"}
-                            </p>
-                            <a
-                              href={previewModal.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-                            >
-                              <Download className="w-4 h-4" />
-                              {locales.ui?.download_file || "Download File"}
-                            </a>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ) : null}
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
-        )}
       </div>
     </PageLayout>
   );

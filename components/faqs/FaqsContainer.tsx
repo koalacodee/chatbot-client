@@ -7,12 +7,14 @@ import { FAQService } from "@/utils/api/index";
 import { useAttachmentsStore } from "@/app/store/useAttachmentsStore";
 import { motion } from "framer-motion";
 import { useFaqTranslationStore } from "@/app/store/useFaqTranslationStore";
+import { useFileHubAttachmentsStore } from "@/app/store/useFileHubAttachmentsStore";
 
 export default function FaqsContainer() {
   const { setFaqs, faqs } = useFaqsStore();
   const { mainDepartmentId, subDepartmentId } = useDepartmentPairsStore();
   const { appendAttachments } = useAttachmentsStore();
   const { setFaqTranslations } = useFaqTranslationStore();
+  const { setAttachments } = useFileHubAttachmentsStore();
 
   useEffect(() => {
     FAQService.viewAll(
@@ -23,6 +25,7 @@ export default function FaqsContainer() {
       setFaqs(res.data.data.faqs);
       appendAttachments(res.data.data.attachments);
       setFaqTranslations(res.data.data.translations);
+      setAttachments(res.data.data.fileHubAttachments);
     });
   }, [mainDepartmentId, subDepartmentId]);
 

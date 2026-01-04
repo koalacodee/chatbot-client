@@ -245,7 +245,12 @@ interface TrackSupportTicketResponse {
   description: string;
   departmentId: string;
   department: Department;
-  answer?: string;
+  answer?: {
+    id: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+  };
   status: string;
   createdAt: string;
   updatedAt: string;
@@ -299,6 +304,10 @@ export const ticketService = {
   trackSupportTicket: async (code: string) => {
     return api
       .get<{ data: TrackTicketOutput }>(`/support-tickets/track/${code}`)
+      .then((res) => {
+        console.log("RES", res);
+        return res;
+      })
       .then((res) => res.data.data);
   },
 
