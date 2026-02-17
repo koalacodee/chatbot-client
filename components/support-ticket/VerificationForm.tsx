@@ -58,7 +58,6 @@ export default function VerificationForm() {
 
       // Upload attachments using FileHub TUS if available
       if (attachments.length > 0 && response.data?.fileHubUploadKey) {
-        console.log("Uploading attachments using FileHub TUS...");
         const tusUploadUrl = env("NEXT_PUBLIC_TUS_URL");
         if (!tusUploadUrl) {
           throw new Error("TUS upload URL is not set");
@@ -109,7 +108,6 @@ export default function VerificationForm() {
       // Don't reset verification here - let the parent component handle it
     } catch (error: any) {
       console.error("Error verifying ticket:", error);
-      console.log(locales);
 
       setVerificationError(locales.ui?.invalid_verification_code || "");
     } finally {
@@ -158,9 +156,8 @@ export default function VerificationForm() {
             id="code"
             {...register("code")}
             maxLength={6}
-            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background text-center text-lg tracking-widest ${
-              errors.code ? "border-destructive" : "border-border"
-            } transition-colors animate-fade-in`}
+            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-background text-center text-lg tracking-widest ${errors.code ? "border-destructive" : "border-border"
+              } transition-colors animate-fade-in`}
             placeholder="000000"
           />
           {verificationError && (

@@ -107,7 +107,7 @@ export const useChat = () => {
         const uiConversations = (data || []).map((apiConversation) => ({
           ...apiConversation,
           messages: apiConversation.messages.map(
-            transformApiMessageToUIMessage
+            transformApiMessageToUIMessage,
           ),
         }));
         setConversations(uiConversations);
@@ -123,12 +123,10 @@ export const useChat = () => {
         const uiConversations = (data || []).map((apiConversation) => ({
           ...apiConversation,
           messages: apiConversation.messages.map(
-            transformApiMessageToUIMessage
+            transformApiMessageToUIMessage,
           ),
         }));
         setConversations(uiConversations);
-
-        console.log(data);
 
         if (data && data.length > 0) {
           await fetchConversationDetails(data[0].id);
@@ -151,8 +149,6 @@ export const useChat = () => {
           ? await chatService.getConversation(id)
           : await chatService.getConversationGuest(id);
 
-        console.log(data);
-
         const uiConversation = {
           ...data,
           messages: data.messages.map(transformApiMessageToUIMessage),
@@ -173,7 +169,7 @@ export const useChat = () => {
         setLoading(false);
       }
     },
-    [isAuthenticated]
+    [isAuthenticated],
   );
 
   const createNewConversation = async () => {
@@ -224,12 +220,12 @@ export const useChat = () => {
           ? await chatService.ask(
               askDto.question,
               askDto.conversationId,
-              askDto.faqId
+              askDto.faqId,
             )
           : await chatService.askGuest(
               askDto.question,
               askDto.conversationId,
-              askDto.faqId
+              askDto.faqId,
             );
 
         setIsTyping(false); // Stop typing indicator
@@ -274,7 +270,7 @@ export const useChat = () => {
         setMessages((prev) => [...prev, errorMessage]);
       }
     },
-    [isAuthenticated, conversationId]
+    [isAuthenticated, conversationId],
   );
 
   // Initialize on mount - load saved conversation if exists

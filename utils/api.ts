@@ -68,7 +68,7 @@ api.interceptors.request.use(
   },
   async (error) => {
     throw error;
-  }
+  },
 );
 
 // // Response interceptor to handle 401 errors with token refresh
@@ -113,7 +113,7 @@ export const authService = {
   login: async (credentials: LoginCredentials): Promise<User> => {
     const response = await api.post<{ data: AuthResponse }>(
       "/auth/guest/login",
-      credentials
+      credentials,
     );
 
     // Save token to localStorage
@@ -135,7 +135,7 @@ export const authService = {
 
   refreshToken: async (): Promise<string> => {
     const response = await api.post<{ data: { accessToken: string } }>(
-      "/auth/refresh"
+      "/auth/refresh",
     );
     const newToken = response.data.data.accessToken;
 
@@ -177,13 +177,13 @@ export const chatService = {
           "Content-Type": "application/json",
         },
         adapter: "fetch",
-      }
+      },
     );
   },
   askGuest: async (
     question: string,
     conversationId?: string,
-    faqId?: string
+    faqId?: string,
   ) => {
     const response = await api.post("/chat/ask/guest", {
       question,
@@ -217,9 +217,8 @@ export const chatService = {
 export const FAQService = {
   getQuestions: async (department?: string) => {
     const response = await api.get<{ data: Question[] }>(
-      `/questions${department ? `?departmentId=${department}` : ""}`
+      `/questions${department ? `?departmentId=${department}` : ""}`,
     );
-    console.log(response);
 
     return response.data.data;
   },
@@ -233,7 +232,7 @@ export const departmentService = {
 
   getSharedDepartmentData: async (key: string) => {
     const response = await api.get<{ data: Department }>(
-      `/department/shared/data?key=${key}`
+      `/department/shared/data?key=${key}`,
     );
     return response.data.data;
   },
@@ -305,7 +304,6 @@ export const ticketService = {
     return api
       .get<{ data: TrackTicketOutput }>(`/support-tickets/track/${code}`)
       .then((res) => {
-        console.log("RES", res);
         return res;
       })
       .then((res) => res.data.data);
@@ -335,18 +333,18 @@ export interface AttachmentSignedUrlResponse {
 export const AttachmentService = {
   getAttachmentMetadata: async (tokenOrId: string) => {
     const res = await api.get<AttachmentMetadataResponse>(
-      `/attachment/${tokenOrId}/metadata`
+      `/attachment/${tokenOrId}/metadata`,
     );
     return res.data.data;
   },
 
   getAttachmentSignedUrl: async (
-    tokenOrId: string
+    tokenOrId: string,
   ): Promise<AttachmentSignedUrlResponse> => {
     return api
-      .get<{ data: AttachmentSignedUrlResponse }>(
-        `/attachment/signed/${tokenOrId}`
-      )
+      .get<{
+        data: AttachmentSignedUrlResponse;
+      }>(`/attachment/signed/${tokenOrId}`)
       .then((res) => res.data.data);
   },
 

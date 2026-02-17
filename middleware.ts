@@ -7,7 +7,6 @@ export async function middleware(request: NextRequest) {
 
   // Inject custom header in all requests
   const headers = new Headers(request.headers);
-  console.log(headers.get("accept-language"));
   const lang = headers.get("accept-language")?.split(",")[0]?.split("-")[0];
   headers.set("x-lang", lang || "en");
   headers.set("x-current-path", pathname);

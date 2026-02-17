@@ -67,8 +67,6 @@ export const useTickets = () => {
               question: ticketData.question,
             });
 
-        console.log(code);
-
         setTicketCode(code);
         localStorage.setItem("ticketCode", code);
 
@@ -86,7 +84,7 @@ export const useTickets = () => {
         setLoading(false);
       }
     },
-    [isAuthenticated]
+    [isAuthenticated],
   );
 
   // Track a ticket by code (handles both authenticated and guest)
@@ -126,7 +124,7 @@ export const useTickets = () => {
         setLoading(false);
       }
     },
-    [isAuthenticated]
+    [isAuthenticated],
   );
 
   // Clear current ticket
@@ -152,11 +150,11 @@ export const useTickets = () => {
     (code: string, newStatus: string) => {
       if (currentTicket?.code === code) {
         setCurrentTicket((prev) =>
-          prev ? { ...prev, status: newStatus, updatedAt: new Date() } : null
+          prev ? { ...prev, status: newStatus, updatedAt: new Date() } : null,
         );
       }
     },
-    [currentTicket]
+    [currentTicket],
   );
 
   // Initialize tickets on mount

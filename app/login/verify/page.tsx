@@ -14,9 +14,6 @@ export default function LoginVerifyPage() {
     setIsLoading(true);
     setError(undefined);
 
-    // Mock console log for verification data
-    console.log("Login verification code submitted:", data);
-
     // Simulate API call
     try {
       await GuestService.verifyGuestLogin({ code: data.code });
@@ -24,7 +21,6 @@ export default function LoginVerifyPage() {
     } catch (error) {
       if (error instanceof AxiosError) {
         const errorData = error.response?.data.data;
-        console.log(errorData);
         if (errorData?.code == "code_incorrect") {
           setError("Code is incorrect, Please Try again");
         }

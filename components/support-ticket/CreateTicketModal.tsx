@@ -170,7 +170,7 @@ export default function CreateTicketModal({
           console.error("Error fetching departments:", error);
           setError(
             locales.tickets?.form?.errors?.failed_to_load_departments ||
-              "Failed to load departments. Please try again later."
+            "Failed to load departments. Please try again later."
           );
           setCategories([]);
         } finally {
@@ -233,7 +233,6 @@ export default function CreateTicketModal({
 
       // Store ticket data for verification (same as TicketForm)
       const { setTicketData, setIsVerifying } = useVerificationStore.getState();
-      console.log("RESPONSE", response);
 
       setTicketData(response.data?.ticketId, data.guestEmail);
       setIsVerifying(true);
@@ -247,8 +246,8 @@ export default function CreateTicketModal({
       console.error("Error submitting ticket:", error);
       setSubmitError(
         error.response?.data?.message ||
-          locales.tickets?.form?.errors?.failed_to_create_ticket ||
-          "Failed to create ticket. Please try again."
+        locales.tickets?.form?.errors?.failed_to_create_ticket ||
+        "Failed to create ticket. Please try again."
       );
     } finally {
       setIsSubmitting(false);
@@ -339,9 +338,9 @@ export default function CreateTicketModal({
                 <Dialog.Title className="text-2xl font-bold text-foreground">
                   {isVerifying
                     ? locales.tickets?.modal?.verify_title ||
-                      "Verify Your Ticket"
+                    "Verify Your Ticket"
                     : locales.tickets?.modal?.create_title ||
-                      "Create Support Ticket"}
+                    "Create Support Ticket"}
                 </Dialog.Title>
                 <button
                   onClick={handleClose}
@@ -412,15 +411,13 @@ export default function CreateTicketModal({
                               </label>
                               <select
                                 {...register("mainCategory")}
-                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
-                                  errors.mainCategory
+                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${errors.mainCategory
                                     ? "border-destructive"
                                     : "border-border"
-                                } ${
-                                  sharedDepartment
+                                  } ${sharedDepartment
                                     ? "opacity-75 cursor-not-allowed"
                                     : ""
-                                }`}
+                                  }`}
                                 disabled={loading || !!sharedDepartment}
                               >
                                 <option value="">
@@ -450,40 +447,39 @@ export default function CreateTicketModal({
                             {/* Sub Department */}
                             {(availableSubDepts.length > 0 ||
                               (sharedDepartment && sharedSubDepartments)) && (
-                              <div>
-                                <label className="block text-sm font-medium text-foreground mb-2">
-                                  {locales.tickets?.modal
-                                    ?.specific_issue_label || "Specific Issue"}
-                                </label>
-                                <select
-                                  {...register("subDepartment")}
-                                  className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
-                                    errors.subDepartment
-                                      ? "border-destructive"
-                                      : "border-border"
-                                  }`}
-                                  disabled={
-                                    !selectedCategoryId && !sharedDepartment
-                                  }
-                                >
-                                  <option value="">
+                                <div>
+                                  <label className="block text-sm font-medium text-foreground mb-2">
                                     {locales.tickets?.modal
-                                      ?.specific_issue_placeholder ||
-                                      "Select a specific issue (optional)"}
-                                  </option>
-                                  {availableSubDepts.map((subDept) => (
-                                    <option key={subDept.id} value={subDept.id}>
-                                      {subDept.name}
+                                      ?.specific_issue_label || "Specific Issue"}
+                                  </label>
+                                  <select
+                                    {...register("subDepartment")}
+                                    className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${errors.subDepartment
+                                        ? "border-destructive"
+                                        : "border-border"
+                                      }`}
+                                    disabled={
+                                      !selectedCategoryId && !sharedDepartment
+                                    }
+                                  >
+                                    <option value="">
+                                      {locales.tickets?.modal
+                                        ?.specific_issue_placeholder ||
+                                        "Select a specific issue (optional)"}
                                     </option>
-                                  ))}
-                                </select>
-                                {errors.subDepartment && (
-                                  <p className="mt-1 text-sm text-destructive">
-                                    {errors.subDepartment.message}
-                                  </p>
-                                )}
-                              </div>
-                            )}
+                                    {availableSubDepts.map((subDept) => (
+                                      <option key={subDept.id} value={subDept.id}>
+                                        {subDept.name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  {errors.subDepartment && (
+                                    <p className="mt-1 text-sm text-destructive">
+                                      {errors.subDepartment.message}
+                                    </p>
+                                  )}
+                                </div>
+                              )}
 
                             {/* Guest Name */}
                             <div>
@@ -495,11 +491,10 @@ export default function CreateTicketModal({
                               <input
                                 type="text"
                                 {...register("guestName")}
-                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
-                                  errors.guestName
+                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${errors.guestName
                                     ? "border-destructive"
                                     : "border-border"
-                                }`}
+                                  }`}
                                 placeholder={
                                   locales.tickets?.modal
                                     ?.full_name_placeholder ||
@@ -523,11 +518,10 @@ export default function CreateTicketModal({
                               <input
                                 type="email"
                                 {...register("guestEmail")}
-                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
-                                  errors.guestEmail
+                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${errors.guestEmail
                                     ? "border-destructive"
                                     : "border-border"
-                                }`}
+                                  }`}
                                 placeholder={
                                   locales.tickets?.modal?.email_placeholder ||
                                   "Enter your email address"
@@ -550,11 +544,10 @@ export default function CreateTicketModal({
                               <input
                                 type="tel"
                                 {...register("guestPhone")}
-                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
-                                  errors.guestPhone
+                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${errors.guestPhone
                                     ? "border-destructive"
                                     : "border-border"
-                                }`}
+                                  }`}
                                 placeholder={
                                   locales.tickets?.modal?.phone_placeholder ||
                                   "Enter your phone number"
@@ -577,11 +570,10 @@ export default function CreateTicketModal({
                               <input
                                 type="text"
                                 {...register("subject")}
-                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
-                                  errors.subject
+                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${errors.subject
                                     ? "border-destructive"
                                     : "border-border"
-                                }`}
+                                  }`}
                                 placeholder={
                                   locales.tickets?.modal?.subject_placeholder ||
                                   "Enter ticket subject"
@@ -604,11 +596,10 @@ export default function CreateTicketModal({
                               <textarea
                                 rows={4}
                                 {...register("description")}
-                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none ${
-                                  errors.description
+                                className={`w-full px-4 py-3 bg-input border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none ${errors.description
                                     ? "border-destructive"
                                     : "border-border"
-                                }`}
+                                  }`}
                                 placeholder={
                                   locales.tickets?.modal
                                     ?.description_placeholder ||

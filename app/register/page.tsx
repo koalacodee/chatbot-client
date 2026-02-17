@@ -51,7 +51,6 @@ export default function RegisterPage() {
     } catch (error) {
       if (error instanceof AxiosError) {
         const errorData = error.response?.data.data;
-        console.log(errorData);
         if (errorData?.email === "already_exists") {
           setError("email", {
             message: "Email already exists",
@@ -92,11 +91,10 @@ export default function RegisterPage() {
                 {...register("name")}
                 id="name"
                 type="text"
-                className={`w-full rounded-md border bg-background px-10 py-2 text-sm transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 ${
-                  errors.name
+                className={`w-full rounded-md border bg-background px-10 py-2 text-sm transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 ${errors.name
                     ? "border-destructive focus:border-destructive"
                     : "border-input"
-                }`}
+                  }`}
                 placeholder="Enter your full name"
                 aria-invalid={errors.name ? "true" : "false"}
                 aria-describedby={errors.name ? "name-error" : undefined}
@@ -126,11 +124,10 @@ export default function RegisterPage() {
                 {...register("email")}
                 id="email"
                 type="email"
-                className={`w-full rounded-md border bg-background px-10 py-2 text-sm transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 ${
-                  errors.email
+                className={`w-full rounded-md border bg-background px-10 py-2 text-sm transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 ${errors.email
                     ? "border-destructive focus:border-destructive"
                     : "border-input"
-                }`}
+                  }`}
                 placeholder="Enter your email"
                 aria-invalid={errors.email ? "true" : "false"}
                 aria-describedby={errors.email ? "email-error" : undefined}
@@ -161,11 +158,10 @@ export default function RegisterPage() {
                 {...register("phone")}
                 id="phone"
                 type="tel"
-                className={`w-full rounded-md border bg-background px-10 py-2 text-sm transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 ${
-                  errors.phone
+                className={`w-full rounded-md border bg-background px-10 py-2 text-sm transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 ${errors.phone
                     ? "border-destructive focus:border-destructive"
                     : "border-input"
-                }`}
+                  }`}
                 placeholder="Enter your phone number"
                 aria-invalid={errors.phone ? "true" : "false"}
                 aria-describedby={errors.phone ? "phone-error" : undefined}

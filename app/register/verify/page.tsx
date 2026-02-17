@@ -15,9 +15,6 @@ export default function VerifyPage() {
   const handleVerification = async (data: { code: string }) => {
     setIsLoading(true);
 
-    // Mock console log for verification data
-    console.log("Verification code submitted:", data);
-
     // Simulate API call
     try {
       await GuestService.verifyGuestRegistration({
@@ -27,7 +24,6 @@ export default function VerifyPage() {
     } catch (error) {
       if (error instanceof AxiosError) {
         const errorData = error.response?.data.data;
-        console.log(errorData);
         if (errorData?.code == "code_incorrect") {
           setError("Code is incorrect, Please Try again");
         }

@@ -36,7 +36,6 @@ export default function LoginPage() {
       await GuestService.loginGuest({
         identifier: data.email,
       });
-      console.log("Login Success");
 
       router.replace("/login/verify");
     } catch (error) {
@@ -82,11 +81,10 @@ export default function LoginPage() {
                 {...register("email")}
                 id="email"
                 type="email"
-                className={`w-full rounded-md border bg-background px-10 py-2 text-sm transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 ${
-                  errors.email
+                className={`w-full rounded-md border bg-background px-10 py-2 text-sm transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 ${errors.email
                     ? "border-destructive focus:border-destructive"
                     : "border-input"
-                }`}
+                  }`}
                 placeholder="Enter your email"
                 aria-invalid={errors.email ? "true" : "false"}
                 aria-describedby={errors.email ? "email-error" : undefined}

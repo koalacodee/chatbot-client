@@ -49,14 +49,6 @@ export default function StreamingChatWindow() {
     setIsMounted(true);
   }, []);
 
-  // Debug state changes
-  useEffect(() => {
-    console.log("currentBotMessage changed:", currentBotMessage);
-  }, [currentBotMessage]);
-
-  useEffect(() => {
-    console.log("isLoading changed:", isLoading);
-  }, [isLoading]);
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
@@ -79,13 +71,10 @@ export default function StreamingChatWindow() {
 
   const handleSSEStream = (message: string) => {
     // Create a new bot message if it doesn't exist
-    console.log("Received message chunk:", message);
     setCurrentBotMessage((prev) => prev + message);
   };
 
   const handleDone = () => {
-    console.log("DONEEE", currentBotMessageRef.current);
-
     const messageId = `final-${Date.now()}-${Math.random()}`;
     addMessage({
       id: messageId,
@@ -98,7 +87,6 @@ export default function StreamingChatWindow() {
   };
 
   const handleConversationMeta = (data: { conversationId: string }) => {
-    console.log("Received conversation meta:", data);
     setConversationId(data.conversationId);
 
     setIsLoading(false);
@@ -151,7 +139,6 @@ export default function StreamingChatWindow() {
             if (line.startsWith("data: ")) {
               try {
                 const payload = JSON.parse(line.slice(6)); // remove "data: "
-                console.log(payload);
 
                 if (payload.type == "message") {
                   handleSSEStream(payload.data);
@@ -164,7 +151,6 @@ export default function StreamingChatWindow() {
                   (payload.data && String(payload.data).trim() === "[DONE]")
                 ) {
                   // Handle [DONE] in various formats
-                  console.log("Received [DONE] signal, finalizing message");
                   handleDone();
                   setIsLoading(false);
                   streamDone = true;
@@ -186,7 +172,6 @@ export default function StreamingChatWindow() {
         reader.releaseLock(); // always unlock
         // Ensure loading is false even if something went wrong
         setIsLoading(false);
-        console.log("Stream ended");
       }
     } catch (error) {
       console.error("Network or parsing error:", error);
@@ -401,10 +386,6 @@ function StreamingChatHistory({
               {/* Show streaming message */}
               {isLoading && currentBotMessage && (
                 <>
-                  {console.log(
-                    "Rendering streaming message:",
-                    currentBotMessage
-                  )}
                   <ChatMessage
                     message={currentBotMessage}
                     sender="bot"
